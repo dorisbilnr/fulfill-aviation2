@@ -7,13 +7,15 @@ const morgan = require('morgan');
 const path = require('path');
 const fs = require('fs');
 
-// Auto-run DB setup on first boot
+// Auto-run DB setup and always seed admin on boot
 const DB_PATH = path.join(__dirname, '../data/fulfill.db');
 if (!fs.existsSync(DB_PATH)) {
   console.log('[boot] First run — setting up database...');
   require('./db/setup');
-  // Auto-seed if ADMIN_PASSWORD is set
-  if (process.env.ADMIN_PASSWORD) require('./db/seed');
+}
+// Always upsert admin credentials from env on every boot
+if (process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
+  require('./db/seed');
 }
 
 const { apiLimiter } = require('./middleware/rateLimit');
@@ -26,7 +28,8 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-hashes'"],
+      scriptSrcAttr: ["'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:"],
@@ -73,6 +76,7 @@ app.use('/api/stats',    require('./routes/stats'));
 
 // ── Health check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
+app.use('/api/debug', require('./routes/debug'));
 
 // ── Admin SPA (serve admin panel) ─────────────────────────────────────────────
 const ADMIN_DIR = path.join(__dirname, '../admin');
