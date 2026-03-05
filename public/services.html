@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Services — Shanghai Fulfill Aviation Ground Service</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#0b1f3a;--sky:#1a6ea8;--gold:#c8a96e;--light:#f5f6f8;--white:#ffffff;--text:#1e2535;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:"Barlow",sans-serif;color:var(--text);background:var(--white);}
+    a{text-decoration:none;color:inherit;}
+    nav{position:fixed;top:0;left:0;width:100%;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:70px;background:rgba(11,31,58,0.95);backdrop-filter:blur(8px);}
+    .nav-logo{font-family:"Cormorant Garamond",serif;font-size:1.5rem;font-weight:600;color:var(--white);letter-spacing:2px;}
+    .nav-logo span{color:var(--gold);}
+    .nav-links{display:flex;gap:32px;list-style:none;}
+    .nav-links a{color:rgba(255,255,255,0.85);font-size:0.85rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--gold);}
+    .nav-lang{display:flex;gap:12px;}
+    .nav-lang button{background:none;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);padding:4px 12px;font-size:0.75rem;cursor:pointer;border-radius:2px;}
+    .page-hero{padding-top:70px;height:260px;background:linear-gradient(135deg,#0b1f3a,#1a6ea8);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;position:relative;}
+    .page-hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.3);}
+    .page-hero-content{position:relative;z-index:1;}
+    .page-tag{display:inline-block;background:var(--gold);color:var(--navy);font-size:0.7rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;margin-bottom:14px;}
+    .page-title{font-family:"Cormorant Garamond",serif;font-size:2.8rem;color:var(--white);font-weight:300;}
+    .container{max-width:1100px;margin:0 auto;padding:72px 40px;}
+    .section-label{font-family:"Cormorant Garamond",serif;font-size:1.6rem;color:var(--navy);border-bottom:2px solid var(--gold);padding-bottom:12px;margin-bottom:32px;display:inline-block;}
+    .img-ph{display:flex;align-items:center;justify-content:center;color:#5a7a99;font-size:0.82rem;text-align:center;background:linear-gradient(135deg,#c9d6e3,#a8bfd4);width:100%;height:100%;}
+    footer{background:var(--navy);padding:32px 10%;margin-top:80px;}
+    .foot-row{display:flex;justify-content:space-between;align-items:center;}
+    .foot-row p{color:rgba(255,255,255,0.35);font-size:0.78rem;}
+    .foot-nav{display:flex;gap:24px;}
+    .foot-nav a{color:rgba(255,255,255,0.5);font-size:0.78rem;}
+    .foot-nav a:hover{color:var(--gold);}
+    @media(max-width:900px){nav{padding:0 20px;}.nav-links{display:none;}}
+
+    .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:72px;}
+    .svc-card{position:relative;overflow:hidden;height:360px;cursor:pointer;}
+    .svc-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform 0.6s;}
+    .svc-card:hover .svc-bg{transform:scale(1.06);}
+    .svc-1 .svc-bg{background:linear-gradient(160deg,#0b2d52,#1a6ea8);}
+    .svc-2 .svc-bg{background:linear-gradient(160deg,#0d3a60,#0f5487);}
+    .svc-3 .svc-bg{background:linear-gradient(160deg,#091a33,#14487a);}
+    .svc-4 .svc-bg{background:linear-gradient(160deg,#0b2540,#1a5a8a);}
+    .svc-5 .svc-bg{background:linear-gradient(160deg,#102030,#1a4060);}
+    .svc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.1) 60%);}
+    .svc-content{position:absolute;bottom:0;left:0;right:0;padding:28px;z-index:2;}
+    .svc-icon{font-size:1.8rem;margin-bottom:10px;display:block;}
+    .svc-name{font-family:"Cormorant Garamond",serif;font-size:1.45rem;color:var(--white);font-weight:400;margin-bottom:8px;}
+    .svc-desc{color:rgba(255,255,255,0.7);font-size:0.82rem;line-height:1.6;margin-bottom:14px;}
+    .svc-link{display:inline-block;color:var(--gold);font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid var(--gold);padding-bottom:2px;}
+    @media(max-width:900px){.svc-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body><nav>
+  <a href="index.html" class="nav-logo">FULFILL<span>.</span>AVIATION</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="news.html">News</a></li>
+    <li><a href="services.html" class="active">Services</a></li>
+    <li><a href="charter.html">Charter &amp; Ticketing</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-lang"><button>中文</button><button>EN</button></div>
+</nav><div class="page-hero"><div class="page-hero-content"><span class="page-tag">What We Do</span><h1 class="page-title">Our Services</h1></div></div>
+<div class="container">
+  <p style="text-align:center;max-width:680px;margin:0 auto 56px;color:#4a5568;line-height:1.8;font-size:0.95rem;">
+    Shanghai Fulfill Aviation Ground Service provides comprehensive aviation support across commercial, business, and general aviation sectors.
+    Edit this paragraph to describe your services overview.
+  </p>
+</div>
+<div class="svc-grid">
+    <div class="svc-card svc-1">
+      <div class="svc-bg"></div>
+      <div class="svc-overlay"></div>
+      <div class="svc-content">
+        <span class="svc-icon">&#9992;</span>
+        <div class="svc-name">Flight Operations Support</div>
+        <p class="svc-desc">Foreign and domestic airline operational support — permits, handling, and coordination. Edit this description.</p>
+        <a href="#" class="svc-link">Learn More</a>
+      </div>
+    </div>
+    <div class="svc-card svc-2">
+      <div class="svc-bg"></div>
+      <div class="svc-overlay"></div>
+      <div class="svc-content">
+        <span class="svc-icon">&#9981;</span>
+        <div class="svc-name">Aviation Fuel Supply</div>
+        <p class="svc-desc">JetA-1 / TS1 / JP8 / AvGas supply with global sourcing and competitive pricing. Edit this description.</p>
+        <a href="#" class="svc-link">Learn More</a>
+      </div>
+    </div>
+    <div class="svc-card svc-3">
+      <div class="svc-bg"></div>
+      <div class="svc-overlay"></div>
+      <div class="svc-content">
+        <span class="svc-icon">&#128747;</span>
+        <div class="svc-name">Charter &amp; Ticketing</div>
+        <p class="svc-desc">Group charter / private charter / cargo charter / airline ticketing solutions. Edit this description.</p>
+        <a href="#" class="svc-link">Learn More</a>
+      </div>
+    </div>
+    <div class="svc-card svc-4">
+      <div class="svc-bg"></div>
+      <div class="svc-overlay"></div>
+      <div class="svc-content">
+        <span class="svc-icon">&#128205;</span>
+        <div class="svc-name">Ground Handling</div>
+        <p class="svc-desc">Professional ground handling services at major airports. Edit this description.</p>
+        <a href="#" class="svc-link">Learn More</a>
+      </div>
+    </div>
+    <div class="svc-card svc-5">
+      <div class="svc-bg"></div>
+      <div class="svc-overlay"></div>
+      <div class="svc-content">
+        <span class="svc-icon">&#128196;</span>
+        <div class="svc-name">Navigation &amp; Data</div>
+        <p class="svc-desc">Navigation database management and aviation data services. Edit this description.</p>
+        <a href="#" class="svc-link">Learn More</a>
+      </div>
+    </div></div><footer>
+  <div class="foot-row">
+    <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
+    <nav class="foot-nav">
+      <a href="index.html">Home</a><a href="news.html">News</a><a href="services.html">Services</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</footer></body></html>

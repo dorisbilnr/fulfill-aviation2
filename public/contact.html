@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — Shanghai Fulfill Aviation Ground Service</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#0b1f3a;--sky:#1a6ea8;--gold:#c8a96e;--light:#f5f6f8;--white:#ffffff;--text:#1e2535;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:"Barlow",sans-serif;color:var(--text);background:var(--white);}
+    a{text-decoration:none;color:inherit;}
+    nav{position:fixed;top:0;left:0;width:100%;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:70px;background:rgba(11,31,58,0.95);backdrop-filter:blur(8px);}
+    .nav-logo{font-family:"Cormorant Garamond",serif;font-size:1.5rem;font-weight:600;color:var(--white);letter-spacing:2px;}
+    .nav-logo span{color:var(--gold);}
+    .nav-links{display:flex;gap:32px;list-style:none;}
+    .nav-links a{color:rgba(255,255,255,0.85);font-size:0.85rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--gold);}
+    .nav-lang{display:flex;gap:12px;}
+    .nav-lang button{background:none;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);padding:4px 12px;font-size:0.75rem;cursor:pointer;border-radius:2px;}
+    .page-hero{padding-top:70px;height:260px;background:linear-gradient(135deg,#0b1f3a,#1a6ea8);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;position:relative;}
+    .page-hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.3);}
+    .page-hero-content{position:relative;z-index:1;}
+    .page-tag{display:inline-block;background:var(--gold);color:var(--navy);font-size:0.7rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;margin-bottom:14px;}
+    .page-title{font-family:"Cormorant Garamond",serif;font-size:2.8rem;color:var(--white);font-weight:300;}
+    .container{max-width:1100px;margin:0 auto;padding:72px 40px;}
+    .section-label{font-family:"Cormorant Garamond",serif;font-size:1.6rem;color:var(--navy);border-bottom:2px solid var(--gold);padding-bottom:12px;margin-bottom:32px;display:inline-block;}
+    .img-ph{display:flex;align-items:center;justify-content:center;color:#5a7a99;font-size:0.82rem;text-align:center;background:linear-gradient(135deg,#c9d6e3,#a8bfd4);width:100%;height:100%;}
+    footer{background:var(--navy);padding:32px 10%;margin-top:80px;}
+    .foot-row{display:flex;justify-content:space-between;align-items:center;}
+    .foot-row p{color:rgba(255,255,255,0.35);font-size:0.78rem;}
+    .foot-nav{display:flex;gap:24px;}
+    .foot-nav a{color:rgba(255,255,255,0.5);font-size:0.78rem;}
+    .foot-nav a:hover{color:var(--gold);}
+    @media(max-width:900px){nav{padding:0 20px;}.nav-links{display:none;}}
+
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
+    .contact-info h2{font-family:"Cormorant Garamond",serif;font-size:2rem;color:var(--navy);font-weight:300;margin-bottom:8px;}
+    .gold-line{width:48px;height:3px;background:var(--gold);margin-bottom:24px;}
+    .contact-item{display:flex;gap:16px;margin-bottom:24px;align-items:flex-start;}
+    .contact-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px;}
+    .contact-label{font-size:0.72rem;color:var(--sky);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+    .contact-value{color:#4a5568;font-size:0.9rem;line-height:1.6;}
+    .contact-form{background:var(--light);padding:40px;border-radius:4px;}
+    .contact-form h3{font-family:"Cormorant Garamond",serif;font-size:1.6rem;color:var(--navy);margin-bottom:24px;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+    .form-group{display:flex;flex-direction:column;margin-bottom:16px;}
+    label{font-size:0.78rem;color:#4a5568;margin-bottom:6px;font-weight:500;letter-spacing:0.5px;}
+    input,textarea,select{padding:10px 14px;border:1px solid #dde3ec;border-radius:2px;font-family:"Barlow",sans-serif;font-size:0.9rem;color:var(--text);outline:none;transition:border 0.2s;background:white;}
+    input:focus,textarea:focus,select:focus{border-color:var(--sky);}
+    textarea{resize:vertical;min-height:120px;}
+    .submit-btn{width:100%;padding:14px;background:var(--navy);color:white;border:none;font-family:"Barlow",sans-serif;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background 0.3s;}
+    .submit-btn:hover{background:var(--sky);}
+    @media(max-width:900px){.contact-grid{grid-template-columns:1fr;}.form-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body><nav>
+  <a href="index.html" class="nav-logo">FULFILL<span>.</span>AVIATION</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="news.html">News</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="charter.html">Charter &amp; Ticketing</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+  <div class="nav-lang"><button>中文</button><button>EN</button></div>
+</nav><div class="page-hero"><div class="page-hero-content"><span class="page-tag">Get In Touch</span><h1 class="page-title">Contact Us</h1></div></div>
+<div class="container">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h2>We would love to hear from you</h2>
+      <div class="gold-line"></div>
+      <div class="contact-item">
+        <span class="contact-icon">&#128205;</span>
+        <div>
+          <div class="contact-label">Address</div>
+          <div class="contact-value">Room 801, 600 Yunjin Road,<br>Xuhui District, Shanghai, China</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">&#128222;</span>
+        <div>
+          <div class="contact-label">Phone</div>
+          <div class="contact-value">+86 21 XXXX XXXX</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">&#128真;</span>
+        <div>
+          <div class="contact-label">Fax</div>
+          <div class="contact-value">+86 21 XXXX XXXX</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">&#9993;</span>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5d34333b321d3b28313b343131703c2b343c29343233733e3230">[email&#160;protected]</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">&#128336;</span>
+        <div>
+          <div class="contact-label">Business Hours</div>
+          <div class="contact-value">Monday – Friday: 9:00 AM – 6:00 PM<br>Saturday: 9:00 AM – 12:00 PM</div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <h3>Send Us a Message</h3>
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="John"/></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Smith"/></div>
+      </div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="your@email.com"/></div>
+      <div class="form-group"><label>Company</label><input type="text" placeholder="Your company name"/></div>
+      <div class="form-group">
+        <label>Service of Interest</label>
+        <select>
+          <option>Flight Operations Support</option>
+          <option>Aviation Fuel Supply</option>
+          <option>Charter &amp; Ticketing</option>
+          <option>Ground Handling</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Message</label><textarea placeholder="Tell us how we can help you..."></textarea></div>
+      <button class="submit-btn">Send Message</button>
+    </div>
+  </div>
+</div><footer>
+  <div class="foot-row">
+    <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
+    <nav class="foot-nav">
+      <a href="index.html">Home</a><a href="news.html">News</a><a href="service

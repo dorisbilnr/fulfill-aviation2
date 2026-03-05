@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>News — Shanghai Fulfill Aviation Ground Service</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#0b1f3a;--sky:#1a6ea8;--gold:#c8a96e;--light:#f5f6f8;--white:#ffffff;--text:#1e2535;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:"Barlow",sans-serif;color:var(--text);background:var(--white);}
+    a{text-decoration:none;color:inherit;}
+    nav{position:fixed;top:0;left:0;width:100%;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:70px;background:rgba(11,31,58,0.95);backdrop-filter:blur(8px);}
+    .nav-logo{font-family:"Cormorant Garamond",serif;font-size:1.5rem;font-weight:600;color:var(--white);letter-spacing:2px;}
+    .nav-logo span{color:var(--gold);}
+    .nav-links{display:flex;gap:32px;list-style:none;}
+    .nav-links a{color:rgba(255,255,255,0.85);font-size:0.85rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--gold);}
+    .nav-lang{display:flex;gap:12px;}
+    .nav-lang button{background:none;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);padding:4px 12px;font-size:0.75rem;cursor:pointer;border-radius:2px;}
+    .page-hero{padding-top:70px;height:260px;background:linear-gradient(135deg,#0b1f3a,#1a6ea8);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;position:relative;}
+    .page-hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.3);}
+    .page-hero-content{position:relative;z-index:1;}
+    .page-tag{display:inline-block;background:var(--gold);color:var(--navy);font-size:0.7rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;margin-bottom:14px;}
+    .page-title{font-family:"Cormorant Garamond",serif;font-size:2.8rem;color:var(--white);font-weight:300;}
+    .container{max-width:1100px;margin:0 auto;padding:72px 40px;}
+    .section-label{font-family:"Cormorant Garamond",serif;font-size:1.6rem;color:var(--navy);border-bottom:2px solid var(--gold);padding-bottom:12px;margin-bottom:32px;display:inline-block;}
+    .img-ph{display:flex;align-items:center;justify-content:center;color:#5a7a99;font-size:0.82rem;text-align:center;background:linear-gradient(135deg,#c9d6e3,#a8bfd4);width:100%;height:100%;}
+    footer{background:var(--navy);padding:32px 10%;margin-top:80px;}
+    .foot-row{display:flex;justify-content:space-between;align-items:center;}
+    .foot-row p{color:rgba(255,255,255,0.35);font-size:0.78rem;}
+    .foot-nav{display:flex;gap:24px;}
+    .foot-nav a{color:rgba(255,255,255,0.5);font-size:0.78rem;}
+    .foot-nav a:hover{color:var(--gold);}
+    @media(max-width:900px){nav{padding:0 20px;}.nav-links{display:none;}}
+
+    .news-featured{display:grid;grid-template-columns:1.4fr 1fr;gap:32px;margin-bottom:56px;}
+    .nf-img{height:320px;background:linear-gradient(135deg,#c9d6e3,#a8bfd4);border-radius:4px;overflow:hidden;}
+    .nf-body{display:flex;flex-direction:column;justify-content:center;}
+    .news-cat{color:var(--sky);font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+    .nf-date{color:var(--gold);font-size:0.82rem;margin-bottom:10px;}
+    .nf-title{font-family:"Cormorant Garamond",serif;font-size:1.9rem;font-weight:400;color:var(--navy);line-height:1.3;margin-bottom:14px;}
+    .nf-exc{color:#4a5568;font-size:0.9rem;line-height:1.75;margin-bottom:22px;}
+    .btn{display:inline-block;border:1px solid var(--navy);color:var(--navy);padding:10px 28px;font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;transition:all 0.3s;}
+    .btn:hover{background:var(--navy);color:var(--white);}
+    .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+    .nc{border:1px solid #e5e9f0;border-radius:4px;overflow:hidden;cursor:pointer;transition:box-shadow 0.3s;}
+    .nc:hover{box-shadow:0 8px 28px rgba(0,0,0,0.1);}
+    .nc-img{height:170px;overflow:hidden;}
+    .nc-body{padding:18px;}
+    .nc-date{color:var(--gold);font-size:0.78rem;margin-bottom:6px;}
+    .nc-title{font-size:0.9rem;font-weight:500;line-height:1.5;color:var(--text);margin-bottom:8px;}
+    .nc-exc{font-size:0.82rem;color:#6b7280;line-height:1.6;}
+    @media(max-width:900px){.news-featured{grid-template-columns:1fr;}.news-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body><nav>
+  <a href="index.html" class="nav-logo">FULFILL<span>.</span>AVIATION</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="news.html" class="active">News</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="charter.html">Charter &amp; Ticketing</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-lang"><button>中文</button><button>EN</button></div>
+</nav><div class="page-hero"><div class="page-hero-content"><span class="page-tag">Latest Updates</span><h1 class="page-title">News &amp; Events</h1></div></div>
+<div class="container">
+  <div class="news-featured">
+    <div class="nf-img"><div class="img-ph">Featured photo<br>(replace with img tag)</div></div>
+    <div class="nf-body">
+      <span class="news-cat">Latest</span>
+      <div class="nf-date">2026-02-14</div>
+      <h2 class="nf-title">Your most recent news headline goes here</h2>
+      <p class="nf-exc">Write a 2-3 sentence summary of this story here. Describe what happened and why it matters for your company and clients.</p>
+      <a href="#" class="btn">Read More</a>
+    </div>
+  </div>
+  <div class="section-label">All News</div>
+  <div class="news-grid">
+    <div class="nc">
+      <div class="nc-img"><div class="img-ph">Photo 2<br>(replace with img)</div></div>
+      <div class="nc-body">
+        <div class="nc-date">2025-12-10</div>
+        <div class="nc-title">News headline #2 — edit this title</div>
+        <p class="nc-exc">Short 1-2 sentence description. Edit this text.</p>
+      </div>
+    </div>
+    <div class="nc">
+      <div class="nc-img"><div class="img-ph">Photo 3<br>(replace with img)</div></div>
+      <div class="nc-body">
+        <div class="nc-date">2025-11-17</div>
+        <div class="nc-title">News headline #3 — edit this title</div>
+        <p class="nc-exc">Short 1-2 sentence description. Edit this text.</p>
+      </div>
+    </div>
+    <div class="nc">
+      <div class="nc-img"><div class="img-ph">Photo 4<br>(replace with img)</div></div>
+      <div class="nc-body">
+        <div class="nc-date">2025-09-12</div>
+        <div class="nc-title">News headline #4 — edit this title</div>
+        <p class="nc-exc">Short 1-2 sentence description. Edit this text.</p>
+      </div>
+    </div>
+    <div class="nc">
+      <div class="nc-img"><div class="img-ph">Photo 5<br>(replace with img)</div></div>
+      <div class="nc-body">
+        <div class="nc-date">2025-07-18</div>
+        <div class="nc-title">News headline #5 — edit this title</div>
+        <p class="nc-exc">Short 1-2 sentence description. Edit this text.</p>
+      </div>
+    </div>
+    <div class="nc">
+      <div class="nc-img"><div class="img-ph">Photo 6<br>(replace with img)</div></div>
+      <div class="nc-body">
+        <div class="nc-date">2025-04-13</div>
+        <div class="nc-title">News headline #6 — edit this title</div>
+        <p class="nc-exc">Short 1-2 sentence description. Edit this text.</p>
+      </div>
+    </div>
+    <div class="nc">
+      <div class="nc-img"><div class="img-ph">Photo 7<br>(replace with img)</div></div>
+      <div class="nc-body">
+        <div class="nc-date">2025-02-08</div>
+        <div class="nc-title">News headline #7 — edit this title</div>
+        <p class="nc-exc">Short 1-2 sentence description. Edit this text.</p>
+      </div>
+    </div>
+  </div>
+</div><footer>
+  <div class="foot-row">
+    <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
+    <nav class="foot-nav">
+      <a href="index.html">Home</a><a href="news.html">News</a><a href="services.html">Services</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</footer></body></html>

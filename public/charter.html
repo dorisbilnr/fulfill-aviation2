@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Charter and Ticketing — Shanghai Fulfill Aviation Ground Service</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#0b1f3a;--sky:#1a6ea8;--gold:#c8a96e;--light:#f5f6f8;--white:#ffffff;--text:#1e2535;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:"Barlow",sans-serif;color:var(--text);background:var(--white);}
+    a{text-decoration:none;color:inherit;}
+    nav{position:fixed;top:0;left:0;width:100%;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:70px;background:rgba(11,31,58,0.95);backdrop-filter:blur(8px);}
+    .nav-logo{font-family:"Cormorant Garamond",serif;font-size:1.5rem;font-weight:600;color:var(--white);letter-spacing:2px;}
+    .nav-logo span{color:var(--gold);}
+    .nav-links{display:flex;gap:32px;list-style:none;}
+    .nav-links a{color:rgba(255,255,255,0.85);font-size:0.85rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--gold);}
+    .nav-lang{display:flex;gap:12px;}
+    .nav-lang button{background:none;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);padding:4px 12px;font-size:0.75rem;cursor:pointer;border-radius:2px;}
+    .page-hero{padding-top:70px;height:260px;background:linear-gradient(135deg,#0b1f3a,#1a6ea8);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;position:relative;}
+    .page-hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.3);}
+    .page-hero-content{position:relative;z-index:1;}
+    .page-tag{display:inline-block;background:var(--gold);color:var(--navy);font-size:0.7rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;margin-bottom:14px;}
+    .page-title{font-family:"Cormorant Garamond",serif;font-size:2.8rem;color:var(--white);font-weight:300;}
+    .container{max-width:1100px;margin:0 auto;padding:72px 40px;}
+    .section-label{font-family:"Cormorant Garamond",serif;font-size:1.6rem;color:var(--navy);border-bottom:2px solid var(--gold);padding-bottom:12px;margin-bottom:32px;display:inline-block;}
+    .img-ph{display:flex;align-items:center;justify-content:center;color:#5a7a99;font-size:0.82rem;text-align:center;background:linear-gradient(135deg,#c9d6e3,#a8bfd4);width:100%;height:100%;}
+    footer{background:var(--navy);padding:32px 10%;margin-top:80px;}
+    .foot-row{display:flex;justify-content:space-between;align-items:center;}
+    .foot-row p{color:rgba(255,255,255,0.35);font-size:0.78rem;}
+    .foot-nav{display:flex;gap:24px;}
+    .foot-nav a{color:rgba(255,255,255,0.5);font-size:0.78rem;}
+    .foot-nav a:hover{color:var(--gold);}
+    @media(max-width:900px){nav{padding:0 20px;}.nav-links{display:none;}}
+
+    .charter-intro{text-align:center;max-width:720px;margin:0 auto 64px;}
+    .charter-intro h2{font-family:"Cormorant Garamond",serif;font-size:2.2rem;color:var(--navy);font-weight:300;margin-bottom:16px;}
+    .charter-intro p{color:#4a5568;font-size:0.95rem;line-height:1.85;}
+    .charter-types{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;margin-bottom:64px;}
+    .ct-card{display:grid;grid-template-columns:200px 1fr;gap:0;border:1px solid #e5e9f0;border-radius:4px;overflow:hidden;transition:box-shadow 0.3s;}
+    .ct-card:hover{box-shadow:0 8px 28px rgba(0,0,0,0.1);}
+    .ct-img{background:linear-gradient(135deg,#0b2d52,#1a6ea8);min-height:180px;display:flex;align-items:center;justify-content:center;font-size:3rem;}
+    .ct-body{padding:28px;}
+    .ct-title{font-family:"Cormorant Garamond",serif;font-size:1.4rem;color:var(--navy);margin-bottom:10px;}
+    .ct-desc{color:#4a5568;font-size:0.88rem;line-height:1.75;margin-bottom:16px;}
+    .ct-link{color:var(--sky);font-size:0.78rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--sky);padding-bottom:2px;}
+    .inquiry-box{background:var(--navy);padding:56px 48px;text-align:center;border-radius:4px;}
+    .inquiry-box h3{font-family:"Cormorant Garamond",serif;font-size:2rem;color:var(--white);font-weight:300;margin-bottom:12px;}
+    .inquiry-box p{color:rgba(255,255,255,0.65);margin-bottom:28px;font-size:0.92rem;}
+    .inquiry-btn{display:inline-block;background:var(--gold);color:var(--navy);padding:14px 40px;font-size:0.82rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;transition:opacity 0.3s;}
+    .inquiry-btn:hover{opacity:0.88;}
+    @media(max-width:900px){.charter-types{grid-template-columns:1fr;}.ct-card{grid-template-columns:1fr;}}
+</style>
+</head>
+<body><nav>
+  <a href="index.html" class="nav-logo">FULFILL<span>.</span>AVIATION</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="news.html">News</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="charter.html" class="active">Charter &amp; Ticketing</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-lang"><button>中文</button><button>EN</button></div>
+</nav><div class="page-hero"><div class="page-hero-content"><span class="page-tag">Travel Solutions</span><h1 class="page-title">Charter &amp; Ticketing</h1></div></div>
+<div class="container">
+  <div class="charter-intro">
+    <h2>Tailored Aviation Travel Solutions</h2>
+    <p>Shanghai Fulfill Aviation Ground Service offers comprehensive charter and ticketing services for individuals, corporations, and cargo operators. Edit this paragraph to describe your charter services in detail.</p>
+  </div>
+
+  <div class="section-label">Charter Types</div>
+  <div class="charter-types">
+    <div class="ct-card">
+      <div class="ct-img">&#128101;</div>
+      <div class="ct-body">
+        <div class="ct-title">Group Charter</div>
+        <p class="ct-desc">Tailored charter flights for large groups — corporate events, conferences, sports teams, pilgrimages, and more. Edit this description with your actual group charter services.</p>
+        <a href="contact.html" class="ct-link">Request Quote</a>
+      </div>
+    </div>
+    <div class="ct-card">
+      <div class="ct-img">&#129309;</div>
+      <div class="ct-body">
+        <div class="ct-title">Private Charter</div>
+        <p class="ct-desc">Exclusive private jet charter services for executives and VIP clients. Flexible scheduling, premium comfort, and global reach. Edit this description.</p>
+        <a href="contact.html" class="ct-link">Request Quote</a>
+      </div>
+    </div>
+    <div class="ct-card">
+      <div class="ct-img">&#128230;</div>
+      <div class="ct-body">
+        <div class="ct-title">Cargo Charter</div>
+        <p class="ct-desc">Reliable air cargo charter solutions for time-sensitive shipments, oversized freight, and special cargo requirements. Edit this description.</p>
+        <a href="contact.html" class="ct-link">Request Quote</a>
+      </div>
+    </div>
+    <div class="ct-card">
+      <div class="ct-img">&#127915;</div>
+      <div class="ct-body">
+        <div class="ct-title">Airline Ticketing</div>
+        <p class="ct-desc">Full-service airline ticketing for domestic and international routes. Competitive fares, flexible booking, and professional support. Edit this description.</p>
+        <a href="contact.html" class="ct-link">Book Now</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="inquiry-box">
+    <h3>Ready to Book Your Flight?</h3>
+    <p>Contact our team for a personalized quote and expert travel consultation.</p>
+    <a href="contact.html" class="inquiry-btn">Get a Quote</a>
+  </div>
+</div><footer>
+  <div class="foot-row">
+    <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
+    <nav class="foot-nav">
+      <a href="index.html">Home</a><a href="news.html">News</a><a href="services.html">Services</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</footer></body></html>
