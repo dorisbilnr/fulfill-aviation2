@@ -28,4 +28,22 @@ router.post('/reseed', (req, res) => {
   }
 });
 
+// Direct password reset — use once then delete
+router.post('/reset-password', (req, res) => {
+  try {
+    const bcrypt = require('bcryptjs');
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ error: 'email and password required' });
+    const hash = bcrypt.hashSync(password, 12);
+    const result = db.prepare('UPDATE admins SET password = ? WHERE email = ?').run(hash, email);
+    if (result.changes === 0) {
+      // Admin doesn't exist, create them
+      db.prepare('INSERT INTO admins(email, password, name) VALUES(?,?,?)').run(email, hash, 'Administrator');
+    }
+    res.json({ success: true, message: 'Password updated for ' + email });
+  } catch(e) {
+    res.json({ error: e.message });
+  }
+});
+
 module.exports = router;
