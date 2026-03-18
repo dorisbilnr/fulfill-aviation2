@@ -2,41 +2,57 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../db/client');
-const { loginLimiter } = require('../middleware/rateLimit');
-const { body, validationResult } = require('express-validator');
 
-router.post('/login', loginLimiter, [
-  body('email').isEmail().normalizeEmail(),
-  body('password').notEmpty(),
-], (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ error: 'Invalid credentials' });
+router.post('/login', (req, res) => {
+  try {
+    const email = String(req.body.email || '').trim().toLowerCase();
+    const password = String(req.body.password || '').trim();
 
-  const { email, password } = req.body;
-  const admin = db.prepare('SELECT * FROM admins WHERE email = ?').get(email);
-  if (!admin || !bcrypt.compareSync(password, admin.password)) {
-    return res.status(401).json({ error: 'Invalid email or password' });
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+
+    const admin = db.prepare('SELECT * FROM admins WHERE LOWER(email) = ?').get(email);
+    if (!admin) {
+      console.log('[auth] No admin found for:', email);
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    const match = bcrypt.compareSync(password, admin.password);
+    console.log('[auth] Login attempt:', email, '| match:', match);
+    if (!match) return res.status(401).json({ error: 'Invalid email or password' });
+
+    const secret = String(process.env.JWT_SECRET || 'default_dev_secret_abc123');
+    console.log('[auth] JWT secret length:', secret.length);
+    
+    const token = jwt.sign(
+      { id: admin.id, email: admin.email, name: admin.name },
+      secret,
+      { expiresIn: '8h' }
+    );
+
+    db.prepare("UPDATE admins SET last_login = datetime('now') WHERE id = ?").run(admin.id);
+    return res.json({ token, name: admin.name, email: admin.email });
+
+  } catch(e) {
+    console.error('[auth] CRASH:', e.message, e.stack);
+    return res.status(500).json({ error: 'Login failed: ' + e.message });
   }
-
-  db.prepare('UPDATE admins SET last_login = datetime("now") WHERE id = ?').run(admin.id);
-  const token = jwt.sign({ id: admin.id, email: admin.email, name: admin.name }, process.env.JWT_SECRET, { expiresIn: '8h' });
-  res.json({ token, name: admin.name, email: admin.email });
 });
 
-router.post('/change-password', require('../middleware/auth'), [
-  body('currentPassword').notEmpty(),
-  body('newPassword').isLength({ min: 8 }),
-], (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ error: 'Password must be at least 8 characters' });
-
-  const admin = db.prepare('SELECT * FROM admins WHERE id = ?').get(req.admin.id);
-  if (!bcrypt.compareSync(req.body.currentPassword, admin.password)) {
-    return res.status(401).json({ error: 'Current password is incorrect' });
+router.post('/change-password', require('../middleware/auth'), (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    if (!newPassword || newPassword.length < 6) return res.status(400).json({ error: 'Min 6 characters' });
+    const admin = db.prepare('SELECT * FROM admins WHERE id = ?').get(req.admin.id);
+    if (!bcrypt.compareSync(currentPassword, admin.password)) {
+      return res.status(401).json({ error: 'Wrong current password' });
+    }
+    db.prepare('UPDATE admins SET password = ? WHERE id = ?').run(bcrypt.hashSync(newPassword, 10), req.admin.id);
+    res.json({ success: true });
+  } catch(e) {
+    res.status(500).json({ error: e.message });
   }
-  const hash = bcrypt.hashSync(req.body.newPassword, 12);
-  db.prepare('UPDATE admins SET password = ? WHERE id = ?').run(hash, req.admin.id);
-  res.json({ success: true });
 });
 
 module.exports = router;

@@ -7,16 +7,13 @@ const morgan = require('morgan');
 const path = require('path');
 const fs = require('fs');
 
-// Auto-run DB setup and always seed admin on boot
+// Always setup DB and seed on every boot (Railway wipes filesystem on redeploy)
 const DB_PATH = path.join(__dirname, '../data/fulfill.db');
-if (!fs.existsSync(DB_PATH)) {
-  console.log('[boot] First run — setting up database...');
-  require('./db/setup');
-}
-// Always upsert admin credentials from env on every boot
-if (process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
-  require('./db/seed');
-}
+console.log('[boot] DB path:', DB_PATH);
+console.log('[boot] DB exists:', fs.existsSync(DB_PATH));
+require('./db/setup');
+require('./db/seed');
+console.log('[boot] DB ready.');
 
 const { apiLimiter } = require('./middleware/rateLimit');
 
@@ -65,8 +62,8 @@ const PUBLIC_DIR = path.join(__dirname, '../public');
 if (fs.existsSync(PUBLIC_DIR)) app.use(express.static(PUBLIC_DIR, { maxAge: '1d' }));
 
 // ── API routes ───────────────────────────────────────────────────────────────
-app.use('/api', apiLimiter);
 app.use('/api/auth',     require('./routes/auth'));
+app.use('/api', apiLimiter);
 app.use('/api/contacts', require('./routes/contact'));
 app.use('/api/news',     require('./routes/news'));
 app.use('/api/services', require('./routes/services'));

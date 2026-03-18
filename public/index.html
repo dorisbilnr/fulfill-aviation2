@@ -5,156 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Your Company Name</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <style>
-    /* ─── EDIT YOUR BRAND COLORS HERE ─────────────────── */
-    :root {
-      --navy:   #0b1f3a;
-      --sky:    #1a6ea8;
-      --gold:   #c8a96e;
-      --light:  #f5f6f8;
-      --white:  #ffffff;
-      --text:   #1e2535;
-      --muted:  #6b7280;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Barlow', sans-serif;
-      color: var(--text);
-      background: var(--white);
-    }
-
-    a { text-decoration: none; color: inherit; }
-
-    /* ─── NAVIGATION ───────────────────────────────────── */
-    nav {
-      position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 48px;
-      height: 70px;
-      background: rgba(11, 31, 58, 0.92);
-      backdrop-filter: blur(8px);
-    }
-
-    .nav-logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--white);
-      letter-spacing: 2px;
-    }
-    .nav-logo span { color: var(--gold); }
-
-    .nav-links {
-      display: flex; gap: 32px; list-style: none;
-    }
-    .nav-links a {
-      color: rgba(255,255,255,0.85);
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--gold); }
-
-    .nav-lang {
-      display: flex; gap: 12px;
-    }
-    .nav-lang button {
-      background: none; border: 1px solid rgba(255,255,255,0.3);
-      color: rgba(255,255,255,0.7); padding: 4px 12px;
-      font-size: 0.75rem; cursor: pointer; border-radius: 2px;
-      transition: all 0.2s; letter-spacing: 1px;
-    }
-    .nav-lang button:hover { border-color: var(--gold); color: var(--gold); }
-
-    /* ─── HERO SLIDES ─────────────────────────────────── */
-    .hero {
-      position: relative; height: 100vh; overflow: hidden;
-    }
-
-    .slide {
-      position: absolute; inset: 0;
-      background-size: cover; background-position: center;
-      opacity: 0; transition: opacity 1.2s ease;
-    }
-    .slide.active { opacity: 1; }
-
-    /* EDIT: Replace these gradient placeholders with real image URLs */
-    .slide-1 { background: linear-gradient(135deg, #0b1f3a 0%, #1a6ea8 50%, #0b2d52 100%); }
-    .slide-2 { background: linear-gradient(135deg, #0d2640 0%, #0f4c75 60%, #1a6ea8 100%); }
-    /* To use real images, change to:
-       .slide-1 { background-image: url('your-image.jpg'); } */
-
-    .slide::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.55) 100%);
-    }
-
-    .hero-content {
-      position: absolute; z-index: 2;
-      bottom: 22%; left: 10%;
-      max-width: 640px;
-    }
-
-    .hero-tag {
-      display: inline-block;
-      background: var(--gold);
-      color: var(--navy);
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      margin-bottom: 20px;
-    }
-
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
-      font-weight: 300;
-      color: var(--white);
-      line-height: 1.25;
-      margin-bottom: 20px;
-    }
-
-    .hero-sub {
-      color: rgba(255,255,255,0.75);
-      font-size: 1rem;
-      font-weight: 300;
-      line-height: 1.7;
-      margin-bottom: 32px;
-    }
-
-    .hero-btn {
-      display: inline-block;
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      padding: 12px 32px;
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      transition: all 0.3s;
-    }
-    .hero-btn:hover { background: var(--gold); color: var(--navy); }
-
-    .slide-dots {
-      position: absolute; bottom: 40px; left: 50%;
-      transform: translateX(-50%);
-      display: flex; gap: 10px; z-index: 3;
-    }
-    .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.5);
-      background: transparent; cursor: pointer; transition: all 0.3s;
-    }
-    .dot.active { background: var(--gold); border-color: var(--gold); }
-
-    /* ─── INTRO STRIP ─────────────────────────────────── */
-    .intro-strip {
+  <style>.intro-strip {
       background: var(--navy);
       padding: 48px 10%;
       display: flex; align-items: center; justify-content: space-between;
@@ -173,32 +24,7 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 2.8rem; color: var(--gold); display: block;
     }
-    .intro-stat .label { color: rgba(255,255,255,0.6); font-size: 0.78rem; letter-spacing: 1px; }
-
-    /* ─── SECTION HEADER ──────────────────────────────── */
-    .section-header {
-      text-align: center; padding: 72px 10% 48px;
-    }
-    .section-tag {
-      display: inline-block;
-      color: var(--sky);
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      border-bottom: 2px solid var(--gold);
-      padding-bottom: 4px;
-      margin-bottom: 16px;
-    }
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.8rem, 3vw, 2.6rem);
-      font-weight: 400;
-      color: var(--navy);
-    }
-
-    /* ─── NEWS ────────────────────────────────────────── */
-    .news { background: var(--light); }
+    .intro-stat .label { color: rgba(255,255,255,0.6); font-size: 0.78rem; letter-spacing: 1px; }.news { background: var(--light); }
 
     .news-grid {
       display: grid;
@@ -318,7 +144,7 @@
       padding-bottom: 40px;
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-    .footer-brand .nav-logo { font-size: 1.3rem; margin-bottom: 16px; display: block; }
+    .footer-brand 
     .footer-desc {
       color: rgba(255,255,255,0.55);
       font-size: 0.85rem;
@@ -357,34 +183,79 @@
     .footer-bottom p { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
 
     @media (max-width: 900px) {
-      nav { padding: 0 20px; }
-      .nav-links { display: none; }
+      
       .intro-strip { flex-direction: column; padding: 40px 6%; }
       .news-grid { grid-template-columns: 1fr; padding: 0 6% 56px; }
       .services-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; }
       .hero-content { left: 6%; bottom: 18%; }
     }
-  </style>
+  
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:68px;background:rgba(11,31,58,0.97);backdrop-filter:blur(8px);}
+    .nav-logo{font-size:1.1rem;font-weight:600;color:white;letter-spacing:3px;text-decoration:none;flex-shrink:0;font-family:'Barlow',sans-serif;}
+    .nav-logo span{color:var(--gold);}
+    .nav-links{display:flex;gap:24px;list-style:none;margin:0;padding:0;align-items:center;}
+    .nav-links a{color:rgba(255,255,255,0.82);font-size:0.82rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:color 0.2s;white-space:nowrap;font-family:'Barlow',sans-serif;}
+    .nav-links a:hover,.nav-links a.active{color:var(--gold);}
+    .nav-right{display:flex;align-items:center;gap:16px;flex-shrink:0;}
+    .nav-lang{display:flex;gap:6px;}
+    .nav-lang button{background:none;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);padding:4px 10px;font-size:0.72rem;letter-spacing:1px;cursor:pointer;transition:all 0.2s;font-family:'Barlow',sans-serif;}
+    .nav-lang button:hover{border-color:var(--gold);color:var(--gold);}
+    .nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
+    .nav-burger span{display:block;width:24px;height:2px;background:rgba(255,255,255,0.8);transition:all 0.3s;}
+    .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .nav-burger.open span:nth-child(2){opacity:0;}
+    .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    .nav-mobile{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(11,31,58,0.99);padding:16px 0;z-index:99;border-top:1px solid rgba(255,255,255,0.08);}
+    .nav-mobile.open{display:block;}
+    .nav-mobile a{display:block;padding:12px 32px;color:rgba(255,255,255,0.82);font-size:0.88rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:all 0.2s;border-left:3px solid transparent;font-family:'Barlow',sans-serif;}
+    .nav-mobile a:hover,.nav-mobile a.active{color:var(--gold);border-left-color:var(--gold);background:rgba(255,255,255,0.04);}
+    @media(max-width:1024px){
+      nav{padding:0 24px;}
+      .nav-links{gap:16px;}
+      .nav-links a{font-size:0.75rem;letter-spacing:0.5px;}
+    }
+    @media(max-width:860px){
+      .nav-links{display:none;}
+      .nav-burger{display:flex;}
+    }
+    @media(max-width:480px){nav{padding:0 16px;}}
+}
+
+    </style>
 </head>
 <body>
 
 <!-- ═══ NAVIGATION ══════════════════════════════════════════ -->
 <nav>
-  <div class="nav-logo">FULFILL<span>.</span>AVIATION</div>
+  <a href="/" class="nav-logo">FULFILL<span>.</span>AVIATION</a>
   <ul class="nav-links">
-    <li><a href="/index.html">Home</a></li>
+    <li><a href="/" class="active">Home</a></li>
     <li><a href="/news.html">News</a></li>
     <li><a href="/services.html">Services</a></li>
-    <li><a href="/charter.html">Charter &amp; Ticketing</a></li>
+    <li><a href="/charter.html">Charter & Ticketing</a></li>
     <li><a href="/about.html">About Us</a></li>
     <li><a href="/contact.html">Contact</a></li>
   </ul>
-  <div class="nav-lang">
-    <button>中文</button>
-    <button>EN</button>
+  <div class="nav-right">
+    <div class="nav-lang">
+      <button>中文</button>
+      <button>EN</button>
+    </div>
+    <button class="nav-burger" id="nav-burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
-</nav>
+
+<div class="nav-mobile" id="nav-mobile">
+  <a href="/" class="active">Home</a>
+  <a href="/news.html">News</a>
+  <a href="/services.html">Services</a>
+  <a href="/charter.html">Charter & Ticketing</a>
+  <a href="/about.html">About Us</a>
+  <a href="/contact.html">Contact</a>
+</div></nav>
+
 
 <!-- ═══ HERO ═════════════════════════════════════════════════ -->
 <section class="hero">
