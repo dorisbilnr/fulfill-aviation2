@@ -85,7 +85,7 @@
     'Send Message':                           '发送消息',
     /* FOOTER */
     '\u00a9 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.':
-      '\u00a9 2026 上海丰盈航空地面服务有限公司 版权所有',
+      '\u00a9 2026 上海赋瞻航空地面服务有限公司 版权所有',
   };
 
   /* Build reverse map for EN restore */
@@ -155,7 +155,7 @@
     /* Update page title */
     var titleMap = {
       'en': { 'index': 'Shanghai Fulfill Aviation Ground Service', 'news': 'News — Shanghai Fulfill Aviation', 'services': 'Services — Shanghai Fulfill Aviation', 'charter': 'Charter & Ticketing — Shanghai Fulfill Aviation', 'about': 'About Us — Shanghai Fulfill Aviation', 'contact': 'Contact — Shanghai Fulfill Aviation' },
-      'zh': { 'index': '上海丰盈航空地面服务', 'news': '新闻 — 上海丰盈航空', 'services': '服务 — 上海丰盈航空', 'charter': '包机与机票 — 上海丰盈航空', 'about': '关于我们 — 上海丰盈航空', 'contact': '联系我们 — 上海丰盈航空' }
+      'zh': { 'index': '上海赋瞻航空地面服务', 'news': '新闻 — 上海赋瞻航空', 'services': '服务 — 上海赋瞻航空', 'charter': '包机与机票 — 上海赋瞻航空', 'about': '关于我们 — 上海赋瞻航空', 'contact': '联系我们 — 上海赋瞻航空' }
     };
     var page = window.FA_PAGE || 'index';
     if (titleMap[lang] && titleMap[lang][page]) document.title = titleMap[lang][page];

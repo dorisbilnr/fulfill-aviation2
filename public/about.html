@@ -42,7 +42,7 @@
     .about-body .gold-line{width:48px;height:3px;background:var(--gold);margin-bottom:20px;}
     .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--navy);margin-bottom:72px;}
     .stat-box{padding:40px 24px;text-align:center;background:var(--navy);}
-    .stat-num{font-family:"Cormorant Garamond",serif;font-size:3rem;color:var(--gold);display:block;}
+    .stat-num{font-family:"Barlow",sans-serif;font-size:3rem;font-weight:300;color:var(--gold);display:block;}
     .stat-lbl{color:rgba(255,255,255,0.6);font-size:0.78rem;letter-spacing:1px;margin-top:6px;}
     .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
     .team-card{text-align:center;}
@@ -51,7 +51,17 @@
     .team-name{font-family:"Cormorant Garamond",serif;font-size:1.2rem;color:var(--navy);margin-bottom:4px;}
     .team-role{color:var(--sky);font-size:0.8rem;letter-spacing:1px;text-transform:uppercase;}
     @media(max-width:900px){.about-grid{grid-template-columns:1fr;}.stats-row{grid-template-columns:repeat(2,1fr);}.team-grid{grid-template-columns:1fr;}}
-</style>
+
+    .office-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-bottom:72px;}
+    .office-card{border:1px solid #e5e9f0;border-radius:4px;padding:32px;transition:box-shadow 0.3s;}
+    .office-card:hover{box-shadow:0 8px 28px rgba(0,0,0,0.08);}
+    .office-city{font-family:"Cormorant Garamond",serif;font-size:1.4rem;color:var(--navy);font-weight:400;margin-bottom:20px;border-bottom:2px solid var(--gold);padding-bottom:12px;}
+    .office-city span{font-size:0.85rem;color:var(--sky);font-family:"Barlow",sans-serif;font-weight:500;}
+    .office-row{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;font-size:0.88rem;color:#4a5568;line-height:1.6;}
+    .office-icon{flex-shrink:0;font-size:1rem;margin-top:1px;}
+    @media(max-width:900px){.office-grid{grid-template-columns:1fr;}}
+
+    </style>
   <script src="/lang.js"></script>
 </head>
 <body>
@@ -139,7 +149,21 @@ window.FA_PAGE = 'about';
       <div class="team-role">Business Development</div>
     </div>
   </div>
-</div><footer>
+</div>
+  <div class="section-label" style="margin-top:72px;">Our Office</div>
+  <div class="office-grid">
+    <div class="office-card">
+      <div class="office-city">Shanghai <span>— Headquarters</span></div>
+      <div class="office-detail">
+        <div class="office-row"><span class="office-icon">📍</span><span>Room 801, 600 Yunjin Road,<br>Xuhui District, Shanghai, China</span></div>
+        <div class="office-row"><span class="office-icon">📞</span><span>+86 21 XXXX XXXX</span></div>
+        <div class="office-row"><span class="office-icon">✉</span><span>info@fulfill-aviation.com</span></div>
+        <div class="office-row"><span class="office-icon">🕐</span><span>Mon – Fri: 9:00 AM – 6:00 PM<br>Sat: 9:00 AM – 12:00 PM</span></div>
+      </div>
+    </div>
+  </div>
+
+<footer>
   <div class="foot-row">
     <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
     </div>

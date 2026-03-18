@@ -106,6 +106,10 @@ tr:last-child td{border-bottom:none;}tr:hover td{background:#fafbfc;}
     </nav>
     <div class="sidebar-footer">
       <div class="sidebar-user" id="admin-name">Administrator</div>
+      <div style="display:flex;gap:6px;margin-bottom:8px;">
+        <button class="admin-lang-btn" data-lang="zh" onclick="applyAdminLang('zh')" style="flex:1;background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);padding:5px 0;font-size:0.78rem;cursor:pointer;transition:all 0.2s;font-family:'Barlow',sans-serif;">中文</button>
+        <button class="admin-lang-btn" data-lang="en" onclick="applyAdminLang('en')" style="flex:1;background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);padding:5px 0;font-size:0.78rem;cursor:pointer;transition:all 0.2s;font-family:'Barlow',sans-serif;">EN</button>
+      </div>
       <button class="logout-btn" onclick="doLogout()">Sign Out</button>
     </div>
   </div>
@@ -308,5 +312,225 @@ async function saveSettings(){const keys=['company_name','company_tagline','addr
 async function changePassword(){const cur=document.getElementById('pw-current').value;const nw=document.getElementById('pw-new').value;const cf=document.getElementById('pw-confirm').value;if(nw!==cf)return toast('Passwords do not match','error');if(nw.length<8)return toast('Min 8 characters','error');try{await api('POST','/auth/change-password',{currentPassword:cur,newPassword:nw});toast('Password updated');['pw-current','pw-new','pw-confirm'].forEach(id=>document.getElementById(id).value='');}catch(e){toast(e.message,'error');}}
 function renderPagination(cid,pages,current,fn){const el=document.getElementById(cid);if(pages<=1){el.innerHTML='';return;}el.innerHTML=Array.from({length:pages},(_,i)=>i+1).map(p=>`<button class="page-btn${p===current?' active':''}" onclick="${fn.name}(${p})">${p}</button>`).join('');}
 </script>
+
+<script>
+var ADMIN_T = {
+  en: {
+    'Dashboard': 'Dashboard',
+    'Contact Submissions': 'Contact Submissions',
+    'News Articles': 'News Articles',
+    'Services': 'Services',
+    'Site Settings': 'Site Settings',
+    'Administrator': 'Administrator',
+    'Sign Out': 'Sign Out',
+    'New Inquiries': 'New Inquiries',
+    'Total Contacts': 'Total Contacts',
+    'Published Articles': 'Published Articles',
+    'Active Services': 'Active Services',
+    'Recent Inquiries': 'Recent Inquiries',
+    'View All': 'View All',
+    'Name': 'Name',
+    'Email': 'Email',
+    'Service': 'Service',
+    'Date': 'Date',
+    'Status': 'Status',
+    'Actions': 'Actions',
+    'Company': 'Company',
+    'View': 'View',
+    'Del': 'Del',
+    '+ New Article': '+ New Article',
+    'Title': 'Title',
+    'Featured': 'Featured',
+    'Edit': 'Edit',
+    '+ Add Service': '+ Add Service',
+    'Icon': 'Icon',
+    'Description': 'Description',
+    'Order': 'Order',
+    'Company Info': 'Company Info',
+    'Company Name': 'Company Name',
+    'Tagline': 'Tagline',
+    'Address': 'Address',
+    'Phone': 'Phone',
+    'Fax': 'Fax',
+    'Hero Slides': 'Hero Slides',
+    'Stats Bar': 'Stats Bar',
+    'Years Experience': 'Years Experience',
+    'Destinations': 'Destinations',
+    'Partners': 'Partners',
+    'Intro Paragraph': 'Intro Paragraph',
+    'Save All Settings': 'Save All Settings',
+    'Change Password': 'Change Password',
+    'Current Password': 'Current Password',
+    'New Password': 'New Password',
+    'Confirm New Password': 'Confirm New Password',
+    'Update Password': 'Update Password',
+    'Contact Detail': 'Contact Detail',
+    'Close': 'Close',
+    'Mark Replied': 'Mark Replied',
+    'New Article': 'New Article',
+    'Edit Article': 'Edit Article',
+    'Excerpt': 'Excerpt',
+    'Body (HTML allowed)': 'Body (HTML allowed)',
+    'Cover Image (JPG/PNG/WebP, max 5MB)': 'Cover Image (JPG/PNG/WebP, max 5MB)',
+    'Published': 'Published',
+    'Featured on homepage': 'Featured on homepage',
+    'Cancel': 'Cancel',
+    'Save Article': 'Save Article',
+    'New Service': 'New Service',
+    'Edit Service': 'Edit Service',
+    'Service Name': 'Service Name',
+    'Icon (emoji)': 'Icon (emoji)',
+    'Short Description': 'Short Description',
+    'Full Details (HTML)': 'Full Details (HTML)',
+    'Sort Order': 'Sort Order',
+    'Image': 'Image',
+    'Save Service': 'Save Service',
+    'Sign In': 'Sign In',
+    'Admin Panel — Sign in to continue': 'Admin Panel — Sign in to continue',
+    'Email Address': 'Email Address',
+    'Password': 'Password',
+    'Signing in...': 'Signing in...',
+    'All': 'All',
+    'New': 'New',
+    'Read': 'Read',
+    'Replied': 'Replied',
+    'Slide 1 Tag': 'Slide 1 Tag',
+    'Slide 1 Sub': 'Slide 1 Sub',
+    'Slide 1 Title': 'Slide 1 Title',
+    'Slide 2 Tag': 'Slide 2 Tag',
+    'Slide 2 Sub': 'Slide 2 Sub',
+    'Slide 2 Title': 'Slide 2 Title',
+  },
+  zh: {
+    'Dashboard': '控制台',
+    'Contact Submissions': '联系表单',
+    'News Articles': '新闻文章',
+    'Services': '服务管理',
+    'Site Settings': '网站设置',
+    'Administrator': '管理员',
+    'Sign Out': '退出登录',
+    'New Inquiries': '新询盘',
+    'Total Contacts': '总联系数',
+    'Published Articles': '已发布文章',
+    'Active Services': '活跃服务',
+    'Recent Inquiries': '近期询盘',
+    'View All': '查看全部',
+    'Name': '姓名',
+    'Email': '邮箱',
+    'Service': '服务',
+    'Date': '日期',
+    'Status': '状态',
+    'Actions': '操作',
+    'Company': '公司',
+    'View': '查看',
+    'Del': '删除',
+    '+ New Article': '+ 新建文章',
+    'Title': '标题',
+    'Featured': '推荐',
+    'Edit': '编辑',
+    '+ Add Service': '+ 添加服务',
+    'Icon': '图标',
+    'Description': '描述',
+    'Order': '排序',
+    'Company Info': '公司信息',
+    'Company Name': '公司名称',
+    'Tagline': '标语',
+    'Address': '地址',
+    'Phone': '电话',
+    'Fax': '传真',
+    'Hero Slides': '首页幻灯片',
+    'Stats Bar': '数据栏',
+    'Years Experience': '年经验',
+    'Destinations': '目的地',
+    'Partners': '合作伙伴',
+    'Intro Paragraph': '简介段落',
+    'Save All Settings': '保存所有设置',
+    'Change Password': '修改密码',
+    'Current Password': '当前密码',
+    'New Password': '新密码',
+    'Confirm New Password': '确认新密码',
+    'Update Password': '更新密码',
+    'Contact Detail': '联系详情',
+    'Close': '关闭',
+    'Mark Replied': '标记已回复',
+    'New Article': '新建文章',
+    'Edit Article': '编辑文章',
+    'Excerpt': '摘要',
+    'Body (HTML allowed)': '正文（支持HTML）',
+    'Cover Image (JPG/PNG/WebP, max 5MB)': '封面图片（JPG/PNG/WebP，最大5MB）',
+    'Published': '已发布',
+    'Featured on homepage': '在首页推荐',
+    'Cancel': '取消',
+    'Save Article': '保存文章',
+    'New Service': '新建服务',
+    'Edit Service': '编辑服务',
+    'Service Name': '服务名称',
+    'Icon (emoji)': '图标（emoji）',
+    'Short Description': '简短描述',
+    'Full Details (HTML)': '详细内容（支持HTML）',
+    'Sort Order': '排序',
+    'Image': '图片',
+    'Save Service': '保存服务',
+    'Sign In': '登录',
+    'Admin Panel — Sign in to continue': '管理后台 — 请登录',
+    'Email Address': '邮箱地址',
+    'Password': '密码',
+    'Signing in...': '登录中...',
+    'All': '全部',
+    'New': '新',
+    'Read': '已读',
+    'Replied': '已回复',
+    'Slide 1 Tag': '幻灯片1标签',
+    'Slide 1 Sub': '幻灯片1副标题',
+    'Slide 1 Title': '幻灯片1标题',
+    'Slide 2 Tag': '幻灯片2标签',
+    'Slide 2 Sub': '幻灯片2副标题',
+    'Slide 2 Title': '幻灯片2标题',
+  }
+};
+
+var adminLang = localStorage.getItem('admin_lang') || 'en';
+
+function applyAdminLang(lang) {
+  adminLang = lang;
+  localStorage.setItem('admin_lang', lang);
+  var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode: function(node) {
+      var p = node.parentNode;
+      if (!p) return NodeFilter.FILTER_REJECT;
+      var tag = p.tagName ? p.tagName.toUpperCase() : '';
+      if (tag === 'SCRIPT' || tag === 'STYLE') return NodeFilter.FILTER_REJECT;
+      if (node.nodeValue.trim().length === 0) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  }, false);
+  var nodes = [];
+  var n;
+  while ((n = walker.nextNode())) nodes.push(n);
+  var T = ADMIN_T[lang];
+  var EN = ADMIN_T['en'];
+  // Build reverse map
+  var R = {};
+  Object.keys(EN).forEach(function(k) { R[EN[k]] = k; });
+  nodes.forEach(function(node) {
+    var txt = node.nodeValue.trim();
+    // Try direct match in target lang
+    if (T[txt]) { node.nodeValue = node.nodeValue.replace(txt, T[txt]); return; }
+    // Try reverse (find english key from current text)
+    if (R[txt] && T[R[txt]]) { node.nodeValue = node.nodeValue.replace(txt, T[R[txt]]); }
+  });
+  // Update lang button styles
+  document.querySelectorAll('.admin-lang-btn').forEach(function(btn) {
+    btn.style.opacity = btn.getAttribute('data-lang') === lang ? '1' : '0.5';
+    btn.style.borderColor = btn.getAttribute('data-lang') === lang ? '#c8a96e' : 'rgba(255,255,255,0.2)';
+    btn.style.color = btn.getAttribute('data-lang') === lang ? '#c8a96e' : 'rgba(255,255,255,0.6)';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  applyAdminLang(adminLang);
+});
+</script>
+
 </body>
 </html>
