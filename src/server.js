@@ -70,6 +70,7 @@ app.use('/api/services', require('./routes/services'));
 app.use('/api/settings', require('./routes/settings'));
 app.use('/api/upload',   require('./routes/upload'));
 app.use('/api/stats',    require('./routes/stats'));
+app.use('/api/gallery',  require('./routes/gallery'));
 
 // ── Health check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));

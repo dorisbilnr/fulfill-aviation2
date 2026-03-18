@@ -61,6 +61,15 @@
     .office-icon{flex-shrink:0;font-size:1rem;margin-top:1px;}
     @media(max-width:900px){.office-grid{grid-template-columns:1fr;}}
 
+    
+    .gallery-strip{display:flex;gap:16px;overflow-x:auto;padding:8px 0 20px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin-bottom:72px;}
+    .gallery-strip::-webkit-scrollbar{height:4px;}
+    .gallery-strip::-webkit-scrollbar-track{background:#f0f2f5;}
+    .gallery-strip::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+    .gallery-img{flex-shrink:0;width:320px;height:220px;object-fit:cover;border-radius:4px;scroll-snap-align:start;cursor:pointer;transition:opacity 0.2s;}
+    .gallery-img:hover{opacity:0.88;}
+    .gallery-placeholder{color:#9ba8b8;font-size:0.88rem;padding:40px;border:1px dashed #dde3ec;border-radius:4px;width:100%;text-align:center;}
+
     </style>
   <script src="/lang.js"></script>
 </head>
@@ -150,6 +159,7 @@ window.FA_PAGE = 'about';
     </div>
   </div>
 </div>
+
   <div class="section-label" style="margin-top:72px;">Our Office</div>
   <div class="office-grid">
     <div class="office-card">
@@ -157,14 +167,36 @@ window.FA_PAGE = 'about';
       <div class="office-detail">
         <div class="office-row"><span class="office-icon">📍</span><span>Room 801, 600 Yunjin Road,<br>Xuhui District, Shanghai, China</span></div>
         <div class="office-row"><span class="office-icon">📞</span><span>+86 21 XXXX XXXX</span></div>
-        <div class="office-row"><span class="office-icon">✉</span><span>info@fulfill-aviation.com</span></div>
+        <div class="office-row"><span class="office-icon">✉️</span><span>info@fulfill-aviation.com</span></div>
         <div class="office-row"><span class="office-icon">🕐</span><span>Mon – Fri: 9:00 AM – 6:00 PM<br>Sat: 9:00 AM – 12:00 PM</span></div>
       </div>
     </div>
   </div>
 
+  <div class="section-label" style="margin-top:72px;">Gallery</div>
+  <div class="gallery-strip" id="gallery-strip">
+    <div class="gallery-placeholder">No images yet. Upload images from the admin panel.</div>
+  </div>
+
+</div>
 <footer>
   <div class="foot-row">
     <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
     </div>
-</footer></body></html>
+</footer>
+<script>
+(function(){
+  fetch('/api/gallery')
+    .then(function(r){ return r.json(); })
+    .then(function(imgs){
+      var strip = document.getElementById('gallery-strip');
+      if(!strip) return;
+      if(!imgs || imgs.length === 0) return;
+      strip.innerHTML = imgs.map(function(img){
+        return '<img class="gallery-img" src="' + img.url + '" alt="' + (img.caption||'Gallery image') + '" onclick="window.open(this.src)">';
+      }).join('');
+    })
+    .catch(function(){});
+})();
+</script>
+</body></html>
