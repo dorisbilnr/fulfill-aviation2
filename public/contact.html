@@ -17,6 +17,7 @@
     
     
     
+    
     .page-hero{padding-top:70px;height:260px;background:linear-gradient(135deg,#0b1f3a,#1a6ea8);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;position:relative;}
     .page-hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.3);}
     .page-hero-content{position:relative;z-index:1;}
@@ -51,197 +52,122 @@
     .submit-btn{width:100%;padding:14px;background:var(--navy);color:white;border:none;font-family:"Barlow",sans-serif;font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background 0.3s;}
     .submit-btn:hover{background:var(--sky);}
     @media(max-width:900px){.contact-grid{grid-template-columns:1fr;}.form-row{grid-template-columns:1fr;}}
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @media(max-width:1024px){
-      
-      
-      
-    }
-    @media(max-width:860px){
-      
-      
-    }
-    @media(max-width:480px){}
-}
-
-    </style>
-
-<script>
-(function(){
-  var LANG_KEY = 'fa_lang';
-  var current = localStorage.getItem(LANG_KEY) || 'en';
-
-  function applyLang(lang) {
-    current = lang;
-    localStorage.setItem(LANG_KEY, lang);
-    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-    document.querySelectorAll('[data-en]').forEach(function(el) {
-      el.innerHTML = lang === 'zh' ? (el.getAttribute('data-zh') || el.getAttribute('data-en')) : el.getAttribute('data-en');
-    });
-    // Update active state on lang buttons
-    document.querySelectorAll('.lang-btn').forEach(function(btn) {
-      btn.style.borderColor = btn.getAttribute('data-lang') === lang ? '#c8a96e' : 'rgba(255,255,255,0.3)';
-      btn.style.color = btn.getAttribute('data-lang') === lang ? '#c8a96e' : 'rgba(255,255,255,0.7)';
-    });
-  }
-
-  // Apply on load
-  document.addEventListener('DOMContentLoaded', function(){ applyLang(current); });
-
-  // Expose globally
-  window.setLang = applyLang;
-})();
-</script>
-
+</style>
+  <script src="/lang.js"></script>
 </head>
 <body>
-<nav class="global-nav">
-  <a href="/" class="nav-logo">FULFILL<span>.</span>AVIATION</a>
-  <ul class="nav-links">
-      <li><a href="/" data-en="Home" data-zh="首页"><span data-en="Home" data-zh="首页">Home</span></a></li>
-      <li><a href="/news.html" data-en="News" data-zh="新闻"><span data-en="News" data-zh="新闻">News</span></a></li>
-      <li><a href="/services.html" data-en="Services" data-zh="服务"><span data-en="Services" data-zh="服务">Services</span></a></li>
-      <li><a href="/charter.html" data-en="Charter &amp; Ticketing" data-zh="包机与机票"><span data-en="Charter &amp; Ticketing" data-zh="包机与机票">Charter &amp; Ticketing</span></a></li>
-      <li><a href="/about.html" data-en="About Us" data-zh="关于我们">About Us</a></li>
-      <li><a href="/contact.html" class="active" data-en="Contact" data-zh="联系我们"><span data-en="Contact" data-zh="联系">Contact</span></a></li>
+<link rel="stylesheet" href="/nav.css"/>
+<nav class="gn">
+  <a href="/" class="gn-logo">FULFILL<span>.</span>AVIATION</a>
+  <ul class="gn-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/news.html">News</a></li>
+    <li><a href="/services.html">Services</a></li>
+    <li><a href="/charter.html">Charter &amp; Ticketing</a></li>
+    <li><a href="/about.html">About Us</a></li>
+    <li><a href="/contact.html" class="active">Contact</a></li>
   </ul>
-  <div class="nav-right">
-    <div class="nav-lang">
-      <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
-      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+  <div class="gn-right">
+    <div class="gn-lang">
+      <button data-lang="zh" onclick="setLang('zh')">中文</button>
+      <button data-lang="en" onclick="setLang('en')">EN</button>
     </div>
-    <button class="nav-burger" id="gnav-burger"><span></span><span></span><span></span></button>
+    <button class="gn-burger" id="gn-burger"><span></span><span></span><span></span></button>
   </div>
 </nav>
-<div class="global-mobile-nav" id="gnav-mobile">
-  <a href="/" data-en="Home" data-zh="首页"><span data-en="Home" data-zh="首页">Home</span></a>
-  <a href="/news.html" data-en="News" data-zh="新闻"><span data-en="News" data-zh="新闻">News</span></a>
-  <a href="/services.html" data-en="Services" data-zh="服务"><span data-en="Services" data-zh="服务">Services</span></a>
-  <a href="/charter.html" data-en="Charter &amp; Ticketing" data-zh="包机与机票"><span data-en="Charter &amp; Ticketing" data-zh="包机与机票">Charter &amp; Ticketing</span></a>
-  <a href="/about.html" data-en="About Us" data-zh="关于我们">About Us</a>
-  <a href="/contact.html" class="active" data-en="Contact" data-zh="联系我们"><span data-en="Contact" data-zh="联系">Contact</span></a>
+<div class="gn-mobile" id="gn-mobile">
+  <a href="/">Home</a>
+  <a href="/news.html">News</a>
+  <a href="/services.html">Services</a>
+  <a href="/charter.html">Charter &amp; Ticketing</a>
+  <a href="/about.html">About Us</a>
+  <a href="/contact.html" class="active">Contact</a>
 </div>
 <script>
+window.FA_PAGE = 'contact';
 (function(){
-  var b=document.getElementById('gnav-burger'),m=document.getElementById('gnav-mobile');
-  if(b&&m){
-    b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});
-    m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('open');m.classList.remove('open');});});
+  var b = document.getElementById('gn-burger');
+  var m = document.getElementById('gn-mobile');
+  if (b && m) {
+    b.addEventListener('click', function() {
+      b.classList.toggle('open');
+      m.classList.toggle('open');
+    });
+    m.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        b.classList.remove('open');
+        m.classList.remove('open');
+      });
+    });
   }
 })();
 </script>
-<style id="nav-style">
-nav.global-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:68px;background:rgba(11,31,58,0.97);backdrop-filter:blur(8px);font-family:'Barlow',sans-serif;}
-nav.global-nav .nav-logo{font-family:'Barlow',sans-serif;font-size:1.1rem;font-weight:600;color:#ffffff;letter-spacing:3px;text-decoration:none;flex-shrink:0;}
-nav.global-nav .nav-logo span{color:#c8a96e;}
-nav.global-nav .nav-links{display:flex;gap:20px;list-style:none;margin:0;padding:0;align-items:center;flex:1;justify-content:center;}
-nav.global-nav .nav-links a{font-family:'Barlow',sans-serif;color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:color 0.2s;padding:4px 0;border-bottom:2px solid transparent;}
-nav.global-nav .nav-links a:hover,nav.global-nav .nav-links a.active{color:#c8a96e;border-bottom-color:#c8a96e;}
-nav.global-nav .nav-right{display:flex;align-items:center;gap:12px;flex-shrink:0;}
-nav.global-nav .nav-lang{display:flex;gap:6px;}
-nav.global-nav .nav-lang button{background:none;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);padding:4px 10px;font-size:0.72rem;letter-spacing:1px;cursor:pointer;transition:all 0.2s;font-family:'Barlow',sans-serif;}
-nav.global-nav .nav-lang button:hover{border-color:#c8a96e;color:#c8a96e;}
-nav.global-nav .nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
-nav.global-nav .nav-burger span{display:block;width:24px;height:2px;background:rgba(255,255,255,0.85);transition:all 0.3s;}
-nav.global-nav .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-nav.global-nav .nav-burger.open span:nth-child(2){opacity:0;}
-nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-.global-mobile-nav{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(11,31,58,0.99);padding:12px 0;z-index:999;border-top:1px solid rgba(255,255,255,0.08);}
-.global-mobile-nav.open{display:block;}
-.global-mobile-nav a{display:block;padding:13px 32px;font-family:'Barlow',sans-serif;color:rgba(255,255,255,0.85);font-size:0.85rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:all 0.2s;border-left:3px solid transparent;}
-.global-mobile-nav a:hover,.global-mobile-nav a.active{color:#c8a96e;border-left-color:#c8a96e;background:rgba(255,255,255,0.04);}
-@media(max-width:1100px){nav.global-nav{padding:0 28px;}nav.global-nav .nav-links{gap:14px;}nav.global-nav .nav-links a{font-size:0.78rem;letter-spacing:0.5px;}}
-@media(max-width:860px){nav.global-nav .nav-links{display:none;}nav.global-nav .nav-burger{display:flex;}}
-@media(max-width:480px){nav.global-nav{padding:0 16px;}}
-</style>
-
-
-
-<div class="page-hero"><div class="page-hero-content"><span class="page-tag"><span data-en="Get In Touch" data-zh="联系我们">Get In Touch</span></span><h1 class="page-title"><span data-en="Contact Us" data-zh="联络方式">Contact Us</span></h1></div></div>
+<div class="page-hero"><div class="page-hero-content"><span class="page-tag">Get In Touch</span><h1 class="page-title">Contact Us</h1></div></div>
 <div class="container">
   <div class="contact-grid">
     <div class="contact-info">
-      <h2><span data-en="We would love to hear from you" data-zh="期待您的来信">We would love to hear from you</span></h2>
+      <h2>We would love to hear from you</h2>
       <div class="gold-line"></div>
       <div class="contact-item">
         <span class="contact-icon">&#128205;</span>
         <div>
-          <div class="contact-label"><span data-en="Address" data-zh="地址">Address</span></div>
-          <div class="contact-value"><span data-en="Room 801, 600 Yunjin Road," data-zh="上海市徐汇区云锦路600号">Room 801, 600 Yunjin Road,</span><br><span data-en="Xuhui District, Shanghai, China" data-zh="801室">Xuhui District, Shanghai, China</span></div>
+          <div class="contact-label">Address</div>
+          <div class="contact-value">Room 801, 600 Yunjin Road,<br>Xuhui District, Shanghai, China</div>
         </div>
       </div>
       <div class="contact-item">
         <span class="contact-icon">&#128222;</span>
         <div>
-          <div class="contact-label"><span data-en="Phone" data-zh="电话">Phone</span></div>
+          <div class="contact-label">Phone</div>
           <div class="contact-value">+86 21 XXXX XXXX</div>
         </div>
       </div>
       <div class="contact-item">
         <span class="contact-icon">&#128真;</span>
         <div>
-          <div class="contact-label"><span data-en="Fax" data-zh="传真">Fax</span></div>
+          <div class="contact-label">Fax</div>
           <div class="contact-value">+86 21 XXXX XXXX</div>
         </div>
       </div>
       <div class="contact-item">
         <span class="contact-icon">&#9993;</span>
         <div>
-          <div class="contact-label"><span data-en="Email" data-zh="邮箱">Email</span></div>
-          <div class="contact-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5d34333b321d3b28313b343131703c2b343c29343233733e3230">[email&#160;protected]</a></div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c9a0a7afa689afbca5afa0a5a5e4a8bfa0a8bda0a6a7e7aaa6a4">[email&#160;protected]</a></div>
         </div>
       </div>
       <div class="contact-item">
         <span class="contact-icon">&#128336;</span>
         <div>
-          <div class="contact-label"><span data-en="Business Hours" data-zh="营业时间">Business Hours</span></div>
-          <div class="contact-value"><span data-en="Monday – Friday: 9:00 AM – 6:00 PM" data-zh="周一至周五：上午9:00 – 下午6:00">Monday – Friday: 9:00 AM – 6:00 PM</span><br><span data-en="Saturday: 9:00 AM – 12:00 PM" data-zh="周六：上午9:00 – 中午12:00">Saturday: 9:00 AM – 12:00 PM</span></div>
+          <div class="contact-label">Business Hours</div>
+          <div class="contact-value">Monday – Friday: 9:00 AM – 6:00 PM<br>Saturday: 9:00 AM – 12:00 PM</div>
         </div>
       </div>
     </div>
     <div class="contact-form">
-      <h3><span data-en="Send Us a Message" data-zh="发送消息">Send Us a Message</span></h3>
+      <h3>Send Us a Message</h3>
       <div class="form-row">
-        <div class="form-group"><label><span data-en="First Name" data-zh="名">First Name</span></label><input type="text" placeholder="John"/></div>
-        <div class="form-group"><label><span data-en="Last Name" data-zh="姓">Last Name</span></label><input type="text" placeholder="Smith"/></div>
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="John"/></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Smith"/></div>
       </div>
-      <div class="form-group"><label><span data-en="Email Address" data-zh="电子邮箱">Email Address</span></label><input type="email" placeholder="your@email.com"/></div>
-      <div class="form-group"><label><span data-en="Company" data-zh="公司名称">Company</span></label><input type="text" placeholder="Your company name"/></div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="your@email.com"/></div>
+      <div class="form-group"><label>Company</label><input type="text" placeholder="Your company name"/></div>
       <div class="form-group">
-        <label><span data-en="Service of Interest" data-zh="感兴趣的服务">Service of Interest</span></label>
+        <label>Service of Interest</label>
         <select>
-          <option><span data-en="Flight Operations Support" data-zh="航班运营支持">Flight Operations Support</span></option>
-          <option><span data-en="Aviation Fuel Supply" data-zh="航空燃油供应">Aviation Fuel Supply</span></option>
-          <option><span data-en="Charter &amp; Ticketing" data-zh="包机与机票">Charter &amp; Ticketing</span></option>
-          <option><span data-en="Ground Handling" data-zh="地面保障">Ground Handling</span></option>
-          <option><span data-en="Other" data-zh="其他">Other</span></option>
+          <option>Flight Operations Support</option>
+          <option>Aviation Fuel Supply</option>
+          <option>Charter &amp; Ticketing</option>
+          <option>Ground Handling</option>
+          <option>Other</option>
         </select>
       </div>
-      <div class="form-group"><label><span data-en="Message" data-zh="留言内容">Message</span></label><textarea placeholder="Tell us how we can help you..."></textarea></div>
-      <button class="submit-btn"><span data-en="Send Message" data-zh="发送消息">Send Message</span></button>
+      <div class="form-group"><label>Message</label><textarea placeholder="Tell us how we can help you..."></textarea></div>
+      <button class="submit-btn">Send Message</button>
     </div>
   </div>
 </div><footer>
   <div class="foot-row">
-    <p><span data-en="© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved." data-zh="© 2026 上海丰盈航空地面服务有限公司 版权所有">© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</span></p>
+    <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
     <nav class="foot-nav">
-      <a href="/index.html"><span data-en="Home" data-zh="首页">Home</span></a><a href="/news.html"><span data-en="News" data-zh="新闻">News</span></a><a href="service
+      <a href="index.html">Home</a><a href="news.html">News</a><a href="service

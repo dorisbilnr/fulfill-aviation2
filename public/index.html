@@ -5,7 +5,127 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Your Company Name</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <style>.intro-strip {
+  <style>
+    /* ─── EDIT YOUR BRAND COLORS HERE ─────────────────── */
+    :root {
+      --navy:   #0b1f3a;
+      --sky:    #1a6ea8;
+      --gold:   #c8a96e;
+      --light:  #f5f6f8;
+      --white:  #ffffff;
+      --text:   #1e2535;
+      --muted:  #6b7280;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {padding-top:68px;
+      font-family: 'Barlow', sans-serif;
+      color: var(--text);
+      background: var(--white);
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── NAVIGATION ───────────────────────────────────── */
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    /* ─── HERO SLIDES ─────────────────────────────────── */
+    .hero {
+      position: relative; height: 100vh; overflow: hidden;
+    }
+
+    .slide {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      opacity: 0; transition: opacity 1.2s ease;
+    }
+    .slide.active { opacity: 1; }
+
+    /* EDIT: Replace these gradient placeholders with real image URLs */
+    .slide-1 { background: linear-gradient(135deg, #0b1f3a 0%, #1a6ea8 50%, #0b2d52 100%); }
+    .slide-2 { background: linear-gradient(135deg, #0d2640 0%, #0f4c75 60%, #1a6ea8 100%); }
+    /* To use real images, change to:
+       .slide-1 { background-image: url('your-image.jpg'); } */
+
+    .slide::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.55) 100%);
+    }
+
+    .hero-content {
+      position: absolute; z-index: 2;
+      bottom: 22%; left: 10%;
+      max-width: 640px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+
+    .hero-sub {
+      color: rgba(255,255,255,0.75);
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 12px 32px;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: all 0.3s;
+    }
+    .hero-btn:hover { background: var(--gold); color: var(--navy); }
+
+    .slide-dots {
+      position: absolute; bottom: 40px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; gap: 10px; z-index: 3;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.5);
+      background: transparent; cursor: pointer; transition: all 0.3s;
+    }
+    .dot.active { background: var(--gold); border-color: var(--gold); }
+
+    /* ─── INTRO STRIP ─────────────────────────────────── */
+    .intro-strip {
       background: var(--navy);
       padding: 48px 10%;
       display: flex; align-items: center; justify-content: space-between;
@@ -24,7 +144,32 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 2.8rem; color: var(--gold); display: block;
     }
-    .intro-stat .label { color: rgba(255,255,255,0.6); font-size: 0.78rem; letter-spacing: 1px; }.news { background: var(--light); }
+    .intro-stat .label { color: rgba(255,255,255,0.6); font-size: 0.78rem; letter-spacing: 1px; }
+
+    /* ─── SECTION HEADER ──────────────────────────────── */
+    .section-header {
+      text-align: center; padding: 72px 10% 48px;
+    }
+    .section-tag {
+      display: inline-block;
+      color: var(--sky);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 4px;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400;
+      color: var(--navy);
+    }
+
+    /* ─── NEWS ────────────────────────────────────────── */
+    .news { background: var(--light); }
 
     .news-grid {
       display: grid;
@@ -184,142 +329,66 @@
 
     @media (max-width: 900px) {
       
+      
       .intro-strip { flex-direction: column; padding: 40px 6%; }
       .news-grid { grid-template-columns: 1fr; padding: 0 6% 56px; }
       .services-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; }
       .hero-content { left: 6%; bottom: 18%; }
     }
-  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @media(max-width:1024px){
-      
-      
-      
-    }
-    @media(max-width:860px){
-      
-      
-    }
-    @media(max-width:480px){}
-}
-
-    </style>
-
-<script>
-(function(){
-  var LANG_KEY = 'fa_lang';
-  var current = localStorage.getItem(LANG_KEY) || 'en';
-
-  function applyLang(lang) {
-    current = lang;
-    localStorage.setItem(LANG_KEY, lang);
-    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-    document.querySelectorAll('[data-en]').forEach(function(el) {
-      el.innerHTML = lang === 'zh' ? (el.getAttribute('data-zh') || el.getAttribute('data-en')) : el.getAttribute('data-en');
-    });
-    // Update active state on lang buttons
-    document.querySelectorAll('.lang-btn').forEach(function(btn) {
-      btn.style.borderColor = btn.getAttribute('data-lang') === lang ? '#c8a96e' : 'rgba(255,255,255,0.3)';
-      btn.style.color = btn.getAttribute('data-lang') === lang ? '#c8a96e' : 'rgba(255,255,255,0.7)';
-    });
-  }
-
-  // Apply on load
-  document.addEventListener('DOMContentLoaded', function(){ applyLang(current); });
-
-  // Expose globally
-  window.setLang = applyLang;
-})();
-</script>
-
+  </style>
+  <script src="/lang.js"></script>
 </head>
 <body>
-<nav class="global-nav">
-  <a href="/" class="nav-logo">FULFILL<span>.</span>AVIATION</a>
-  <ul class="nav-links">
-      <li><a href="/" class="active" data-en="Home" data-zh="首页"><span data-en="Home" data-zh="首页">Home</span></a></li>
-      <li><a href="/news.html" data-en="News" data-zh="新闻"><span data-en="News" data-zh="新闻">News</span></a></li>
-      <li><a href="/services.html" data-en="Services" data-zh="服务"><span data-en="Services" data-zh="服务">Services</span></a></li>
-      <li><a href="/charter.html" data-en="Charter &amp; Ticketing" data-zh="包机与机票">Charter &amp; Ticketing</a></li>
-      <li><a href="/about.html" data-en="About Us" data-zh="关于我们">About Us</a></li>
-      <li><a href="/contact.html" data-en="Contact" data-zh="联系我们"><span data-en="Contact" data-zh="联系">Contact</span></a></li>
+<link rel="stylesheet" href="/nav.css"/>
+<nav class="gn">
+  <a href="/" class="gn-logo">FULFILL<span>.</span>AVIATION</a>
+  <ul class="gn-links">
+    <li><a href="/" class="active">Home</a></li>
+    <li><a href="/news.html">News</a></li>
+    <li><a href="/services.html">Services</a></li>
+    <li><a href="/charter.html">Charter &amp; Ticketing</a></li>
+    <li><a href="/about.html">About Us</a></li>
+    <li><a href="/contact.html">Contact</a></li>
   </ul>
-  <div class="nav-right">
-    <div class="nav-lang">
-      <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
-      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+  <div class="gn-right">
+    <div class="gn-lang">
+      <button data-lang="zh" onclick="setLang('zh')">中文</button>
+      <button data-lang="en" onclick="setLang('en')">EN</button>
     </div>
-    <button class="nav-burger" id="gnav-burger"><span></span><span></span><span></span></button>
+    <button class="gn-burger" id="gn-burger"><span></span><span></span><span></span></button>
   </div>
 </nav>
-<div class="global-mobile-nav" id="gnav-mobile">
-  <a href="/" class="active" data-en="Home" data-zh="首页"><span data-en="Home" data-zh="首页">Home</span></a>
-  <a href="/news.html" data-en="News" data-zh="新闻"><span data-en="News" data-zh="新闻">News</span></a>
-  <a href="/services.html" data-en="Services" data-zh="服务"><span data-en="Services" data-zh="服务">Services</span></a>
-  <a href="/charter.html" data-en="Charter &amp; Ticketing" data-zh="包机与机票">Charter &amp; Ticketing</a>
-  <a href="/about.html" data-en="About Us" data-zh="关于我们">About Us</a>
-  <a href="/contact.html" data-en="Contact" data-zh="联系我们"><span data-en="Contact" data-zh="联系">Contact</span></a>
+<div class="gn-mobile" id="gn-mobile">
+  <a href="/" class="active">Home</a>
+  <a href="/news.html">News</a>
+  <a href="/services.html">Services</a>
+  <a href="/charter.html">Charter &amp; Ticketing</a>
+  <a href="/about.html">About Us</a>
+  <a href="/contact.html">Contact</a>
 </div>
 <script>
+window.FA_PAGE = 'index';
 (function(){
-  var b=document.getElementById('gnav-burger'),m=document.getElementById('gnav-mobile');
-  if(b&&m){
-    b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});
-    m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('open');m.classList.remove('open');});});
+  var b = document.getElementById('gn-burger');
+  var m = document.getElementById('gn-mobile');
+  if (b && m) {
+    b.addEventListener('click', function() {
+      b.classList.toggle('open');
+      m.classList.toggle('open');
+    });
+    m.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        b.classList.remove('open');
+        m.classList.remove('open');
+      });
+    });
   }
 })();
 </script>
-<style id="nav-style">
-nav.global-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:68px;background:rgba(11,31,58,0.97);backdrop-filter:blur(8px);font-family:'Barlow',sans-serif;}
-nav.global-nav .nav-logo{font-family:'Barlow',sans-serif;font-size:1.1rem;font-weight:600;color:#ffffff;letter-spacing:3px;text-decoration:none;flex-shrink:0;}
-nav.global-nav .nav-logo span{color:#c8a96e;}
-nav.global-nav .nav-links{display:flex;gap:20px;list-style:none;margin:0;padding:0;align-items:center;flex:1;justify-content:center;}
-nav.global-nav .nav-links a{font-family:'Barlow',sans-serif;color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:color 0.2s;padding:4px 0;border-bottom:2px solid transparent;}
-nav.global-nav .nav-links a:hover,nav.global-nav .nav-links a.active{color:#c8a96e;border-bottom-color:#c8a96e;}
-nav.global-nav .nav-right{display:flex;align-items:center;gap:12px;flex-shrink:0;}
-nav.global-nav .nav-lang{display:flex;gap:6px;}
-nav.global-nav .nav-lang button{background:none;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);padding:4px 10px;font-size:0.72rem;letter-spacing:1px;cursor:pointer;transition:all 0.2s;font-family:'Barlow',sans-serif;}
-nav.global-nav .nav-lang button:hover{border-color:#c8a96e;color:#c8a96e;}
-nav.global-nav .nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
-nav.global-nav .nav-burger span{display:block;width:24px;height:2px;background:rgba(255,255,255,0.85);transition:all 0.3s;}
-nav.global-nav .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-nav.global-nav .nav-burger.open span:nth-child(2){opacity:0;}
-nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-.global-mobile-nav{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(11,31,58,0.99);padding:12px 0;z-index:999;border-top:1px solid rgba(255,255,255,0.08);}
-.global-mobile-nav.open{display:block;}
-.global-mobile-nav a{display:block;padding:13px 32px;font-family:'Barlow',sans-serif;color:rgba(255,255,255,0.85);font-size:0.85rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:all 0.2s;border-left:3px solid transparent;}
-.global-mobile-nav a:hover,.global-mobile-nav a.active{color:#c8a96e;border-left-color:#c8a96e;background:rgba(255,255,255,0.04);}
-@media(max-width:1100px){nav.global-nav{padding:0 28px;}nav.global-nav .nav-links{gap:14px;}nav.global-nav .nav-links a{font-size:0.78rem;letter-spacing:0.5px;}}
-@media(max-width:860px){nav.global-nav .nav-links{display:none;}nav.global-nav .nav-burger{display:flex;}}
-@media(max-width:480px){nav.global-nav{padding:0 16px;}}
-</style>
-
-
 
 
 <!-- ═══ NAVIGATION ══════════════════════════════════════════ -->
-
-
-
 <!-- ═══ HERO ═════════════════════════════════════════════════ -->
 <section class="hero">
 
@@ -327,26 +396,26 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
     <!-- EDIT: To use a real photo instead of gradient:
          <style>.slide-1 { background-image: url('your-photo.jpg'); }</style> -->
     <div class="hero-content">
-      <span class="hero-tag"><span data-en="Trusted Since 2015" data-zh="自2015年起值得信赖">Trusted Since 2015</span></span>        <!-- EDIT -->
+      <span class="hero-tag">Trusted Since 2015</span>        <!-- EDIT -->
       <h1 class="hero-title">
         Technology-Led,<br>
         Talent-Driven,<br>
         World-Class Aviation                                   <!-- EDIT: main headline -->
       </h1>
-      <p class="hero-sub"><span data-en="Professional. Reliable. Global." data-zh="专业 · 可靠 · 全球">Professional. Reliable. Global.</span></p>  <!-- EDIT: subline -->
-      <a href="#" class="hero-btn"><span data-en="Learn More" data-zh="了解更多">Learn More</span></a>
+      <p class="hero-sub">Professional. Reliable. Global.</p>  <!-- EDIT: subline -->
+      <a href="#" class="hero-btn">Learn More</a>
     </div>
   </div>
 
   <div class="slide slide-2">
     <div class="hero-content">
-      <span class="hero-tag"><span data-en="Expanding Horizons" data-zh="拓展视野">Expanding Horizons</span></span>         <!-- EDIT -->
+      <span class="hero-tag">Expanding Horizons</span>         <!-- EDIT -->
       <h1 class="hero-title">
         Opening Skies,<br>
         Enabling Journeys                                      <!-- EDIT -->
       </h1>
-      <p class="hero-sub"><span data-en="Making flight better for everyone." data-zh="让每一次飞行都更美好。">Making flight better for everyone.</span></p>
-      <a href="#" class="hero-btn"><span data-en="Our Services" data-zh="服务项目">Our Services</span></a>
+      <p class="hero-sub">Making flight better for everyone.</p>
+      <a href="#" class="hero-btn">Our Services</a>
     </div>
   </div>
 
@@ -365,25 +434,25 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
   <div class="intro-divider"></div>
   <div class="intro-stat">
     <span class="num">10+</span>   <!-- EDIT -->
-    <span class="label"><span data-en="Years Experience" data-zh="年经验">Years Experience</span></span>
+    <span class="label">Years Experience</span>
   </div>
   <div class="intro-divider"></div>
   <div class="intro-stat">
     <span class="num">50+</span>   <!-- EDIT -->
-    <span class="label"><span data-en="Destinations" data-zh="目的地">Destinations</span></span>
+    <span class="label">Destinations</span>
   </div>
   <div class="intro-divider"></div>
   <div class="intro-stat">
     <span class="num">200+</span>  <!-- EDIT -->
-    <span class="label"><span data-en="Partners" data-zh="合作伙伴">Partners</span></span>
+    <span class="label">Partners</span>
   </div>
 </div>
 
 <!-- ═══ NEWS ════════════════════════════════════════════════ -->
 <section class="news">
   <div class="section-header">
-    <span class="section-tag"><span data-en="Latest Updates" data-zh="最新动态">Latest Updates</span></span>
-    <h2 class="section-title"><span data-en="Recent News" data-zh="近期新闻">Recent News</span></h2>  <!-- EDIT -->
+    <span class="section-tag">Latest Updates</span>
+    <h2 class="section-title">Recent News</h2>  <!-- EDIT -->
   </div>
 
   <div class="news-grid">
@@ -433,8 +502,8 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
 <!-- ═══ SERVICES ════════════════════════════════════════════ -->
 <section class="services">
   <div class="section-header">
-    <span class="section-tag"><span data-en="What We Do" data-zh="我们的服务">What We Do</span></span>
-    <h2 class="section-title"><span data-en="Our Services" data-zh="服务项目">Our Services</span></h2>  <!-- EDIT -->
+    <span class="section-tag">What We Do</span>
+    <h2 class="section-title">Our Services</h2>  <!-- EDIT -->
   </div>
 
   <div class="services-grid">
@@ -446,9 +515,9 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
       <div class="service-card-overlay"></div>
       <div class="service-card-content">
         <span class="service-icon">✈</span>
-        <div class="service-name"><span data-en="Flight Operations Support" data-zh="航班运营支持">Flight Operations Support</span></div>
+        <div class="service-name">Flight Operations Support</div>
         <p class="service-desc">Foreign &amp; domestic airline operational support — permits, handling, and coordination.</p>
-        <a href="#" class="service-link"><span data-en="Learn More" data-zh="了解更多">Learn More</span></a>
+        <a href="#" class="service-link">Learn More</a>
       </div>
     </div>
 
@@ -458,9 +527,9 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
       <div class="service-card-overlay"></div>
       <div class="service-card-content">
         <span class="service-icon">⛽</span>
-        <div class="service-name"><span data-en="Aviation Fuel Supply" data-zh="航空燃油供应">Aviation Fuel Supply</span></div>
+        <div class="service-name">Aviation Fuel Supply</div>
         <p class="service-desc">JetA-1 / TS1 / JP8 / AvGas supply with global sourcing and competitive pricing.</p>
-        <a href="#" class="service-link"><span data-en="Learn More" data-zh="了解更多">Learn More</span></a>
+        <a href="#" class="service-link">Learn More</a>
       </div>
     </div>
 
@@ -472,7 +541,7 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
         <span class="service-icon">🛫</span>
         <div class="service-name">Charter &amp; Ticketing</div>
         <p class="service-desc">Group charter / private charter / cargo charter / airline ticketing solutions.</p>
-        <a href="#" class="service-link"><span data-en="Learn More" data-zh="了解更多">Learn More</span></a>
+        <a href="#" class="service-link">Learn More</a>
       </div>
     </div>
 
@@ -494,11 +563,11 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
     <div class="footer-col">
       <h4>Quick Links</h4>
       <ul>
-        <li><span data-en="Home" data-zh="首页">Home</span></li>
-        <li><span data-en="News" data-zh="新闻">News</span></li>
-        <li><span data-en="Services" data-zh="服务">Services</span></li>   <!-- EDIT: match your nav -->
+        <li>Home</li>
+        <li>News</li>
+        <li>Services</li>   <!-- EDIT: match your nav -->
         <li>About Us</li>
-        <li><span data-en="Contact" data-zh="联系">Contact</span></li>
+        <li>Contact</li>
       </ul>
     </div>
 

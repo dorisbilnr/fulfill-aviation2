@@ -17,6 +17,7 @@
     
     
     
+    
     .page-hero{padding-top:70px;height:260px;background:linear-gradient(135deg,#0b1f3a,#1a6ea8);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;position:relative;}
     .page-hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.3);}
     .page-hero-content{position:relative;z-index:1;}
@@ -51,144 +52,69 @@
     .nc-title{font-size:0.9rem;font-weight:500;line-height:1.5;color:var(--text);margin-bottom:8px;}
     .nc-exc{font-size:0.82rem;color:#6b7280;line-height:1.6;}
     @media(max-width:900px){.news-featured{grid-template-columns:1fr;}.news-grid{grid-template-columns:1fr;}}
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @media(max-width:1024px){
-      
-      
-      
-    }
-    @media(max-width:860px){
-      
-      
-    }
-    @media(max-width:480px){}
-}
-
-    </style>
-
-<script>
-(function(){
-  var LANG_KEY = 'fa_lang';
-  var current = localStorage.getItem(LANG_KEY) || 'en';
-
-  function applyLang(lang) {
-    current = lang;
-    localStorage.setItem(LANG_KEY, lang);
-    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-    document.querySelectorAll('[data-en]').forEach(function(el) {
-      el.innerHTML = lang === 'zh' ? (el.getAttribute('data-zh') || el.getAttribute('data-en')) : el.getAttribute('data-en');
-    });
-    // Update active state on lang buttons
-    document.querySelectorAll('.lang-btn').forEach(function(btn) {
-      btn.style.borderColor = btn.getAttribute('data-lang') === lang ? '#c8a96e' : 'rgba(255,255,255,0.3)';
-      btn.style.color = btn.getAttribute('data-lang') === lang ? '#c8a96e' : 'rgba(255,255,255,0.7)';
-    });
-  }
-
-  // Apply on load
-  document.addEventListener('DOMContentLoaded', function(){ applyLang(current); });
-
-  // Expose globally
-  window.setLang = applyLang;
-})();
-</script>
-
+</style>
+  <script src="/lang.js"></script>
 </head>
 <body>
-<nav class="global-nav">
-  <a href="/" class="nav-logo">FULFILL<span>.</span>AVIATION</a>
-  <ul class="nav-links">
-      <li><a href="/" data-en="Home" data-zh="首页"><span data-en="Home" data-zh="首页">Home</span></a></li>
-      <li><a href="/news.html" class="active" data-en="News" data-zh="新闻"><span data-en="News" data-zh="新闻">News</span></a></li>
-      <li><a href="/services.html" data-en="Services" data-zh="服务"><span data-en="Services" data-zh="服务">Services</span></a></li>
-      <li><a href="/charter.html" data-en="Charter &amp; Ticketing" data-zh="包机与机票">Charter &amp; Ticketing</a></li>
-      <li><a href="/about.html" data-en="About Us" data-zh="关于我们">About Us</a></li>
-      <li><a href="/contact.html" data-en="Contact" data-zh="联系我们"><span data-en="Contact" data-zh="联系">Contact</span></a></li>
+<link rel="stylesheet" href="/nav.css"/>
+<nav class="gn">
+  <a href="/" class="gn-logo">FULFILL<span>.</span>AVIATION</a>
+  <ul class="gn-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/news.html" class="active">News</a></li>
+    <li><a href="/services.html">Services</a></li>
+    <li><a href="/charter.html">Charter &amp; Ticketing</a></li>
+    <li><a href="/about.html">About Us</a></li>
+    <li><a href="/contact.html">Contact</a></li>
   </ul>
-  <div class="nav-right">
-    <div class="nav-lang">
-      <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
-      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+  <div class="gn-right">
+    <div class="gn-lang">
+      <button data-lang="zh" onclick="setLang('zh')">中文</button>
+      <button data-lang="en" onclick="setLang('en')">EN</button>
     </div>
-    <button class="nav-burger" id="gnav-burger"><span></span><span></span><span></span></button>
+    <button class="gn-burger" id="gn-burger"><span></span><span></span><span></span></button>
   </div>
 </nav>
-<div class="global-mobile-nav" id="gnav-mobile">
-  <a href="/" data-en="Home" data-zh="首页"><span data-en="Home" data-zh="首页">Home</span></a>
-  <a href="/news.html" class="active" data-en="News" data-zh="新闻"><span data-en="News" data-zh="新闻">News</span></a>
-  <a href="/services.html" data-en="Services" data-zh="服务"><span data-en="Services" data-zh="服务">Services</span></a>
-  <a href="/charter.html" data-en="Charter &amp; Ticketing" data-zh="包机与机票">Charter &amp; Ticketing</a>
-  <a href="/about.html" data-en="About Us" data-zh="关于我们">About Us</a>
-  <a href="/contact.html" data-en="Contact" data-zh="联系我们"><span data-en="Contact" data-zh="联系">Contact</span></a>
+<div class="gn-mobile" id="gn-mobile">
+  <a href="/">Home</a>
+  <a href="/news.html" class="active">News</a>
+  <a href="/services.html">Services</a>
+  <a href="/charter.html">Charter &amp; Ticketing</a>
+  <a href="/about.html">About Us</a>
+  <a href="/contact.html">Contact</a>
 </div>
 <script>
+window.FA_PAGE = 'news';
 (function(){
-  var b=document.getElementById('gnav-burger'),m=document.getElementById('gnav-mobile');
-  if(b&&m){
-    b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});
-    m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('open');m.classList.remove('open');});});
+  var b = document.getElementById('gn-burger');
+  var m = document.getElementById('gn-mobile');
+  if (b && m) {
+    b.addEventListener('click', function() {
+      b.classList.toggle('open');
+      m.classList.toggle('open');
+    });
+    m.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        b.classList.remove('open');
+        m.classList.remove('open');
+      });
+    });
   }
 })();
 </script>
-<style id="nav-style">
-nav.global-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:68px;background:rgba(11,31,58,0.97);backdrop-filter:blur(8px);font-family:'Barlow',sans-serif;}
-nav.global-nav .nav-logo{font-family:'Barlow',sans-serif;font-size:1.1rem;font-weight:600;color:#ffffff;letter-spacing:3px;text-decoration:none;flex-shrink:0;}
-nav.global-nav .nav-logo span{color:#c8a96e;}
-nav.global-nav .nav-links{display:flex;gap:20px;list-style:none;margin:0;padding:0;align-items:center;flex:1;justify-content:center;}
-nav.global-nav .nav-links a{font-family:'Barlow',sans-serif;color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:color 0.2s;padding:4px 0;border-bottom:2px solid transparent;}
-nav.global-nav .nav-links a:hover,nav.global-nav .nav-links a.active{color:#c8a96e;border-bottom-color:#c8a96e;}
-nav.global-nav .nav-right{display:flex;align-items:center;gap:12px;flex-shrink:0;}
-nav.global-nav .nav-lang{display:flex;gap:6px;}
-nav.global-nav .nav-lang button{background:none;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);padding:4px 10px;font-size:0.72rem;letter-spacing:1px;cursor:pointer;transition:all 0.2s;font-family:'Barlow',sans-serif;}
-nav.global-nav .nav-lang button:hover{border-color:#c8a96e;color:#c8a96e;}
-nav.global-nav .nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
-nav.global-nav .nav-burger span{display:block;width:24px;height:2px;background:rgba(255,255,255,0.85);transition:all 0.3s;}
-nav.global-nav .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-nav.global-nav .nav-burger.open span:nth-child(2){opacity:0;}
-nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-.global-mobile-nav{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(11,31,58,0.99);padding:12px 0;z-index:999;border-top:1px solid rgba(255,255,255,0.08);}
-.global-mobile-nav.open{display:block;}
-.global-mobile-nav a{display:block;padding:13px 32px;font-family:'Barlow',sans-serif;color:rgba(255,255,255,0.85);font-size:0.85rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:all 0.2s;border-left:3px solid transparent;}
-.global-mobile-nav a:hover,.global-mobile-nav a.active{color:#c8a96e;border-left-color:#c8a96e;background:rgba(255,255,255,0.04);}
-@media(max-width:1100px){nav.global-nav{padding:0 28px;}nav.global-nav .nav-links{gap:14px;}nav.global-nav .nav-links a{font-size:0.78rem;letter-spacing:0.5px;}}
-@media(max-width:860px){nav.global-nav .nav-links{display:none;}nav.global-nav .nav-burger{display:flex;}}
-@media(max-width:480px){nav.global-nav{padding:0 16px;}}
-</style>
-
-
-
-<div class="page-hero"><div class="page-hero-content"><span class="page-tag"><span data-en="Latest Updates" data-zh="最新动态">Latest Updates</span></span><h1 class="page-title"><span data-en="News &amp; Events" data-zh="新闻与活动">News &amp; Events</span></h1></div></div>
+<div class="page-hero"><div class="page-hero-content"><span class="page-tag">Latest Updates</span><h1 class="page-title">News &amp; Events</h1></div></div>
 <div class="container">
   <div class="news-featured">
     <div class="nf-img"><div class="img-ph">Featured photo<br>(replace with img tag)</div></div>
     <div class="nf-body">
-      <span class="news-cat"><span data-en="Latest" data-zh="最新">Latest</span></span>
+      <span class="news-cat">Latest</span>
       <div class="nf-date">2026-02-14</div>
-      <h2 class="nf-title"><span data-en="Your most recent news headline goes here" data-zh="请填写最新新闻标题">Your most recent news headline goes here</span></h2>
-      <p class="nf-exc"><span data-en="Write a 2-3 sentence summary of this story here. Describe what happened and why it matters for your company and clients." data-zh="请在此处填写2-3句话的新闻摘要，描述事件经过及其对公司和客户的意义。">Write a 2-3 sentence summary of this story here. Describe what happened and why it matters for your company and clients.</span></p>
-      <a href="#" class="btn"><span data-en="Read More" data-zh="阅读更多">Read More</span></a>
+      <h2 class="nf-title">Your most recent news headline goes here</h2>
+      <p class="nf-exc">Write a 2-3 sentence summary of this story here. Describe what happened and why it matters for your company and clients.</p>
+      <a href="#" class="btn">Read More</a>
     </div>
   </div>
-  <div class="section-label"><span data-en="All News" data-zh="全部新闻">All News</span></div>
+  <div class="section-label">All News</div>
   <div class="news-grid">
     <div class="nc">
       <div class="nc-img"><div class="img-ph">Photo 2<br>(replace with img)</div></div>
@@ -241,23 +167,6 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
   </div>
 </div><footer>
   <div class="foot-row">
-    <p><span data-en="© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved." data-zh="© 2026 上海丰盈航空地面服务有限公司 版权所有">© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</span></p>
-    
-  </div>
-</footer>{
-  var burger = document.getElementById('nav-burger');
-  var mobile = document.getElementById('nav-mobile');
-  if(burger && mobile){
-    burger.addEventListener('click',function(){
-      burger.classList.toggle('open');
-      mobile.classList.toggle('open');
-    });
-    mobile.querySelectorAll('a').forEach(function(a){
-      a.addEventListener('click',function(){
-        burger.classList.remove('open');
-        mobile.classList.remove('open');
-      });
-    });
-  }
-
-</body></html>
+    <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
+    </div>
+</footer></body></html>

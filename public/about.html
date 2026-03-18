@@ -17,6 +17,7 @@
     
     
     
+    
     .page-hero{padding-top:70px;height:260px;background:linear-gradient(135deg,#0b1f3a,#1a6ea8);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;position:relative;}
     .page-hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.3);}
     .page-hero-content{position:relative;z-index:1;}
@@ -50,188 +51,96 @@
     .team-name{font-family:"Cormorant Garamond",serif;font-size:1.2rem;color:var(--navy);margin-bottom:4px;}
     .team-role{color:var(--sky);font-size:0.8rem;letter-spacing:1px;text-transform:uppercase;}
     @media(max-width:900px){.about-grid{grid-template-columns:1fr;}.stats-row{grid-template-columns:repeat(2,1fr);}.team-grid{grid-template-columns:1fr;}}
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @media(max-width:1024px){
-      
-      
-      
-    }
-    @media(max-width:860px){
-      
-      
-    }
-    @media(max-width:480px){}
-}
-
-    </style>
-
-<script>
-(function(){
-  var LANG_KEY = 'fa_lang';
-  var current = localStorage.getItem(LANG_KEY) || 'en';
-
-  function applyLang(lang) {
-    current = lang;
-    localStorage.setItem(LANG_KEY, lang);
-    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-    document.querySelectorAll('[data-en]').forEach(function(el) {
-      el.innerHTML = lang === 'zh' ? (el.getAttribute('data-zh') || el.getAttribute('data-en')) : el.getAttribute('data-en');
-    });
-    // Update active state on lang buttons
-    document.querySelectorAll('.lang-btn').forEach(function(btn) {
-      btn.style.borderColor = btn.getAttribute('data-lang') === lang ? '#c8a96e' : 'rgba(255,255,255,0.3)';
-      btn.style.color = btn.getAttribute('data-lang') === lang ? '#c8a96e' : 'rgba(255,255,255,0.7)';
-    });
-  }
-
-  // Apply on load
-  document.addEventListener('DOMContentLoaded', function(){ applyLang(current); });
-
-  // Expose globally
-  window.setLang = applyLang;
-})();
-</script>
-
+</style>
+  <script src="/lang.js"></script>
 </head>
 <body>
-<nav class="global-nav">
-  <a href="/" class="nav-logo">FULFILL<span>.</span>AVIATION</a>
-  <ul class="nav-links">
-      <li><a href="/" data-en="Home" data-zh="首页"><span data-en="Home" data-zh="首页">Home</span></a></li>
-      <li><a href="/news.html" data-en="News" data-zh="新闻"><span data-en="News" data-zh="新闻">News</span></a></li>
-      <li><a href="/services.html" data-en="Services" data-zh="服务"><span data-en="Services" data-zh="服务">Services</span></a></li>
-      <li><a href="/charter.html" data-en="Charter &amp; Ticketing" data-zh="包机与机票">Charter &amp; Ticketing</a></li>
-      <li><a href="/about.html" class="active" data-en="About Us" data-zh="关于我们"><span data-en="About Us" data-zh="关于我们">About Us</span></a></li>
-      <li><a href="/contact.html" data-en="Contact" data-zh="联系我们"><span data-en="Contact" data-zh="联系">Contact</span></a></li>
+<link rel="stylesheet" href="/nav.css"/>
+<nav class="gn">
+  <a href="/" class="gn-logo">FULFILL<span>.</span>AVIATION</a>
+  <ul class="gn-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/news.html">News</a></li>
+    <li><a href="/services.html">Services</a></li>
+    <li><a href="/charter.html">Charter &amp; Ticketing</a></li>
+    <li><a href="/about.html" class="active">About Us</a></li>
+    <li><a href="/contact.html">Contact</a></li>
   </ul>
-  <div class="nav-right">
-    <div class="nav-lang">
-      <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
-      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+  <div class="gn-right">
+    <div class="gn-lang">
+      <button data-lang="zh" onclick="setLang('zh')">中文</button>
+      <button data-lang="en" onclick="setLang('en')">EN</button>
     </div>
-    <button class="nav-burger" id="gnav-burger"><span></span><span></span><span></span></button>
+    <button class="gn-burger" id="gn-burger"><span></span><span></span><span></span></button>
   </div>
 </nav>
-<div class="global-mobile-nav" id="gnav-mobile">
-  <a href="/" data-en="Home" data-zh="首页"><span data-en="Home" data-zh="首页">Home</span></a>
-  <a href="/news.html" data-en="News" data-zh="新闻"><span data-en="News" data-zh="新闻">News</span></a>
-  <a href="/services.html" data-en="Services" data-zh="服务"><span data-en="Services" data-zh="服务">Services</span></a>
-  <a href="/charter.html" data-en="Charter &amp; Ticketing" data-zh="包机与机票">Charter &amp; Ticketing</a>
-  <a href="/about.html" class="active" data-en="About Us" data-zh="关于我们"><span data-en="About Us" data-zh="关于我们">About Us</span></a>
-  <a href="/contact.html" data-en="Contact" data-zh="联系我们"><span data-en="Contact" data-zh="联系">Contact</span></a>
+<div class="gn-mobile" id="gn-mobile">
+  <a href="/">Home</a>
+  <a href="/news.html">News</a>
+  <a href="/services.html">Services</a>
+  <a href="/charter.html">Charter &amp; Ticketing</a>
+  <a href="/about.html" class="active">About Us</a>
+  <a href="/contact.html">Contact</a>
 </div>
 <script>
+window.FA_PAGE = 'about';
 (function(){
-  var b=document.getElementById('gnav-burger'),m=document.getElementById('gnav-mobile');
-  if(b&&m){
-    b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});
-    m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('open');m.classList.remove('open');});});
+  var b = document.getElementById('gn-burger');
+  var m = document.getElementById('gn-mobile');
+  if (b && m) {
+    b.addEventListener('click', function() {
+      b.classList.toggle('open');
+      m.classList.toggle('open');
+    });
+    m.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        b.classList.remove('open');
+        m.classList.remove('open');
+      });
+    });
   }
 })();
 </script>
-<style id="nav-style">
-nav.global-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:68px;background:rgba(11,31,58,0.97);backdrop-filter:blur(8px);font-family:'Barlow',sans-serif;}
-nav.global-nav .nav-logo{font-family:'Barlow',sans-serif;font-size:1.1rem;font-weight:600;color:#ffffff;letter-spacing:3px;text-decoration:none;flex-shrink:0;}
-nav.global-nav .nav-logo span{color:#c8a96e;}
-nav.global-nav .nav-links{display:flex;gap:20px;list-style:none;margin:0;padding:0;align-items:center;flex:1;justify-content:center;}
-nav.global-nav .nav-links a{font-family:'Barlow',sans-serif;color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:color 0.2s;padding:4px 0;border-bottom:2px solid transparent;}
-nav.global-nav .nav-links a:hover,nav.global-nav .nav-links a.active{color:#c8a96e;border-bottom-color:#c8a96e;}
-nav.global-nav .nav-right{display:flex;align-items:center;gap:12px;flex-shrink:0;}
-nav.global-nav .nav-lang{display:flex;gap:6px;}
-nav.global-nav .nav-lang button{background:none;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);padding:4px 10px;font-size:0.72rem;letter-spacing:1px;cursor:pointer;transition:all 0.2s;font-family:'Barlow',sans-serif;}
-nav.global-nav .nav-lang button:hover{border-color:#c8a96e;color:#c8a96e;}
-nav.global-nav .nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
-nav.global-nav .nav-burger span{display:block;width:24px;height:2px;background:rgba(255,255,255,0.85);transition:all 0.3s;}
-nav.global-nav .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-nav.global-nav .nav-burger.open span:nth-child(2){opacity:0;}
-nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-.global-mobile-nav{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(11,31,58,0.99);padding:12px 0;z-index:999;border-top:1px solid rgba(255,255,255,0.08);}
-.global-mobile-nav.open{display:block;}
-.global-mobile-nav a{display:block;padding:13px 32px;font-family:'Barlow',sans-serif;color:rgba(255,255,255,0.85);font-size:0.85rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:all 0.2s;border-left:3px solid transparent;}
-.global-mobile-nav a:hover,.global-mobile-nav a.active{color:#c8a96e;border-left-color:#c8a96e;background:rgba(255,255,255,0.04);}
-@media(max-width:1100px){nav.global-nav{padding:0 28px;}nav.global-nav .nav-links{gap:14px;}nav.global-nav .nav-links a{font-size:0.78rem;letter-spacing:0.5px;}}
-@media(max-width:860px){nav.global-nav .nav-links{display:none;}nav.global-nav .nav-burger{display:flex;}}
-@media(max-width:480px){nav.global-nav{padding:0 16px;}}
-</style>
-
-
-
-<div class="page-hero"><div class="page-hero-content"><span class="page-tag"><span data-en="Our Story" data-zh="我们的故事">Our Story</span></span><h1 class="page-title"><span data-en="About Us" data-zh="关于我们">About Us</span></h1></div></div>
+<div class="page-hero"><div class="page-hero-content"><span class="page-tag">Our Story</span><h1 class="page-title">About Us</h1></div></div>
 <div class="container">
   <div class="about-grid">
     <div class="about-img"><div class="img-ph">Company photo<br>(replace with img tag)</div></div>
     <div class="about-body">
       <div class="gold-line"></div>
-      <h2><span data-en="Leading Aviation Ground Services Since [Year]" data-zh="自[年份]起引领航空地面服务">Leading Aviation Ground Services Since [Year]</span></h2>
-      <p><span data-en="Shanghai Fulfill Aviation Ground Service is a professional aviation services company dedicated to providing world-class operational support and travel solutions. Edit this paragraph to tell your company story." data-zh="上海丰盈航空地面服务有限公司是一家专业的航空服务企业，致力于提供世界级的运营支持与出行解决方案。">Shanghai Fulfill Aviation Ground Service is a professional aviation services company dedicated to providing world-class operational support and travel solutions. Edit this paragraph to tell your company story.</span></p>
-      <p><span data-en="We specialize in commercial aviation, business aviation, and general aviation sectors, serving governments, enterprises, aircraft manufacturers, airlines, and aircraft owners. Edit this paragraph with your actual history and mission." data-zh="我们专注于商业航空、公务航空和通用航空领域，服务对象涵盖政府机构、企业、飞机制造商、航空公司及飞机所有者。">We specialize in commercial aviation, business aviation, and general aviation sectors, serving governments, enterprises, aircraft manufacturers, airlines, and aircraft owners. Edit this paragraph with your actual history and mission.</span></p>
-      <p><span data-en="Our team of experienced professionals is committed to safety, reliability, and excellence in every flight we support. Add more details about your company culture and values here." data-zh="我们经验丰富的专业团队在每一次航班保障中都坚守安全、可靠与卓越的承诺。">Our team of experienced professionals is committed to safety, reliability, and excellence in every flight we support. Add more details about your company culture and values here.</span></p>
+      <h2>Leading Aviation Ground Services Since [Year]</h2>
+      <p>Shanghai Fulfill Aviation Ground Service is a professional aviation services company dedicated to providing world-class operational support and travel solutions. Edit this paragraph to tell your company story.</p>
+      <p>We specialize in commercial aviation, business aviation, and general aviation sectors, serving governments, enterprises, aircraft manufacturers, airlines, and aircraft owners. Edit this paragraph with your actual history and mission.</p>
+      <p>Our team of experienced professionals is committed to safety, reliability, and excellence in every flight we support. Add more details about your company culture and values here.</p>
     </div>
   </div>
 
   <div class="stats-row">
-    <div class="stat-box"><span class="stat-num">10+</span><div class="stat-lbl"><span data-en="Years Experience" data-zh="年经验">Years Experience</span></div></div>
-    <div class="stat-box"><span class="stat-num">50+</span><div class="stat-lbl"><span data-en="Destinations" data-zh="目的地">Destinations</span></div></div>
-    <div class="stat-box"><span class="stat-num">200+</span><div class="stat-lbl"><span data-en="Partners" data-zh="合作伙伴">Partners</span></div></div>
-    <div class="stat-box"><span class="stat-num">1000+</span><div class="stat-lbl"><span data-en="Flights Supported" data-zh="保障航班">Flights Supported</span></div></div>
+    <div class="stat-box"><span class="stat-num">10+</span><div class="stat-lbl">Years Experience</div></div>
+    <div class="stat-box"><span class="stat-num">50+</span><div class="stat-lbl">Destinations</div></div>
+    <div class="stat-box"><span class="stat-num">200+</span><div class="stat-lbl">Partners</div></div>
+    <div class="stat-box"><span class="stat-num">1000+</span><div class="stat-lbl">Flights Supported</div></div>
   </div>
 
-  <div class="section-label"><span data-en="Our Team" data-zh="我们的团队">Our Team</span></div>
+  <div class="section-label">Our Team</div>
   <div class="team-grid">
     <div class="team-card">
       <div class="team-photo"><div class="img-ph">Photo</div></div>
-      <div class="team-name"><span data-en="Team Member Name" data-zh="团队成员姓名">Team Member Name</span></div>
-      <div class="team-role"><span data-en="Chief Executive Officer" data-zh="首席执行官">Chief Executive Officer</span></div>
+      <div class="team-name">Team Member Name</div>
+      <div class="team-role">Chief Executive Officer</div>
     </div>
     <div class="team-card">
       <div class="team-photo"><div class="img-ph">Photo</div></div>
-      <div class="team-name"><span data-en="Team Member Name" data-zh="团队成员姓名">Team Member Name</span></div>
-      <div class="team-role"><span data-en="Operations Director" data-zh="运营总监">Operations Director</span></div>
+      <div class="team-name">Team Member Name</div>
+      <div class="team-role">Operations Director</div>
     </div>
     <div class="team-card">
       <div class="team-photo"><div class="img-ph">Photo</div></div>
-      <div class="team-name"><span data-en="Team Member Name" data-zh="团队成员姓名">Team Member Name</span></div>
-      <div class="team-role"><span data-en="Business Development" data-zh="业务拓展">Business Development</span></div>
+      <div class="team-name">Team Member Name</div>
+      <div class="team-role">Business Development</div>
     </div>
   </div>
 </div><footer>
   <div class="foot-row">
-    <p><span data-en="© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved." data-zh="© 2026 上海丰盈航空地面服务有限公司 版权所有">© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</span></p>
-    
-  </div>
-</footer>{
-  var burger = document.getElementById('nav-burger');
-  var mobile = document.getElementById('nav-mobile');
-  if(burger && mobile){
-    burger.addEventListener('click',function(){
-      burger.classList.toggle('open');
-      mobile.classList.toggle('open');
-    });
-    mobile.querySelectorAll('a').forEach(function(a){
-      a.addEventListener('click',function(){
-        burger.classList.remove('open');
-        mobile.classList.remove('open');
-      });
-    });
-  }
-
-</body></html>
+    <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
+    </div>
+</footer></body></html>
