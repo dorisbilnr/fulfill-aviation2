@@ -83,8 +83,71 @@
 }
 
     </style>
+
+<script>
+(function(){
+  var LANG_KEY = 'fa_lang';
+  var current = localStorage.getItem(LANG_KEY) || 'en';
+
+  function applyLang(lang) {
+    current = lang;
+    localStorage.setItem(LANG_KEY, lang);
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.querySelectorAll('[data-en]').forEach(function(el) {
+      el.innerHTML = lang === 'zh' ? (el.getAttribute('data-zh') || el.getAttribute('data-en')) : el.getAttribute('data-en');
+    });
+    // Update active state on lang buttons
+    document.querySelectorAll('.lang-btn').forEach(function(btn) {
+      btn.style.borderColor = btn.getAttribute('data-lang') === lang ? '#c8a96e' : 'rgba(255,255,255,0.3)';
+      btn.style.color = btn.getAttribute('data-lang') === lang ? '#c8a96e' : 'rgba(255,255,255,0.7)';
+    });
+  }
+
+  // Apply on load
+  document.addEventListener('DOMContentLoaded', function(){ applyLang(current); });
+
+  // Expose globally
+  window.setLang = applyLang;
+})();
+</script>
+
 </head>
 <body>
+<nav class="global-nav">
+  <a href="/" class="nav-logo">FULFILL<span>.</span>AVIATION</a>
+  <ul class="nav-links">
+      <li><a href="/" data-en="Home" data-zh="首页"><span data-en="Home" data-zh="首页">Home</span></a></li>
+      <li><a href="/news.html" data-en="News" data-zh="新闻"><span data-en="News" data-zh="新闻">News</span></a></li>
+      <li><a href="/services.html" data-en="Services" data-zh="服务"><span data-en="Services" data-zh="服务">Services</span></a></li>
+      <li><a href="/charter.html" class="active" data-en="Charter &amp; Ticketing" data-zh="包机与机票"><span data-en="Charter &amp; Ticketing" data-zh="包机与机票">Charter &amp; Ticketing</span></a></li>
+      <li><a href="/about.html" data-en="About Us" data-zh="关于我们">About Us</a></li>
+      <li><a href="/contact.html" data-en="Contact" data-zh="联系我们"><span data-en="Contact" data-zh="联系">Contact</span></a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-lang">
+      <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
+      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="nav-burger" id="gnav-burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="global-mobile-nav" id="gnav-mobile">
+  <a href="/" data-en="Home" data-zh="首页"><span data-en="Home" data-zh="首页">Home</span></a>
+  <a href="/news.html" data-en="News" data-zh="新闻"><span data-en="News" data-zh="新闻">News</span></a>
+  <a href="/services.html" data-en="Services" data-zh="服务"><span data-en="Services" data-zh="服务">Services</span></a>
+  <a href="/charter.html" class="active" data-en="Charter &amp; Ticketing" data-zh="包机与机票"><span data-en="Charter &amp; Ticketing" data-zh="包机与机票">Charter &amp; Ticketing</span></a>
+  <a href="/about.html" data-en="About Us" data-zh="关于我们">About Us</a>
+  <a href="/contact.html" data-en="Contact" data-zh="联系我们"><span data-en="Contact" data-zh="联系">Contact</span></a>
+</div>
+<script>
+(function(){
+  var b=document.getElementById('gnav-burger'),m=document.getElementById('gnav-mobile');
+  if(b&&m){
+    b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});
+    m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('open');m.classList.remove('open');});});
+  }
+})();
+</script>
 <style id="nav-style">
 nav.global-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:68px;background:rgba(11,31,58,0.97);backdrop-filter:blur(8px);font-family:'Barlow',sans-serif;}
 nav.global-nav .nav-logo{font-family:'Barlow',sans-serif;font-size:1.1rem;font-weight:600;color:#ffffff;letter-spacing:3px;text-decoration:none;flex-shrink:0;}
@@ -109,81 +172,60 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
 @media(max-width:860px){nav.global-nav .nav-links{display:none;}nav.global-nav .nav-burger{display:flex;}}
 @media(max-width:480px){nav.global-nav{padding:0 16px;}}
 </style>
-<nav class="global-nav">
-  <a href="/" class="nav-logo">FULFILL<span>.</span>AVIATION</a>
-  <ul class="nav-links">
-      <li><a href="/">Home</a></li>
-      <li><a href="/news.html">News</a></li>
-      <li><a href="/services.html">Services</a></li>
-      <li><a href="/charter.html" class="active">Charter &amp; Ticketing</a></li>
-      <li><a href="/about.html">About Us</a></li>
-      <li><a href="/contact.html">Contact</a></li>
-  </ul>
-  <div class="nav-right">
-    <div class="nav-lang"><button>中文</button><button>EN</button></div>
-    <button class="nav-burger" id="gnav-burger"><span></span><span></span><span></span></button>
-  </div>
-</nav>
-<div class="global-mobile-nav" id="gnav-mobile">
-  <a href="/">Home</a>
-  <a href="/news.html">News</a>
-  <a href="/services.html">Services</a>
-  <a href="/charter.html" class="active">Charter &amp; Ticketing</a>
-  <a href="/about.html">About Us</a>
-  <a href="/contact.html">Contact</a>
-</div>
-<script>(function(){var b=document.getElementById('gnav-burger'),m=document.getElementById('gnav-mobile');if(b&&m){b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('open');m.classList.remove('open');});});}})();</script>
-<div class="page-hero"><div class="page-hero-content"><span class="page-tag">Travel Solutions</span><h1 class="page-title">Charter &amp; Ticketing</h1></div></div>
+
+
+
+<div class="page-hero"><div class="page-hero-content"><span class="page-tag"><span data-en="Travel Solutions" data-zh="出行解决方案">Travel Solutions</span></span><h1 class="page-title"><span data-en="Charter &amp; Ticketing" data-zh="包机与机票">Charter &amp; Ticketing</span></h1></div></div>
 <div class="container">
   <div class="charter-intro">
-    <h2>Tailored Aviation Travel Solutions</h2>
-    <p>Shanghai Fulfill Aviation Ground Service offers comprehensive charter and ticketing services for individuals, corporations, and cargo operators. Edit this paragraph to describe your charter services in detail.</p>
+    <h2><span data-en="Tailored Aviation Travel Solutions" data-zh="量身定制的航空出行方案">Tailored Aviation Travel Solutions</span></h2>
+    <p><span data-en="Shanghai Fulfill Aviation Ground Service offers comprehensive charter and ticketing services for individuals, corporations, and cargo operators. Edit this paragraph to describe your charter services in detail." data-zh="上海丰盈航空地面服务有限公司为个人、企业及货运客户提供全面的包机与机票服务。">Shanghai Fulfill Aviation Ground Service offers comprehensive charter and ticketing services for individuals, corporations, and cargo operators. Edit this paragraph to describe your charter services in detail.</span></p>
   </div>
 
-  <div class="section-label">Charter Types</div>
+  <div class="section-label"><span data-en="Charter Types" data-zh="包机类型">Charter Types</span></div>
   <div class="charter-types">
     <div class="ct-card">
       <div class="ct-img">&#128101;</div>
       <div class="ct-body">
-        <div class="ct-title">Group Charter</div>
-        <p class="ct-desc">Tailored charter flights for large groups — corporate events, conferences, sports teams, pilgrimages, and more. Edit this description with your actual group charter services.</p>
-        <a href="/contact.html" class="ct-link">Request Quote</a>
+        <div class="ct-title"><span data-en="Group Charter" data-zh="团队包机">Group Charter</span></div>
+        <p class="ct-desc"><span data-en="Tailored charter flights for large groups — corporate events, conferences, sports teams, pilgrimages, and more. Edit this description with your actual group charter services." data-zh="为大型团体量身定制包机服务——企业活动、会议、体育队伍、朝觐等各类需求。">Tailored charter flights for large groups — corporate events, conferences, sports teams, pilgrimages, and more. Edit this description with your actual group charter services.</span></p>
+        <a href="/contact.html" class="ct-link"><span data-en="Request Quote" data-zh="申请报价">Request Quote</span></a>
       </div>
     </div>
     <div class="ct-card">
       <div class="ct-img">&#129309;</div>
       <div class="ct-body">
-        <div class="ct-title">Private Charter</div>
-        <p class="ct-desc">Exclusive private jet charter services for executives and VIP clients. Flexible scheduling, premium comfort, and global reach. Edit this description.</p>
-        <a href="/contact.html" class="ct-link">Request Quote</a>
+        <div class="ct-title"><span data-en="Private Charter" data-zh="私人包机">Private Charter</span></div>
+        <p class="ct-desc"><span data-en="Exclusive private jet charter services for executives and VIP clients. Flexible scheduling, premium comfort, and global reach. Edit this description." data-zh="为高管及VIP客户提供专属私人飞机包机服务，灵活的时间安排、顶级舒适体验与全球覆盖。">Exclusive private jet charter services for executives and VIP clients. Flexible scheduling, premium comfort, and global reach. Edit this description.</span></p>
+        <a href="/contact.html" class="ct-link"><span data-en="Request Quote" data-zh="申请报价">Request Quote</span></a>
       </div>
     </div>
     <div class="ct-card">
       <div class="ct-img">&#128230;</div>
       <div class="ct-body">
-        <div class="ct-title">Cargo Charter</div>
-        <p class="ct-desc">Reliable air cargo charter solutions for time-sensitive shipments, oversized freight, and special cargo requirements. Edit this description.</p>
-        <a href="/contact.html" class="ct-link">Request Quote</a>
+        <div class="ct-title"><span data-en="Cargo Charter" data-zh="货运包机">Cargo Charter</span></div>
+        <p class="ct-desc"><span data-en="Reliable air cargo charter solutions for time-sensitive shipments, oversized freight, and special cargo requirements. Edit this description." data-zh="为时效性货物、超大货物及特殊货物需求提供可靠的航空货运包机解决方案。">Reliable air cargo charter solutions for time-sensitive shipments, oversized freight, and special cargo requirements. Edit this description.</span></p>
+        <a href="/contact.html" class="ct-link"><span data-en="Request Quote" data-zh="申请报价">Request Quote</span></a>
       </div>
     </div>
     <div class="ct-card">
       <div class="ct-img">&#127915;</div>
       <div class="ct-body">
-        <div class="ct-title">Airline Ticketing</div>
-        <p class="ct-desc">Full-service airline ticketing for domestic and international routes. Competitive fares, flexible booking, and professional support. Edit this description.</p>
-        <a href="/contact.html" class="ct-link">Book Now</a>
+        <div class="ct-title"><span data-en="Airline Ticketing" data-zh="航空机票">Airline Ticketing</span></div>
+        <p class="ct-desc"><span data-en="Full-service airline ticketing for domestic and international routes. Competitive fares, flexible booking, and professional support. Edit this description." data-zh="提供国内外航线全方位机票服务，价格实惠，预订灵活，专业支持。">Full-service airline ticketing for domestic and international routes. Competitive fares, flexible booking, and professional support. Edit this description.</span></p>
+        <a href="/contact.html" class="ct-link"><span data-en="Book Now" data-zh="立即预订">Book Now</span></a>
       </div>
     </div>
   </div>
 
   <div class="inquiry-box">
-    <h3>Ready to Book Your Flight?</h3>
-    <p>Contact our team for a personalized quote and expert travel consultation.</p>
-    <a href="/contact.html" class="inquiry-btn">Get a Quote</a>
+    <h3><span data-en="Ready to Book Your Flight?" data-zh="准备好预订您的航班了吗？">Ready to Book Your Flight?</span></h3>
+    <p><span data-en="Contact our team for a personalized quote and expert travel consultation." data-zh="联系我们的团队，获取个性化报价和专业出行咨询。">Contact our team for a personalized quote and expert travel consultation.</span></p>
+    <a href="/contact.html" class="inquiry-btn"><span data-en="Get a Quote" data-zh="获取报价">Get a Quote</span></a>
   </div>
 </div><footer>
   <div class="foot-row">
-    <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
+    <p><span data-en="© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved." data-zh="© 2026 上海丰盈航空地面服务有限公司 版权所有">© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</span></p>
     
   </div>
 </footer>{

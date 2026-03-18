@@ -223,8 +223,71 @@
 }
 
     </style>
+
+<script>
+(function(){
+  var LANG_KEY = 'fa_lang';
+  var current = localStorage.getItem(LANG_KEY) || 'en';
+
+  function applyLang(lang) {
+    current = lang;
+    localStorage.setItem(LANG_KEY, lang);
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.querySelectorAll('[data-en]').forEach(function(el) {
+      el.innerHTML = lang === 'zh' ? (el.getAttribute('data-zh') || el.getAttribute('data-en')) : el.getAttribute('data-en');
+    });
+    // Update active state on lang buttons
+    document.querySelectorAll('.lang-btn').forEach(function(btn) {
+      btn.style.borderColor = btn.getAttribute('data-lang') === lang ? '#c8a96e' : 'rgba(255,255,255,0.3)';
+      btn.style.color = btn.getAttribute('data-lang') === lang ? '#c8a96e' : 'rgba(255,255,255,0.7)';
+    });
+  }
+
+  // Apply on load
+  document.addEventListener('DOMContentLoaded', function(){ applyLang(current); });
+
+  // Expose globally
+  window.setLang = applyLang;
+})();
+</script>
+
 </head>
 <body>
+<nav class="global-nav">
+  <a href="/" class="nav-logo">FULFILL<span>.</span>AVIATION</a>
+  <ul class="nav-links">
+      <li><a href="/" class="active" data-en="Home" data-zh="首页"><span data-en="Home" data-zh="首页">Home</span></a></li>
+      <li><a href="/news.html" data-en="News" data-zh="新闻"><span data-en="News" data-zh="新闻">News</span></a></li>
+      <li><a href="/services.html" data-en="Services" data-zh="服务"><span data-en="Services" data-zh="服务">Services</span></a></li>
+      <li><a href="/charter.html" data-en="Charter &amp; Ticketing" data-zh="包机与机票">Charter &amp; Ticketing</a></li>
+      <li><a href="/about.html" data-en="About Us" data-zh="关于我们">About Us</a></li>
+      <li><a href="/contact.html" data-en="Contact" data-zh="联系我们"><span data-en="Contact" data-zh="联系">Contact</span></a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-lang">
+      <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">中文</button>
+      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="nav-burger" id="gnav-burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="global-mobile-nav" id="gnav-mobile">
+  <a href="/" class="active" data-en="Home" data-zh="首页"><span data-en="Home" data-zh="首页">Home</span></a>
+  <a href="/news.html" data-en="News" data-zh="新闻"><span data-en="News" data-zh="新闻">News</span></a>
+  <a href="/services.html" data-en="Services" data-zh="服务"><span data-en="Services" data-zh="服务">Services</span></a>
+  <a href="/charter.html" data-en="Charter &amp; Ticketing" data-zh="包机与机票">Charter &amp; Ticketing</a>
+  <a href="/about.html" data-en="About Us" data-zh="关于我们">About Us</a>
+  <a href="/contact.html" data-en="Contact" data-zh="联系我们"><span data-en="Contact" data-zh="联系">Contact</span></a>
+</div>
+<script>
+(function(){
+  var b=document.getElementById('gnav-burger'),m=document.getElementById('gnav-mobile');
+  if(b&&m){
+    b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});
+    m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('open');m.classList.remove('open');});});
+  }
+})();
+</script>
 <style id="nav-style">
 nav.global-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:68px;background:rgba(11,31,58,0.97);backdrop-filter:blur(8px);font-family:'Barlow',sans-serif;}
 nav.global-nav .nav-logo{font-family:'Barlow',sans-serif;font-size:1.1rem;font-weight:600;color:#ffffff;letter-spacing:3px;text-decoration:none;flex-shrink:0;}
@@ -249,30 +312,9 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
 @media(max-width:860px){nav.global-nav .nav-links{display:none;}nav.global-nav .nav-burger{display:flex;}}
 @media(max-width:480px){nav.global-nav{padding:0 16px;}}
 </style>
-<nav class="global-nav">
-  <a href="/" class="nav-logo">FULFILL<span>.</span>AVIATION</a>
-  <ul class="nav-links">
-      <li><a href="/">Home</a></li>
-      <li><a href="/news.html">News</a></li>
-      <li><a href="/services.html">Services</a></li>
-      <li><a href="/charter.html">Charter &amp; Ticketing</a></li>
-      <li><a href="/about.html">About Us</a></li>
-      <li><a href="/contact.html">Contact</a></li>
-  </ul>
-  <div class="nav-right">
-    <div class="nav-lang"><button>中文</button><button>EN</button></div>
-    <button class="nav-burger" id="gnav-burger"><span></span><span></span><span></span></button>
-  </div>
-</nav>
-<div class="global-mobile-nav" id="gnav-mobile">
-  <a href="/">Home</a>
-  <a href="/news.html">News</a>
-  <a href="/services.html">Services</a>
-  <a href="/charter.html">Charter &amp; Ticketing</a>
-  <a href="/about.html">About Us</a>
-  <a href="/contact.html">Contact</a>
-</div>
-<script>(function(){var b=document.getElementById('gnav-burger'),m=document.getElementById('gnav-mobile');if(b&&m){b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('open');m.classList.remove('open');});});}})();</script>
+
+
+
 
 <!-- ═══ NAVIGATION ══════════════════════════════════════════ -->
 
@@ -285,26 +327,26 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
     <!-- EDIT: To use a real photo instead of gradient:
          <style>.slide-1 { background-image: url('your-photo.jpg'); }</style> -->
     <div class="hero-content">
-      <span class="hero-tag">Trusted Since 2015</span>        <!-- EDIT -->
+      <span class="hero-tag"><span data-en="Trusted Since 2015" data-zh="自2015年起值得信赖">Trusted Since 2015</span></span>        <!-- EDIT -->
       <h1 class="hero-title">
         Technology-Led,<br>
         Talent-Driven,<br>
         World-Class Aviation                                   <!-- EDIT: main headline -->
       </h1>
-      <p class="hero-sub">Professional. Reliable. Global.</p>  <!-- EDIT: subline -->
-      <a href="#" class="hero-btn">Learn More</a>
+      <p class="hero-sub"><span data-en="Professional. Reliable. Global." data-zh="专业 · 可靠 · 全球">Professional. Reliable. Global.</span></p>  <!-- EDIT: subline -->
+      <a href="#" class="hero-btn"><span data-en="Learn More" data-zh="了解更多">Learn More</span></a>
     </div>
   </div>
 
   <div class="slide slide-2">
     <div class="hero-content">
-      <span class="hero-tag">Expanding Horizons</span>         <!-- EDIT -->
+      <span class="hero-tag"><span data-en="Expanding Horizons" data-zh="拓展视野">Expanding Horizons</span></span>         <!-- EDIT -->
       <h1 class="hero-title">
         Opening Skies,<br>
         Enabling Journeys                                      <!-- EDIT -->
       </h1>
-      <p class="hero-sub">Making flight better for everyone.</p>
-      <a href="#" class="hero-btn">Our Services</a>
+      <p class="hero-sub"><span data-en="Making flight better for everyone." data-zh="让每一次飞行都更美好。">Making flight better for everyone.</span></p>
+      <a href="#" class="hero-btn"><span data-en="Our Services" data-zh="服务项目">Our Services</span></a>
     </div>
   </div>
 
@@ -323,25 +365,25 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
   <div class="intro-divider"></div>
   <div class="intro-stat">
     <span class="num">10+</span>   <!-- EDIT -->
-    <span class="label">Years Experience</span>
+    <span class="label"><span data-en="Years Experience" data-zh="年经验">Years Experience</span></span>
   </div>
   <div class="intro-divider"></div>
   <div class="intro-stat">
     <span class="num">50+</span>   <!-- EDIT -->
-    <span class="label">Destinations</span>
+    <span class="label"><span data-en="Destinations" data-zh="目的地">Destinations</span></span>
   </div>
   <div class="intro-divider"></div>
   <div class="intro-stat">
     <span class="num">200+</span>  <!-- EDIT -->
-    <span class="label">Partners</span>
+    <span class="label"><span data-en="Partners" data-zh="合作伙伴">Partners</span></span>
   </div>
 </div>
 
 <!-- ═══ NEWS ════════════════════════════════════════════════ -->
 <section class="news">
   <div class="section-header">
-    <span class="section-tag">Latest Updates</span>
-    <h2 class="section-title">Recent News</h2>  <!-- EDIT -->
+    <span class="section-tag"><span data-en="Latest Updates" data-zh="最新动态">Latest Updates</span></span>
+    <h2 class="section-title"><span data-en="Recent News" data-zh="近期新闻">Recent News</span></h2>  <!-- EDIT -->
   </div>
 
   <div class="news-grid">
@@ -391,8 +433,8 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
 <!-- ═══ SERVICES ════════════════════════════════════════════ -->
 <section class="services">
   <div class="section-header">
-    <span class="section-tag">What We Do</span>
-    <h2 class="section-title">Our Services</h2>  <!-- EDIT -->
+    <span class="section-tag"><span data-en="What We Do" data-zh="我们的服务">What We Do</span></span>
+    <h2 class="section-title"><span data-en="Our Services" data-zh="服务项目">Our Services</span></h2>  <!-- EDIT -->
   </div>
 
   <div class="services-grid">
@@ -404,9 +446,9 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
       <div class="service-card-overlay"></div>
       <div class="service-card-content">
         <span class="service-icon">✈</span>
-        <div class="service-name">Flight Operations Support</div>
+        <div class="service-name"><span data-en="Flight Operations Support" data-zh="航班运营支持">Flight Operations Support</span></div>
         <p class="service-desc">Foreign &amp; domestic airline operational support — permits, handling, and coordination.</p>
-        <a href="#" class="service-link">Learn More</a>
+        <a href="#" class="service-link"><span data-en="Learn More" data-zh="了解更多">Learn More</span></a>
       </div>
     </div>
 
@@ -416,9 +458,9 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
       <div class="service-card-overlay"></div>
       <div class="service-card-content">
         <span class="service-icon">⛽</span>
-        <div class="service-name">Aviation Fuel Supply</div>
+        <div class="service-name"><span data-en="Aviation Fuel Supply" data-zh="航空燃油供应">Aviation Fuel Supply</span></div>
         <p class="service-desc">JetA-1 / TS1 / JP8 / AvGas supply with global sourcing and competitive pricing.</p>
-        <a href="#" class="service-link">Learn More</a>
+        <a href="#" class="service-link"><span data-en="Learn More" data-zh="了解更多">Learn More</span></a>
       </div>
     </div>
 
@@ -430,7 +472,7 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
         <span class="service-icon">🛫</span>
         <div class="service-name">Charter &amp; Ticketing</div>
         <p class="service-desc">Group charter / private charter / cargo charter / airline ticketing solutions.</p>
-        <a href="#" class="service-link">Learn More</a>
+        <a href="#" class="service-link"><span data-en="Learn More" data-zh="了解更多">Learn More</span></a>
       </div>
     </div>
 
@@ -452,11 +494,11 @@ nav.global-nav .nav-burger.open span:nth-child(3){transform:translateY(-7px) rot
     <div class="footer-col">
       <h4>Quick Links</h4>
       <ul>
-        <li>Home</li>
-        <li>News</li>
-        <li>Services</li>   <!-- EDIT: match your nav -->
+        <li><span data-en="Home" data-zh="首页">Home</span></li>
+        <li><span data-en="News" data-zh="新闻">News</span></li>
+        <li><span data-en="Services" data-zh="服务">Services</span></li>   <!-- EDIT: match your nav -->
         <li>About Us</li>
-        <li>Contact</li>
+        <li><span data-en="Contact" data-zh="联系">Contact</span></li>
       </ul>
     </div>
 
