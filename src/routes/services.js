@@ -29,6 +29,13 @@ router.get('/:slug', (req, res) => {
   res.json(row);
 });
 
+// Admin: get single by ID (for edit modal)
+router.get('/id/:id', auth, (req, res) => {
+  const row = db.prepare('SELECT * FROM services WHERE id=?').get(req.params.id);
+  if (!row) return res.status(404).json({ error: 'Not found' });
+  res.json(row);
+});
+
 // Admin
 router.post('/', auth, upload.single('image'), (req, res) => {
   const { name, description, details, icon, sort_order = 0 } = req.body;

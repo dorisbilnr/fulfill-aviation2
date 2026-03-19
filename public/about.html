@@ -70,6 +70,23 @@
     .gallery-img:hover{opacity:0.88;}
     .gallery-placeholder{color:#9ba8b8;font-size:0.88rem;padding:40px;border:1px dashed #dde3ec;border-radius:4px;width:100%;text-align:center;}
 
+    
+    /* ── Office Carousel ── */
+    .carousel-wrap{position:relative;width:100%;overflow:hidden;background:var(--navy);border-radius:4px;margin-bottom:72px;}
+    .carousel-track{display:flex;transition:transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);}
+    .carousel-slide{flex-shrink:0;width:100%;height:480px;object-fit:cover;display:block;}
+    .carousel-placeholder{width:100%;height:480px;background:linear-gradient(135deg,#0b2d52,#1a6ea8);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
+    .carousel-placeholder span{color:rgba(255,255,255,0.4);font-size:0.88rem;letter-spacing:1px;}
+    .carousel-placeholder .c-icon{font-size:2.5rem;opacity:0.3;}
+    .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(11,31,58,0.7);border:1px solid rgba(200,169,110,0.4);color:var(--gold);width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;z-index:10;}
+    .carousel-btn:hover{background:rgba(200,169,110,0.2);border-color:var(--gold);}
+    .carousel-prev{left:16px;}
+    .carousel-next{right:16px;}
+    .carousel-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:8px;}
+    .carousel-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.35);cursor:pointer;transition:all 0.2s;border:none;}
+    .carousel-dot.active{background:var(--gold);width:22px;border-radius:4px;}
+    .carousel-caption{position:absolute;bottom:36px;left:0;right:0;text-align:center;color:rgba(255,255,255,0.7);font-size:0.8rem;letter-spacing:1px;pointer-events:none;}
+
     </style>
   <script src="/lang.js"></script>
 </head>
@@ -122,6 +139,7 @@ window.FA_PAGE = 'about';
 </script>
 <div class="page-hero"><div class="page-hero-content"><span class="page-tag">Our Story</span><h1 class="page-title">About Us</h1></div></div>
 <div class="container">
+  <!-- About story -->
   <div class="about-grid">
     <div class="about-img"><div class="img-ph">Company photo<br>(replace with img tag)</div></div>
     <div class="about-body">
@@ -133,6 +151,7 @@ window.FA_PAGE = 'about';
     </div>
   </div>
 
+  <!-- Stats -->
   <div class="stats-row">
     <div class="stat-box"><span class="stat-num">10+</span><div class="stat-lbl">Years Experience</div></div>
     <div class="stat-box"><span class="stat-num">50+</span><div class="stat-lbl">Destinations</div></div>
@@ -140,6 +159,7 @@ window.FA_PAGE = 'about';
     <div class="stat-box"><span class="stat-num">1000+</span><div class="stat-lbl">Flights Supported</div></div>
   </div>
 
+  <!-- Team -->
   <div class="section-label">Our Team</div>
   <div class="team-grid">
     <div class="team-card">
@@ -159,22 +179,50 @@ window.FA_PAGE = 'about';
     </div>
   </div>
 
+  <!-- Our Office title + carousel (no "Office Photos" title) -->
   <div class="section-label" style="margin-top:72px;">Our Office</div>
-  <div class="office-grid">
-    <div class="office-card">
-      <div class="office-city">Shanghai <span>— Headquarters</span></div>
-      <div class="office-detail">
-        <div class="office-row"><span class="office-icon">📍</span><span>Room 801, 600 Yunjin Road,<br>Xuhui District, Shanghai, China</span></div>
-        <div class="office-row"><span class="office-icon">📞</span><span>+86 21 XXXX XXXX</span></div>
-        <div class="office-row"><span class="office-icon">✉️</span><span>info@fulfill-aviation.com</span></div>
-        <div class="office-row"><span class="office-icon">🕐</span><span>Mon – Fri: 9:00 AM – 6:00 PM<br>Sat: 9:00 AM – 12:00 PM</span></div>
-      </div>
-    </div>
+  <div class="carousel-wrap" id="office-carousel">
+    <div class="carousel-track" id="carousel-track"></div>
+    <button class="carousel-btn carousel-prev" id="c-prev">&#8249;</button>
+    <button class="carousel-btn carousel-next" id="c-next">&#8250;</button>
+    <div class="carousel-dots" id="carousel-dots"></div>
   </div>
 
-  <div class="section-label" style="margin-top:72px;">Office Photos</div>
-  <div class="gallery-strip" id="gallery-strip">
-    <div class="gallery-placeholder">No photos yet. Upload office photos from the admin panel → Gallery.</div>
+  <!-- Contact info at bottom — original "Get In Touch" style -->
+  <div class="section-label" style="margin-top:72px;">Get In Touch</div>
+  <div class="contact-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:40px;margin-bottom:72px;">
+    <div>
+      <div style="display:flex;gap:14px;margin-bottom:20px;align-items:flex-start;">
+        <span style="font-size:1.3rem;flex-shrink:0;">📍</span>
+        <div>
+          <div style="font-size:0.72rem;color:var(--sky);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Address</div>
+          <div style="color:#4a5568;font-size:0.9rem;line-height:1.6;">Room 801, 600 Yunjin Road,<br>Xuhui District, Shanghai, China</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;margin-bottom:20px;align-items:flex-start;">
+        <span style="font-size:1.3rem;flex-shrink:0;">📞</span>
+        <div>
+          <div style="font-size:0.72rem;color:var(--sky);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Phone</div>
+          <div style="color:#4a5568;font-size:0.9rem;">+86 21 XXXX XXXX</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="display:flex;gap:14px;margin-bottom:20px;align-items:flex-start;">
+        <span style="font-size:1.3rem;flex-shrink:0;">✉️</span>
+        <div>
+          <div style="font-size:0.72rem;color:var(--sky);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Email</div>
+          <div style="color:#4a5568;font-size:0.9rem;">info@fulfill-aviation.com</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;margin-bottom:20px;align-items:flex-start;">
+        <span style="font-size:1.3rem;flex-shrink:0;">🕐</span>
+        <div>
+          <div style="font-size:0.72rem;color:var(--sky);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Business Hours</div>
+          <div style="color:#4a5568;font-size:0.9rem;line-height:1.6;">Mon – Fri: 9:00 AM – 6:00 PM<br>Sat: 9:00 AM – 12:00 PM</div>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -183,19 +231,49 @@ window.FA_PAGE = 'about';
     <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
     </div>
 </footer>
+
+
 <script>
 (function(){
+  var track = document.getElementById('carousel-track');
+  var dotsEl = document.getElementById('carousel-dots');
+  var prev = document.getElementById('c-prev');
+  var next = document.getElementById('c-next');
+  var current = 0;
+  var slides = [];
+
+  function render(imgs) {
+    if (!imgs || imgs.length === 0) {
+      track.innerHTML = '<div class="carousel-placeholder"><span class="c-icon">🏢</span><span>Upload office photos from Admin → Company Photo Carousel</span></div>';
+      prev.style.display = next.style.display = 'none';
+      return;
+    }
+    slides = imgs;
+    track.innerHTML = imgs.map(function(img) {
+      return '<img class="carousel-slide" src="' + img.url + '" alt="' + (img.caption||'Office photo') + '">';
+    }).join('');
+    dotsEl.innerHTML = imgs.map(function(_,i) {
+      return '<button class="carousel-dot' + (i===0?' active':'') + '" onclick="goTo(' + i + ')"></button>';
+    }).join('');
+    goTo(0);
+  }
+
+  window.goTo = function(n) {
+    current = (n + slides.length) % slides.length;
+    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    document.querySelectorAll('.carousel-dot').forEach(function(d,i){ d.classList.toggle('active', i===current); });
+  };
+
+  if (prev) prev.addEventListener('click', function(){ goTo(current - 1); });
+  if (next) next.addEventListener('click', function(){ goTo(current + 1); });
+
+  // Auto-advance every 5s
+  setInterval(function(){ if(slides.length > 1) goTo(current + 1); }, 5000);
+
   fetch('/api/gallery')
     .then(function(r){ return r.json(); })
-    .then(function(imgs){
-      var strip = document.getElementById('gallery-strip');
-      if(!strip) return;
-      if(!imgs || imgs.length === 0) return;
-      strip.innerHTML = imgs.map(function(img){
-        return '<img class="gallery-img" src="' + img.url + '" alt="' + (img.caption||'Gallery image') + '" onclick="window.open(this.src)">';
-      }).join('');
-    })
-    .catch(function(){});
+    .then(render)
+    .catch(function(){ render([]); });
 })();
 </script>
 </body></html>
