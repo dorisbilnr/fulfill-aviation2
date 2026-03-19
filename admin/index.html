@@ -79,6 +79,134 @@ tr:last-child td{border-bottom:none;}tr:hover td{background:#fafbfc;}
 .page-btn.active{background:var(--navy);color:white;border-color:var(--navy);}
 .section{display:none;}.section.active{display:block;}
 </style>
+<script>
+// ── Admin language switcher — data-i18n attribute approach ────────────────────
+var ADMIN_LANG_KEY = 'admin_lang';
+var adminLang = localStorage.getItem(ADMIN_LANG_KEY) || 'en';
+
+var ADMIN_EN = {
+  'Dashboard': '控制台',
+  'Contact Submissions': '联系表单',
+  'News Articles': '新闻文章',
+  'Services': '服务管理',
+  'Photo Carousel': '照片轮播',
+  'Site Settings': '网站设置',
+  'Sign Out': '退出登录',
+  'New Inquiries': '新询盘',
+  'Total Contacts': '总联系数',
+  'Published Articles': '已发布文章',
+  'Active Services': '活跃服务',
+  'Recent Inquiries': '近期询盘',
+  'View All': '查看全部',
+  'Name': '姓名',
+  'Email': '邮箱',
+  'Service': '服务',
+  'Date': '日期',
+  'Status': '状态',
+  'Actions': '操作',
+  'Company': '公司',
+  'Title': '标题',
+  'Featured': '推荐',
+  'Icon': '图标',
+  'Description': '描述',
+  'Order': '排序',
+  '+ New Article': '+ 新建文章',
+  '+ Add Service': '+ 添加服务',
+  '+ Upload Photo': '+ 上传照片',
+  'Save All Settings': '保存所有设置',
+  'Update Password': '更新密码',
+  'Close': '关闭',
+  'Mark Replied': '标记已回复',
+  'Cancel': '取消',
+  'Save Article': '保存文章',
+  'Save Service': '保存服务',
+  'Upload': '上传',
+  'Edit': '编辑',
+  'Del': '删除',
+  'Company Photo Carousel Management': '公司照片轮播图管理',
+  'Photos uploaded here appear in the carousel on the About Us page.': '此处上传的照片将显示在"关于我们"页面的轮播图中。',
+  'No photos yet. Upload your first office photo.': '暂无照片，请上传第一张办公室照片。',
+  'Company Info': '公司信息',
+  'Company Name': '公司名称',
+  'Tagline': '标语',
+  'Address': '地址',
+  'Phone': '电话',
+  'Fax': '传真',
+  'Hero Slides': '首页幻灯片',
+  'Stats Bar': '数据栏',
+  'Years Experience': '年经验',
+  'Destinations': '目的地',
+  'Partners': '合作伙伴',
+  'Intro Paragraph': '简介段落',
+  'Change Password': '修改密码',
+  'Current Password': '当前密码',
+  'New Password': '新密码',
+  'Confirm New Password': '确认新密码',
+  'Contact Detail': '联系详情',
+  'New Article': '新建文章',
+  'Edit Article': '编辑文章',
+  'Excerpt': '摘要',
+  'Body (HTML allowed)': '正文（支持HTML）',
+  'Cover Image (JPG/PNG/WebP, max 5MB)': '封面图片（JPG/PNG，最大5MB）',
+  'Published': '已发布',
+  'Featured on homepage': '在首页推荐',
+  'New Service': '新建服务',
+  'Edit Service': '编辑服务',
+  'Service Name': '服务名称',
+  'Icon (emoji)': '图标（emoji）',
+  'Short Description': '简短描述',
+  'Full Details (HTML)': '详细内容（支持HTML）',
+  'Sort Order': '显示顺序',
+  'Image': '图片',
+  'Upload Office Photo': '上传办公室照片',
+  'Photo File (JPG/PNG/WebP, max 8MB)': '照片文件（JPG/PNG/WebP，最大8MB）',
+  'Caption (optional)': '说明（可选）',
+  'Display Order (lower = first)': '显示顺序（数字越小越靠前）',
+  'Slide 1 Tag': '幻灯片1标签',
+  'Slide 1 Sub': '幻灯片1副标题',
+  'Slide 1 Title': '幻灯片1标题',
+  'Slide 2 Tag': '幻灯片2标签',
+  'Slide 2 Sub': '幻灯片2副标题',
+  'Slide 2 Title': '幻灯片2标题',
+  'All': '全部',
+  'Admin Panel — Sign in to continue': '管理后台 — 请登录',
+  'Email Address': '邮箱地址',
+  'Password': '密码',
+  'Navigation Tab Labels': '导航栏标签名称',
+  'Edit the names shown in the top navigation bar on every page.': '编辑每个页面顶部导航栏显示的名称。',
+  'Home Tab': '首页标签',
+  'News Tab': '新闻标签',
+  'Services Tab': '服务标签',
+  'Charter Tab': '包机与机票标签',
+  'About Us Tab': '关于我们标签',
+  'Contact Tab': '联系我们标签',
+  'Sign In': '登录'
+};
+
+
+function applyAdminLang(lang) {
+  adminLang = lang;
+  localStorage.setItem(ADMIN_LANG_KEY, lang);
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (lang === 'zh' && ADMIN_EN[key]) {
+      el.textContent = ADMIN_EN[key];
+    } else {
+      // Restore English: key IS the English text
+      el.textContent = key;
+    }
+  });
+  document.querySelectorAll('.admin-lang-btn').forEach(function(btn) {
+    var active = btn.getAttribute('data-lang') === lang;
+    btn.style.borderColor = active ? '#c8a96e' : 'rgba(255,255,255,0.2)';
+    btn.style.color = active ? '#c8a96e' : 'rgba(255,255,255,0.6)';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  applyAdminLang(adminLang);
+});
+</script>
 </head>
 <body>
 <div id="login-screen">
@@ -413,133 +541,6 @@ function renderPagination(cid,pages,current,fn){const el=document.getElementById
 <script>
 
 
-<script>
-// ── Admin language switcher — data-i18n attribute approach ────────────────────
-var ADMIN_LANG_KEY = 'admin_lang';
-var adminLang = localStorage.getItem(ADMIN_LANG_KEY) || 'en';
 
-var ADMIN_EN = {
-  'Dashboard': '控制台',
-  'Contact Submissions': '联系表单',
-  'News Articles': '新闻文章',
-  'Services': '服务管理',
-  'Photo Carousel': '照片轮播',
-  'Site Settings': '网站设置',
-  'Sign Out': '退出登录',
-  'New Inquiries': '新询盘',
-  'Total Contacts': '总联系数',
-  'Published Articles': '已发布文章',
-  'Active Services': '活跃服务',
-  'Recent Inquiries': '近期询盘',
-  'View All': '查看全部',
-  'Name': '姓名',
-  'Email': '邮箱',
-  'Service': '服务',
-  'Date': '日期',
-  'Status': '状态',
-  'Actions': '操作',
-  'Company': '公司',
-  'Title': '标题',
-  'Featured': '推荐',
-  'Icon': '图标',
-  'Description': '描述',
-  'Order': '排序',
-  '+ New Article': '+ 新建文章',
-  '+ Add Service': '+ 添加服务',
-  '+ Upload Photo': '+ 上传照片',
-  'Save All Settings': '保存所有设置',
-  'Update Password': '更新密码',
-  'Close': '关闭',
-  'Mark Replied': '标记已回复',
-  'Cancel': '取消',
-  'Save Article': '保存文章',
-  'Save Service': '保存服务',
-  'Upload': '上传',
-  'Edit': '编辑',
-  'Del': '删除',
-  'Company Photo Carousel Management': '公司照片轮播图管理',
-  'Photos uploaded here appear in the carousel on the About Us page.': '此处上传的照片将显示在"关于我们"页面的轮播图中。',
-  'No photos yet. Upload your first office photo.': '暂无照片，请上传第一张办公室照片。',
-  'Company Info': '公司信息',
-  'Company Name': '公司名称',
-  'Tagline': '标语',
-  'Address': '地址',
-  'Phone': '电话',
-  'Fax': '传真',
-  'Hero Slides': '首页幻灯片',
-  'Stats Bar': '数据栏',
-  'Years Experience': '年经验',
-  'Destinations': '目的地',
-  'Partners': '合作伙伴',
-  'Intro Paragraph': '简介段落',
-  'Change Password': '修改密码',
-  'Current Password': '当前密码',
-  'New Password': '新密码',
-  'Confirm New Password': '确认新密码',
-  'Contact Detail': '联系详情',
-  'New Article': '新建文章',
-  'Edit Article': '编辑文章',
-  'Excerpt': '摘要',
-  'Body (HTML allowed)': '正文（支持HTML）',
-  'Cover Image (JPG/PNG/WebP, max 5MB)': '封面图片（JPG/PNG，最大5MB）',
-  'Published': '已发布',
-  'Featured on homepage': '在首页推荐',
-  'New Service': '新建服务',
-  'Edit Service': '编辑服务',
-  'Service Name': '服务名称',
-  'Icon (emoji)': '图标（emoji）',
-  'Short Description': '简短描述',
-  'Full Details (HTML)': '详细内容（支持HTML）',
-  'Sort Order': '显示顺序',
-  'Image': '图片',
-  'Upload Office Photo': '上传办公室照片',
-  'Photo File (JPG/PNG/WebP, max 8MB)': '照片文件（JPG/PNG/WebP，最大8MB）',
-  'Caption (optional)': '说明（可选）',
-  'Display Order (lower = first)': '显示顺序（数字越小越靠前）',
-  'Slide 1 Tag': '幻灯片1标签',
-  'Slide 1 Sub': '幻灯片1副标题',
-  'Slide 1 Title': '幻灯片1标题',
-  'Slide 2 Tag': '幻灯片2标签',
-  'Slide 2 Sub': '幻灯片2副标题',
-  'Slide 2 Title': '幻灯片2标题',
-  'All': '全部',
-  'Admin Panel — Sign in to continue': '管理后台 — 请登录',
-  'Email Address': '邮箱地址',
-  'Password': '密码',
-  'Navigation Tab Labels': '导航栏标签名称',
-  'Edit the names shown in the top navigation bar on every page.': '编辑每个页面顶部导航栏显示的名称。',
-  'Home Tab': '首页标签',
-  'News Tab': '新闻标签',
-  'Services Tab': '服务标签',
-  'Charter Tab': '包机与机票标签',
-  'About Us Tab': '关于我们标签',
-  'Contact Tab': '联系我们标签',
-  'Sign In': '登录'
-};
-
-
-function applyAdminLang(lang) {
-  adminLang = lang;
-  localStorage.setItem(ADMIN_LANG_KEY, lang);
-  document.querySelectorAll('[data-i18n]').forEach(function(el) {
-    var key = el.getAttribute('data-i18n');
-    if (lang === 'zh' && ADMIN_EN[key]) {
-      el.textContent = ADMIN_EN[key];
-    } else {
-      // Restore English: key IS the English text
-      el.textContent = key;
-    }
-  });
-  document.querySelectorAll('.admin-lang-btn').forEach(function(btn) {
-    var active = btn.getAttribute('data-lang') === lang;
-    btn.style.borderColor = active ? '#c8a96e' : 'rgba(255,255,255,0.2)';
-    btn.style.color = active ? '#c8a96e' : 'rgba(255,255,255,0.6)';
-  });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  applyAdminLang(adminLang);
-});
-</script>
 </body>
 </html>
