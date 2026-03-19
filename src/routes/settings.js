@@ -3,7 +3,7 @@ const db = require('../db/client');
 const auth = require('../middleware/auth');
 
 // Public: get non-sensitive settings (used by frontend to render dynamic content)
-const PUBLIC_KEYS = ['company_name','company_tagline','address','phone','fax','email','hero1_tag','hero1_title','hero1_sub','hero2_tag','hero2_title','hero2_sub','stat_years','stat_destinations','stat_partners','intro_text'];
+const PUBLIC_KEYS = ['company_name','company_tagline','address','phone','fax','email','hero1_tag','hero1_title','hero1_sub','hero2_tag','hero2_title','hero2_sub','stat_years','stat_destinations','stat_partners','intro_text','nav_home','nav_news','nav_services','nav_charter','nav_about','nav_contact'];
 
 router.get('/public', (req, res) => {
   const rows = db.prepare(`SELECT key,value FROM settings WHERE key IN (${PUBLIC_KEYS.map(()=>'?').join(',')})`)
