@@ -66,6 +66,7 @@
   /* Note: these are re-collected on each applyLang call to capture dynamic content */
 
   function collectOnce() {
+    /* Initial collection at DOMContentLoaded — stores English originals */
     if (collected) return;
     collected = true;
     var walker = document.createTreeWalker(
@@ -79,8 +80,8 @@
     );
     var n;
     while ((n = walker.nextNode())) {
-      nodeList.push(n);
       originals.set(n, n.nodeValue);
+      nodeList.push(n);
     }
   }
 
@@ -89,11 +90,26 @@
     localStorage.setItem(STORAGE_KEY, lang);
     document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
 
-    /* Collect fresh every time — ensures nav-labels.js changes are captured */
-    collected = false;
-    nodeList = [];
-    originals = new Map();
-    collectOnce();
+    /* Re-walk DOM to pick up nodes added by nav-labels.js,
+       but ONLY store originals for nodes we haven't seen before.
+       Never overwrite originals — that would lose the English source text. */
+    var walker = document.createTreeWalker(
+      document.body, NodeFilter.SHOW_TEXT,
+      { acceptNode: function(n) {
+          var p = n.parentNode, tag = p && p.tagName ? p.tagName.toUpperCase() : '';
+          if (tag==='SCRIPT'||tag==='STYLE'||tag==='NOSCRIPT') return NodeFilter.FILTER_REJECT;
+          if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+      }}, false
+    );
+    var n;
+    while ((n = walker.nextNode())) {
+      if (!originals.has(n)) {
+        /* New node — store its current value as the English original */
+        originals.set(n, n.nodeValue);
+        nodeList.push(n);
+      }
+    }
 
     nodeList.forEach(function(node) {
       var orig = originals.get(node);
@@ -102,7 +118,7 @@
       if (lang === 'zh') {
         if (T[trimmed]) node.nodeValue = orig.replace(trimmed, T[trimmed]);
       } else {
-        /* Always restore to original — no reverse lookup needed */
+        /* Restore English: always use the stored original */
         node.nodeValue = orig;
       }
     });
