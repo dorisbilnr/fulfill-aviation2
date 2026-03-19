@@ -63,6 +63,7 @@
   var originals = new Map();
   var nodeList = [];
   var collected = false;
+  /* Note: these are re-collected on each applyLang call to capture dynamic content */
 
   function collectOnce() {
     if (collected) return;
@@ -87,6 +88,12 @@
     currentLang = lang;
     localStorage.setItem(STORAGE_KEY, lang);
     document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+
+    /* Collect fresh every time — ensures nav-labels.js changes are captured */
+    collected = false;
+    nodeList = [];
+    originals = new Map();
+    collectOnce();
 
     nodeList.forEach(function(node) {
       var orig = originals.get(node);

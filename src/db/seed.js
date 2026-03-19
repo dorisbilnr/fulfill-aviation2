@@ -44,6 +44,7 @@ const svcs = [
   {name:'Aviation Fuel Supply',slug:'fuel-supply',description:'JetA-1 / TS1 / JP8 / AvGas supply with global sourcing.',icon:'⛽',sort_order:2},
   {name:'Charter & Ticketing',slug:'charter-ticketing',description:'Group charter / private charter / cargo charter.',icon:'🛫',sort_order:3},
   {name:'Ground Handling',slug:'ground-handling',description:'Professional ground handling services at major airports.',icon:'🏢',sort_order:4},
+  {name:'Navigation & Data',slug:'nav-data',description:'Navigation database management and aviation data services.',icon:'📡',sort_order:5},
 ];
 svcs.forEach(s => db.prepare('INSERT OR IGNORE INTO services(name,slug,description,icon,sort_order) VALUES(?,?,?,?,?)').run(s.name,s.slug,s.description,s.icon,s.sort_order));
 

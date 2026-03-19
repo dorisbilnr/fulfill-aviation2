@@ -108,56 +108,60 @@ window.FA_PAGE = 'services';
     Edit this paragraph to describe your services overview.
   </p>
 </div>
-<div class="svc-grid">
-    <div class="svc-card svc-1">
-      <div class="svc-bg"></div>
-      <div class="svc-overlay"></div>
-      <div class="svc-content">
-        <span class="svc-icon">&#9992;</span>
-        <div class="svc-name">Flight Operations Support</div>
-        <p class="svc-desc">Foreign and domestic airline operational support — permits, handling, and coordination. Edit this description.</p>
-        <a href="#" class="svc-link">Learn More</a>
-      </div>
-    </div>
-    <div class="svc-card svc-2">
-      <div class="svc-bg"></div>
-      <div class="svc-overlay"></div>
-      <div class="svc-content">
-        <span class="svc-icon">&#9981;</span>
-        <div class="svc-name">Aviation Fuel Supply</div>
-        <p class="svc-desc">JetA-1 / TS1 / JP8 / AvGas supply with global sourcing and competitive pricing. Edit this description.</p>
-        <a href="#" class="svc-link">Learn More</a>
-      </div>
-    </div>
-    <div class="svc-card svc-3">
-      <div class="svc-bg"></div>
-      <div class="svc-overlay"></div>
-      <div class="svc-content">
-        <span class="svc-icon">&#128747;</span>
-        <div class="svc-name">Charter &amp; Ticketing</div>
-        <p class="svc-desc">Group charter / private charter / cargo charter / airline ticketing solutions. Edit this description.</p>
-        <a href="#" class="svc-link">Learn More</a>
-      </div>
-    </div>
-    <div class="svc-card svc-4">
-      <div class="svc-bg"></div>
-      <div class="svc-overlay"></div>
-      <div class="svc-content">
-        <span class="svc-icon">&#128205;</span>
-        <div class="svc-name">Ground Handling</div>
-        <p class="svc-desc">Professional ground handling services at major airports. Edit this description.</p>
-        <a href="#" class="svc-link">Learn More</a>
-      </div>
-    </div>
-    <div class="svc-card svc-5">
-      <div class="svc-bg"></div>
-      <div class="svc-overlay"></div>
-      <div class="svc-content">
-        <span class="svc-icon">&#128196;</span>
-        <div class="svc-name">Navigation &amp; Data</div>
-        <p class="svc-desc">Navigation database management and aviation data services. Edit this description.</p>
-        <a href="#" class="svc-link">Learn More</a>
-      </div>
+<div class="svc-grid" id="svc-grid">
+  <!-- Services loaded from database -->
+</div>
+
+<script>
+(function(){
+  // Card gradient backgrounds cycle
+  var bgs = [
+    'linear-gradient(160deg,#0b2d52,#1a6ea8)',
+    'linear-gradient(160deg,#0d3a60,#0f5487)',
+    'linear-gradient(160deg,#091a33,#14487a)',
+    'linear-gradient(160deg,#0b2540,#1a5a8a)',
+    'linear-gradient(160deg,#102030,#1a4060)',
+    'linear-gradient(160deg,#0a1828,#1a3858)',
+  ];
+  fetch('/api/services')
+    .then(function(r){ return r.json(); })
+    .then(function(services) {
+      var grid = document.getElementById('svc-grid');
+      if (!services || !services.length) return;
+      grid.innerHTML = services.map(function(svc, i) {
+        return '<div class="svc-card" style="cursor:pointer">' +
+          '<div class="svc-bg" style="background:' + bgs[i % bgs.length] + ';position:absolute;inset:0;background-size:cover;background-position:center;transition:transform 0.6s;"' +
+          (svc.image_url ? ' data-img="' + svc.image_url + '"' : '') + '></div>' +
+          '<div class="svc-overlay" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.1) 60%);"></div>' +
+          '<div class="svc-content" style="position:absolute;bottom:0;left:0;right:0;padding:28px;z-index:2;">' +
+            '<span class="svc-icon" style="font-size:1.8rem;margin-bottom:10px;display:block;">' + (svc.icon || '') + '</span>' +
+            '<div class="svc-name" style="font-family:'Cormorant Garamond',serif;font-size:1.45rem;color:#fff;font-weight:400;margin-bottom:8px;">' + svc.name + '</div>' +
+            '<p class="svc-desc" style="color:rgba(255,255,255,0.7);font-size:0.82rem;line-height:1.6;margin-bottom:14px;">' + (svc.description || '') + '</p>' +
+            '<a href="/contact.html" class="svc-link" style="color:#c8a96e;font-size:0.78rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #c8a96e;padding-bottom:2px;">Learn More</a>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+      // Apply image backgrounds
+      grid.querySelectorAll('.svc-bg[data-img]').forEach(function(el){
+        el.style.backgroundImage = 'url(' + el.getAttribute('data-img') + ')';
+      });
+      // Hover effect
+      grid.querySelectorAll('.svc-card').forEach(function(card){
+        var bg = card.querySelector('.svc-bg');
+        card.addEventListener('mouseenter', function(){ bg.style.transform = 'scale(1.06)'; });
+        card.addEventListener('mouseleave', function(){ bg.style.transform = 'scale(1)'; });
+      });
+    })
+    .catch(function(e){ console.error('Services load error:', e); });
+})();
+</script></div>
+<div class="container">
+  <p style="text-align:center;max-width:680px;margin:0 auto 56px;color:#4a5568;line-height:1.8;font-size:0.95rem;">
+    Shanghai Fulfill Aviation Ground Service provides comprehensive aviation support across commercial, business, and general aviation sectors.
+    Edit this paragraph to describe your services overview.
+  </p>
+</div>
+
     </div></div><footer>
   <div class="foot-row">
     <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>

@@ -49,4 +49,14 @@ router.post('/reset-password', (req, res) => {
   }
 });
 
+// Force add 5th service if missing
+router.post('/add-nav-service', (req, res) => {
+  try {
+    const existing = db.prepare("SELECT id FROM services WHERE slug='nav-data'").get();
+    if (existing) return res.json({ success: true, message: 'Already exists', id: existing.id });
+    const result = db.prepare("INSERT INTO services(name,slug,description,icon,sort_order) VALUES(?,?,?,?,?)").run('Navigation & Data','nav-data','Navigation database management and aviation data services.','📡',5);
+    res.json({ success: true, id: result.lastInsertRowid, message: 'Navigation & Data service added' });
+  } catch(e) { res.json({ error: e.message }); }
+});
+
 module.exports = router;
