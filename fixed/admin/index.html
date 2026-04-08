@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Admin — Fulfill Aviation</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#0b1f3a;--sky:#1a6ea8;--gold:#c8a96e;--light:#f5f6f8;--white:#fff;--text:#1e2535;--danger:#dc2626;--success:#16a34a;--border:#dde3ec;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--light);color:var(--text);min-height:100vh;}
+a{text-decoration:none;color:inherit;}button{cursor:pointer;font-family:'Barlow',sans-serif;}
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--navy);}
+.login-box{background:white;padding:48px 40px;border-radius:8px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.login-logo{font-size:1.3rem;font-weight:600;color:var(--navy);letter-spacing:2px;margin-bottom:8px;}
+.login-logo span{color:var(--gold);}
+.login-sub{color:#6b7280;font-size:0.85rem;margin-bottom:32px;}
+.login-box label{display:block;font-size:0.78rem;font-weight:600;color:#4a5568;letter-spacing:0.5px;margin-bottom:6px;}
+.login-box input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:4px;font-size:0.9rem;margin-bottom:16px;outline:none;transition:border 0.2s;}
+.login-box input:focus{border-color:var(--sky);}
+.login-btn{width:100%;padding:12px;background:var(--navy);color:white;border:none;border-radius:4px;font-size:0.88rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;transition:background 0.2s;}
+.login-btn:hover{background:var(--sky);}
+.login-err{color:var(--danger);font-size:0.82rem;margin-top:8px;display:none;}
+#app{display:none;min-height:100vh;}
+.sidebar{position:fixed;top:0;left:0;width:230px;height:100vh;background:var(--navy);display:flex;flex-direction:column;z-index:50;}
+.sidebar-logo{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,0.1);font-size:1.1rem;font-weight:600;color:white;letter-spacing:2px;}
+.sidebar-logo span{color:var(--gold);}
+.sidebar-nav{flex:1;padding:16px 0;overflow-y:auto;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;color:rgba(255,255,255,0.65);font-size:0.88rem;cursor:pointer;transition:all 0.2s;border-left:3px solid transparent;}
+.nav-item:hover{color:white;background:rgba(255,255,255,0.05);}
+.nav-item.active{color:white;background:rgba(255,255,255,0.08);border-left-color:var(--gold);}
+.nav-item .ico{font-size:1rem;width:20px;text-align:center;}
+.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,0.1);}
+.sidebar-user{color:rgba(255,255,255,0.6);font-size:0.8rem;margin-bottom:8px;}
+.logout-btn{background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);padding:6px 14px;border-radius:3px;font-size:0.78rem;width:100%;transition:all 0.2s;}
+.logout-btn:hover{border-color:var(--gold);color:var(--gold);}
+.main{margin-left:230px;padding:32px;}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
+.page-header h1{font-size:1.5rem;font-weight:600;color:var(--navy);}
+.btn{padding:9px 20px;border-radius:4px;font-size:0.82rem;font-weight:500;border:none;transition:all 0.2s;letter-spacing:0.5px;}
+.btn-primary{background:var(--navy);color:white;}.btn-primary:hover{background:var(--sky);}
+.btn-success{background:var(--success);color:white;}
+.btn-danger{background:var(--danger);color:white;}
+.btn-outline{background:none;border:1px solid var(--border);color:var(--text);}.btn-outline:hover{border-color:var(--sky);color:var(--sky);}
+.btn-sm{padding:5px 12px;font-size:0.78rem;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:32px;}
+.stat-card{background:white;border-radius:8px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.stat-card .num{font-size:2.2rem;font-weight:600;color:var(--navy);}
+.stat-card .lbl{color:#6b7280;font-size:0.82rem;margin-top:4px;}
+.stat-card.highlight .num{color:var(--sky);}.stat-card.alert .num{color:var(--danger);}
+.card{background:white;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.06);overflow:hidden;margin-bottom:24px;}
+.card-header{padding:16px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-header h2{font-size:1rem;font-weight:600;color:var(--navy);}
+table{width:100%;border-collapse:collapse;}
+th{padding:10px 16px;text-align:left;font-size:0.75rem;font-weight:600;color:#6b7280;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border);background:#fafbfc;}
+td{padding:12px 16px;border-bottom:1px solid #f0f2f5;font-size:0.88rem;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}tr:hover td{background:#fafbfc;}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:0.72rem;font-weight:600;}
+.badge-new{background:#dbeafe;color:#1d4ed8;}.badge-read{background:#f3f4f6;color:#6b7280;}.badge-replied{background:#dcfce7;color:#15803d;}
+.badge-pub{background:#dcfce7;color:#15803d;}.badge-draft{background:#fef3c7;color:#92400e;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.form-group label{font-size:0.78rem;font-weight:600;color:#4a5568;letter-spacing:0.5px;}
+.form-group input,.form-group textarea,.form-group select{padding:9px 13px;border:1px solid var(--border);border-radius:4px;font-size:0.9rem;font-family:'Barlow',sans-serif;outline:none;transition:border 0.2s;}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--sky);}
+.form-group textarea{resize:vertical;min-height:100px;}
+.form-full{grid-column:1/-1;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:none;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:white;border-radius:8px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modal-header h3{font-size:1.05rem;font-weight:600;color:var(--navy);}
+.modal-close{background:none;border:none;font-size:1.3rem;color:#6b7280;line-height:1;}
+.modal-body{padding:24px;}.modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:12px;}
+.toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:6px;font-size:0.88rem;font-weight:500;z-index:999;display:none;}
+.toast.show{display:block;}.toast.success{background:#16a34a;color:white;}.toast.error{background:var(--danger);color:white;}
+.pagination{display:flex;gap:8px;justify-content:flex-end;padding:16px 24px;}
+.page-btn{padding:5px 12px;border:1px solid var(--border);border-radius:3px;background:white;font-size:0.82rem;cursor:pointer;}
+.page-btn.active{background:var(--navy);color:white;border-color:var(--navy);}
+.section{display:none;}.section.active{display:block;}
+</style>
+<script>
+// ── Admin language switcher — data-i18n attribute approach ────────────────────
+var ADMIN_LANG_KEY = 'admin_lang';
+var adminLang = localStorage.getItem(ADMIN_LANG_KEY) || 'en';
+
+var ADMIN_EN = {
+  'Dashboard': '控制台',
+  'Contact Submissions': '联系表单',
+  'News Articles': '新闻文章',
+  'Services': '服务管理',
+  'Photo Carousel': '照片轮播',
+  'Site Settings': '网站设置',
+  'Sign Out': '退出登录',
+  'New Inquiries': '新询盘',
+  'Total Contacts': '总联系数',
+  'Published Articles': '已发布文章',
+  'Active Services': '活跃服务',
+  'Recent Inquiries': '近期询盘',
+  'View All': '查看全部',
+  'Name': '姓名',
+  'Email': '邮箱',
+  'Service': '服务',
+  'Date': '日期',
+  'Status': '状态',
+  'Actions': '操作',
+  'Company': '公司',
+  'Title': '标题',
+  'Featured': '推荐',
+  'Icon': '图标',
+  'Description': '描述',
+  'Order': '排序',
+  '+ New Article': '+ 新建文章',
+  '+ Add Service': '+ 添加服务',
+  '+ Upload Photo': '+ 上传照片',
+  'Save All Settings': '保存所有设置',
+  'Update Password': '更新密码',
+  'Close': '关闭',
+  'Mark Replied': '标记已回复',
+  'Cancel': '取消',
+  'Save Article': '保存文章',
+  'Save Service': '保存服务',
+  'Upload': '上传',
+  'Edit': '编辑',
+  'Del': '删除',
+  'Company Photo Carousel Management': '公司照片轮播图管理',
+  'Photos uploaded here appear in the carousel on the About Us page.': '此处上传的照片将显示在"关于我们"页面的轮播图中。',
+  'No photos yet. Upload your first office photo.': '暂无照片，请上传第一张办公室照片。',
+  'Company Info': '公司信息',
+  'Company Name': '公司名称',
+  'Tagline': '标语',
+  'Address': '地址',
+  'Phone': '电话',
+  'Fax': '传真',
+  'Hero Slides': '首页幻灯片',
+  'Stats Bar': '数据栏',
+  'Years Experience': '年经验',
+  'Destinations': '目的地',
+  'Partners': '合作伙伴',
+  'Intro Paragraph': '简介段落',
+  'Change Password': '修改密码',
+  'Current Password': '当前密码',
+  'New Password': '新密码',
+  'Confirm New Password': '确认新密码',
+  'Contact Detail': '联系详情',
+  'New Article': '新建文章',
+  'Edit Article': '编辑文章',
+  'Excerpt': '摘要',
+  'Body (HTML allowed)': '正文（支持HTML）',
+  'Cover Image (JPG/PNG/WebP, max 5MB)': '封面图片（JPG/PNG，最大5MB）',
+  'Published': '已发布',
+  'Featured on homepage': '在首页推荐',
+  'New Service': '新建服务',
+  'Edit Service': '编辑服务',
+  'Service Name': '服务名称',
+  'Icon (emoji)': '图标（emoji）',
+  'Short Description': '简短描述',
+  'Full Details (HTML)': '详细内容（支持HTML）',
+  'Sort Order': '显示顺序',
+  'Image': '图片',
+  'Upload Office Photo': '上传办公室照片',
+  'Photo File (JPG/PNG/WebP, max 8MB)': '照片文件（JPG/PNG/WebP，最大8MB）',
+  'Caption (optional)': '说明（可选）',
+  'Display Order (lower = first)': '显示顺序（数字越小越靠前）',
+  'Slide 1 Tag': '幻灯片1标签',
+  'Slide 1 Sub': '幻灯片1副标题',
+  'Slide 1 Title': '幻灯片1标题',
+  'Slide 2 Tag': '幻灯片2标签',
+  'Slide 2 Sub': '幻灯片2副标题',
+  'Slide 2 Title': '幻灯片2标题',
+  'All': '全部',
+  'Admin Panel — Sign in to continue': '管理后台 — 请登录',
+  'Email Address': '邮箱地址',
+  'Password': '密码',
+  'Navigation Tab Labels': '导航栏标签名称',
+  'Edit the names shown in the top navigation bar on every page.': '编辑每个页面顶部导航栏显示的名称。',
+  'Home Tab': '首页标签',
+  'News Tab': '新闻标签',
+  'Services Tab': '服务标签',
+  'Charter Tab': '包机与机票标签',
+  'About Us Tab': '关于我们标签',
+  'Contact Tab': '联系我们标签',
+  'Sign In': '登录'
+};
+
+
+function applyAdminLang(lang) {
+  adminLang = lang;
+  localStorage.setItem(ADMIN_LANG_KEY, lang);
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (lang === 'zh' && ADMIN_EN[key]) {
+      el.textContent = ADMIN_EN[key];
+    } else {
+      // Restore English: key IS the English text
+      el.textContent = key;
+    }
+  });
+  document.querySelectorAll('.admin-lang-btn').forEach(function(btn) {
+    var active = btn.getAttribute('data-lang') === lang;
+    btn.style.borderColor = active ? '#c8a96e' : 'rgba(255,255,255,0.2)';
+    btn.style.color = active ? '#c8a96e' : 'rgba(255,255,255,0.6)';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  applyAdminLang(adminLang);
+});
+</script>
+</head>
+<body>
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">FULFILL<span>.</span>AVIATION</div>
+    <p class="login-sub"><span data-i18n="Admin Panel — Sign in to continue">Admin Panel — Sign in to continue</span></p>
+    <label><span data-i18n="Email Address">Email Address</span></label>
+    <input type="email" id="login-email" placeholder="admin@fulfill-aviation.com"/>
+    <label><span data-i18n="Password">Password</span></label>
+    <input type="password" id="login-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()"><span data-i18n="Sign In">Sign In</span></button>
+    <div class="login-err" id="login-err">Invalid email or password.</div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="sidebar">
+    <div class="sidebar-logo">FULFILL<span>.</span>AVIATION</div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="showSection('dashboard')" data-sec="dashboard"><span class="ico">📊</span> Dashboard</div>
+      <div class="nav-item" onclick="showSection('contacts')" data-sec="contacts"><span class="ico">✉️</span> Contact Submissions</div>
+      <div class="nav-item" onclick="showSection('news')" data-sec="news"><span class="ico">📰</span> News Articles</div>
+      <div class="nav-item" onclick="showSection('services')" data-sec="services"><span class="ico">✈️</span> Services</div>
+      <div class="nav-item" onclick="showSection('carousel')" data-sec="carousel"><span class="ico">🖼️</span> Photo Carousel</div>
+      <div class="nav-item" onclick="showSection('settings')" data-sec="settings"><span class="ico">⚙️</span> Site Settings</div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="admin-name">Administrator</div>
+      <div style="display:flex;gap:6px;margin-bottom:8px;">
+        <button class="admin-lang-btn" data-lang="zh" onclick="applyAdminLang('zh')" style="flex:1;background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);padding:5px 0;font-size:0.78rem;cursor:pointer;transition:all 0.2s;font-family:'Barlow',sans-serif;">中文</button>
+        <button class="admin-lang-btn" data-lang="en" onclick="applyAdminLang('en')" style="flex:1;background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);padding:5px 0;font-size:0.78rem;cursor:pointer;transition:all 0.2s;font-family:'Barlow',sans-serif;">EN</button>
+      </div>
+      <button class="logout-btn" onclick="doLogout()"><span data-i18n="Sign Out">Sign Out</span></button>
+    </div>
+  </div>
+  <div class="main">
+    <div class="section active" id="sec-dashboard">
+      <div class="page-header"><h1><span data-i18n="Dashboard">Dashboard</span></h1></div>
+      <div class="stats-grid">
+        <div class="stat-card alert"><div class="num" id="stat-new-contacts">—</div><div class="lbl"><span data-i18n="New Inquiries">New Inquiries</span></div></div>
+        <div class="stat-card"><div class="num" id="stat-total-contacts">—</div><div class="lbl"><span data-i18n="Total Contacts">Total Contacts</span></div></div>
+        <div class="stat-card highlight"><div class="num" id="stat-news">—</div><div class="lbl"><span data-i18n="Published Articles">Published Articles</span></div></div>
+        <div class="stat-card"><div class="num" id="stat-services">—</div><div class="lbl"><span data-i18n="Active Services">Active Services</span></div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2><span data-i18n="Recent Inquiries">Recent Inquiries</span></h2><button class="btn btn-outline btn-sm" onclick="showSection('contacts')"><span data-i18n="View All"><span data-i18n="View All">View All</span></span></button></div>
+        <table><thead><tr><th><span data-i18n="Name">Name</span></th><th><span data-i18n="Email">Email</span></th><th><span data-i18n="Service">Service</span></th><th><span data-i18n="Date">Date</span></th></tr></thead>
+        <tbody id="recent-contacts-body"></tbody></table>
+      </div>
+    </div>
+    <div class="section" id="sec-contacts">
+      <div class="page-header"><h1><span data-i18n="Contact Submissions">Contact Submissions</span></h1>
+        <select id="contact-filter" onchange="loadContacts(1)" style="padding:8px 12px;border:1px solid var(--border);border-radius:4px;font-size:0.85rem;">
+          <option value=""><span data-i18n="All">All</span></option><option value="new">New</option><option value="read">Read</option><option value="replied">Replied</option>
+        </select>
+      </div>
+      <div class="card">
+        <table><thead><tr><th><span data-i18n="Name">Name</span></th><th><span data-i18n="Email">Email</span></th><th><span data-i18n="Company">Company</span></th><th><span data-i18n="Service">Service</span></th><th><span data-i18n="Date">Date</span></th><th><span data-i18n="Status">Status</span></th><th><span data-i18n="Actions">Actions</span></th></tr></thead>
+        <tbody id="contacts-body"></tbody></table>
+        <div class="pagination" id="contacts-pagination"></div>
+      </div>
+    </div>
+    <div class="section" id="sec-news">
+      <div class="page-header"><h1><span data-i18n="News Articles">News Articles</span></h1><button class="btn btn-primary" onclick="openNewsModal()"><span data-i18n="+ New Article">+ New Article</span></button></div>
+      <div class="card">
+        <table><thead><tr><th><span data-i18n="Title">Title</span></th><th><span data-i18n="Status">Status</span></th><th><span data-i18n="Featured">Featured</span></th><th><span data-i18n="Date">Date</span></th><th><span data-i18n="Actions">Actions</span></th></tr></thead>
+        <tbody id="news-body"></tbody></table>
+        <div class="pagination" id="news-pagination"></div>
+      </div>
+    </div>
+    <div class="section" id="sec-services">
+      <div class="page-header"><h1><span data-i18n="Services">Services</span></h1><button class="btn btn-primary" onclick="openServiceModal()"><span data-i18n="+ Add Service">+ Add Service</span></button></div>
+      <div class="card">
+        <table><thead><tr><th><span data-i18n="Icon">Icon</span></th><th><span data-i18n="Name">Name</span></th><th><span data-i18n="Description">Description</span></th><th><span data-i18n="Order">Order</span></th><th><span data-i18n="Status">Status</span></th><th><span data-i18n="Actions">Actions</span></th></tr></thead>
+        <tbody id="services-body"></tbody></table>
+      </div>
+    </div>
+
+    <!-- CAROUSEL -->
+    <div class="section" id="sec-carousel">
+      <div class="page-header">
+        <h1 id="carousel-title-text"><span data-i18n="Company Photo Carousel Management">Company Photo Carousel Management</span></h1>
+        <button class="btn btn-primary" onclick="openCarouselUpload()"><span data-i18n="+ Upload Photo">+ Upload Photo</span></button>
+      </div>
+      <p style="color:#6b7280;font-size:0.85rem;margin-bottom:20px;" id="carousel-subtitle-text"><span data-i18n="Photos uploaded here appear in the carousel on the About Us page.">Photos uploaded here appear in the carousel on the About Us page.</span></p>
+      <div class="card">
+        <div style="padding:24px;">
+          <div id="carousel-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;"></div>
+          <p id="carousel-empty" style="color:#9ba8b8;font-size:0.88rem;text-align:center;padding:40px;display:none;"><span data-i18n="No photos yet. Upload your first office photo.">No photos yet. Upload your first office photo.</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAROUSEL UPLOAD MODAL -->
+    <div class="modal-overlay" id="carousel-modal">
+      <div class="modal" style="max-width:480px">
+        <div class="modal-header"><h3 id="carousel-modal-title"><span data-i18n="Upload Office Photo">Upload Office Photo</span></h3><button class="modal-close" onclick="closeModal('carousel-modal')">×</button></div>
+        <div class="modal-body">
+          <div class="form-group"><label><span data-i18n="Photo File (JPG/PNG/WebP, max 8MB)">Photo File (JPG/PNG/WebP, max 8MB)</span></label><input type="file" id="carousel-file" accept="image/*"/></div>
+          <div class="form-group"><label id="carousel-caption-label"><span data-i18n="Caption (optional)">Caption (optional)</span></label><input type="text" id="carousel-caption" placeholder="e.g. Shanghai Headquarters Lobby"/></div>
+          <div class="form-group"><label id="carousel-order-label"><span data-i18n="Display Order (lower = first)">Display Order (lower = first)</span></label><input type="number" id="carousel-order" value="0"/></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeModal('carousel-modal')" id="carousel-cancel-btn"><span data-i18n="Cancel">Cancel</span></button>
+          <button class="btn btn-primary" onclick="uploadCarouselPhoto()" id="carousel-upload-btn"><span data-i18n="Upload">Upload</span></button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- TEAM MEMBERS -->
+    <div class="section" id="sec-team">
+      <div class="page-header">
+        <h1><span data-i18n="Team Members">Team Members</span></h1>
+        <button class="btn btn-primary" onclick="openTeamModal()">+ <span data-i18n="Add Member">Add Member</span></button>
+      </div>
+      <div class="card">
+        <table><thead><tr>
+          <th><span data-i18n="Photo">Photo</span></th>
+          <th><span data-i18n="Name (EN)">Name (EN)</span></th>
+          <th><span data-i18n="Name (ZH)">Name (ZH)</span></th>
+          <th><span data-i18n="Role (EN)">Role (EN)</span></th>
+          <th><span data-i18n="Role (ZH)">Role (ZH)</span></th>
+          <th><span data-i18n="Order">Order</span></th>
+          <th><span data-i18n="Actions">Actions</span></th>
+        </tr></thead>
+        <tbody id="team-body"></tbody></table>
+      </div>
+    </div>
+
+    <!-- TEAM MODAL -->
+    <div class="modal-overlay" id="team-modal">
+      <div class="modal" style="max-width:560px">
+        <div class="modal-header">
+          <h3 id="team-modal-title"><span data-i18n="Add Member">Add Member</span></h3>
+          <button class="modal-close" onclick="closeModal('team-modal')">×</button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="team-id"/>
+          <div class="form-grid">
+            <div class="form-group"><label><span data-i18n="Name (EN)">Name (EN)</span></label><input type="text" id="team-name" placeholder="John Smith"/></div>
+            <div class="form-group"><label><span data-i18n="Name (ZH)">Name (ZH)</span></label><input type="text" id="team-name-zh" placeholder="张三"/></div>
+            <div class="form-group"><label><span data-i18n="Role (EN)">Role (EN)</span></label><input type="text" id="team-role" placeholder="Chief Executive Officer"/></div>
+            <div class="form-group"><label><span data-i18n="Role (ZH)">Role (ZH)</span></label><input type="text" id="team-role-zh" placeholder="首席执行官"/></div>
+            <div class="form-group"><label><span data-i18n="Sort Order">Sort Order</span></label><input type="number" id="team-order" value="0"/></div>
+            <div class="form-group"><label><span data-i18n="Photo">Photo</span> (JPG/PNG, max 5MB)</label><input type="file" id="team-photo" accept="image/*"/></div>
+          </div>
+          <div id="team-photo-preview" style="margin-top:8px;"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeModal('team-modal')"><span data-i18n="Cancel">Cancel</span></button>
+          <button class="btn btn-primary" onclick="saveTeamMember()"><span data-i18n="Save">Save</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-settings">
+      <div class="page-header"><h1><span data-i18n="Site Settings"><span data-i18n="Site Settings">Site Settings</span></span></h1></div>
+      <div class="card">
+        <div class="card-header"><h2><span data-i18n="Company Info">Company Info</span></h2></div>
+        <div style="padding:24px">
+          <div class="form-grid">
+            <div class="form-group"><label><span data-i18n="Company Name">Company Name</span></label><input id="s-company_name" type="text"/></div>
+            <div class="form-group"><label><span data-i18n="Tagline">Tagline</span></label><input id="s-company_tagline" type="text"/></div>
+            <div class="form-group form-full"><label><span data-i18n="Address">Address</span></label><input id="s-address" type="text"/></div>
+            <div class="form-group"><label><span data-i18n="Phone">Phone</span></label><input id="s-phone" type="text"/></div>
+            <div class="form-group"><label><span data-i18n="Fax">Fax</span></label><input id="s-fax" type="text"/></div>
+            <div class="form-group"><label><span data-i18n="Email">Email</span></label><input id="s-email" type="text"/></div>
+          </div>
+          <hr style="margin:16px 0;border:none;border-top:1px solid var(--border)"/>
+          <h3 style="font-size:0.9rem;margin-bottom:16px;color:var(--navy)"><span data-i18n="Hero Slides">Hero Slides</span></h3>
+          <div class="form-grid">
+            <div class="form-group"><label><span data-i18n="Slide 1 Tag">Slide 1 Tag</span></label><input id="s-hero1_tag" type="text"/></div>
+            <div class="form-group"><label><span data-i18n="Slide 1 Sub">Slide 1 Sub</span></label><input id="s-hero1_sub" type="text"/></div>
+            <div class="form-group form-full"><label><span data-i18n="Slide 1 Title">Slide 1 Title</span></label><input id="s-hero1_title" type="text"/></div>
+            <div class="form-group"><label><span data-i18n="Slide 2 Tag">Slide 2 Tag</span></label><input id="s-hero2_tag" type="text"/></div>
+            <div class="form-group"><label><span data-i18n="Slide 2 Sub">Slide 2 Sub</span></label><input id="s-hero2_sub" type="text"/></div>
+            <div class="form-group form-full"><label><span data-i18n="Slide 2 Title">Slide 2 Title</span></label><input id="s-hero2_title" type="text"/></div>
+          </div>
+          <hr style="margin:16px 0;border:none;border-top:1px solid var(--border)"/>
+          <h3 style="font-size:0.9rem;margin-bottom:16px;color:var(--navy)"><span data-i18n="Stats Bar">Stats Bar</span></h3>
+          <div class="form-grid">
+            <div class="form-group"><label><span data-i18n="Years Experience">Years Experience</span></label><input id="s-stat_years" type="text"/></div>
+            <div class="form-group"><label><span data-i18n="Destinations">Destinations</span></label><input id="s-stat_destinations" type="text"/></div>
+            <div class="form-group"><label><span data-i18n="Partners">Partners</span></label><input id="s-stat_partners" type="text"/></div>
+            <div class="form-group form-full"><label><span data-i18n="Intro Paragraph">Intro Paragraph</span></label><textarea id="s-intro_text" rows="3"></textarea></div>
+          </div>
+          
+          <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)"/>
+          <h3 style="font-size:0.9rem;margin-bottom:6px;color:var(--navy)"><span data-i18n="Navigation Tab Labels">Navigation Tab Labels</span></h3>
+          <p style="font-size:0.78rem;color:#6b7280;margin-bottom:16px;"><span data-i18n="Edit the names shown in the top navigation bar on every page.">Edit the names shown in the top navigation bar on every page.</span></p>
+          <div class="form-grid">
+            <div class="form-group"><label><span data-i18n="Home Tab">Home Tab (EN)</span></label><input id="s-nav_home" type="text" placeholder="Home"/></div><div class="form-group"><label>首页 (ZH)</label><input id="s-nav_home_zh" type="text" placeholder="首页"/></div>
+            <div class="form-group"><label><span data-i18n="News Tab">News Tab (EN)</span></label><input id="s-nav_news" type="text" placeholder="News"/></div><div class="form-group"><label>新闻 (ZH)</label><input id="s-nav_news_zh" type="text" placeholder="新闻"/></div>
+            <div class="form-group"><label><span data-i18n="Services Tab">Services Tab (EN)</span></label><input id="s-nav_services" type="text" placeholder="Services"/></div><div class="form-group"><label>服务 (ZH)</label><input id="s-nav_services_zh" type="text" placeholder="服务"/></div>
+            <div class="form-group"><label>Charter Tab (EN)</label><input id="s-nav_charter" type="text" placeholder="Charter &amp; Ticketing"/></div><div class="form-group"><label>包机与机票 (ZH)</label><input id="s-nav_charter_zh" type="text" placeholder="包机与机票"/></div>
+            <div class="form-group"><label>About Us Tab (EN)</label><input id="s-nav_about" type="text" placeholder="About Us"/></div><div class="form-group"><label>关于我们 (ZH)</label><input id="s-nav_about_zh" type="text" placeholder="关于我们"/></div>
+            <div class="form-group"><label>Contact Tab (EN)</label><input id="s-nav_contact" type="text" placeholder="Contact"/></div><div class="form-group"><label>联系我们 (ZH)</label><input id="s-nav_contact_zh" type="text" placeholder="联系我们"/></div>
+          </div>
+
+          <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)"/>
+          <h3 style="font-size:0.9rem;margin-bottom:16px;color:var(--navy)">Business Hours / 营业时间</h3>
+          <div class="form-grid">
+            <div class="form-group form-full"><label>Business Hours (EN)</label><input id="s-business_hours" type="text" placeholder="Mon – Fri: 9:00 AM – 6:00 PM / Sat: 9:00 AM – 12:00 PM"/></div>
+            <div class="form-group form-full"><label>营业时间 (ZH)</label><input id="s-business_hours_zh" type="text" placeholder="周一至周五：9:00–18:00 / 周六：9:00–12:00"/></div>
+          </div>
+          <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)"/>
+          <h3 style="font-size:0.9rem;margin-bottom:16px;color:var(--navy)">Charter Service Types / 包机服务类型</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Type 1 Title (EN)</label><input id="s-charter_type1_title" type="text" placeholder="Group Charter"/></div>
+            <div class="form-group"><label>Type 1 标题 (ZH)</label><input id="s-charter_type1_title_zh" type="text" placeholder="团队包机"/></div>
+            <div class="form-group form-full"><label>Type 1 Description (EN)</label><textarea id="s-charter_type1_desc" rows="2"></textarea></div>
+            <div class="form-group form-full"><label>Type 1 描述 (ZH)</label><textarea id="s-charter_type1_desc_zh" rows="2"></textarea></div>
+            <div class="form-group"><label>Type 2 Title (EN)</label><input id="s-charter_type2_title" type="text" placeholder="Private Charter"/></div>
+            <div class="form-group"><label>Type 2 标题 (ZH)</label><input id="s-charter_type2_title_zh" type="text" placeholder="私人包机"/></div>
+            <div class="form-group form-full"><label>Type 2 Description (EN)</label><textarea id="s-charter_type2_desc" rows="2"></textarea></div>
+            <div class="form-group form-full"><label>Type 2 描述 (ZH)</label><textarea id="s-charter_type2_desc_zh" rows="2"></textarea></div>
+            <div class="form-group"><label>Type 3 Title (EN)</label><input id="s-charter_type3_title" type="text" placeholder="Cargo Charter"/></div>
+            <div class="form-group"><label>Type 3 标题 (ZH)</label><input id="s-charter_type3_title_zh" type="text" placeholder="货运包机"/></div>
+            <div class="form-group form-full"><label>Type 3 Description (EN)</label><textarea id="s-charter_type3_desc" rows="2"></textarea></div>
+            <div class="form-group form-full"><label>Type 3 描述 (ZH)</label><textarea id="s-charter_type3_desc_zh" rows="2"></textarea></div>
+            <div class="form-group"><label>Type 4 Title (EN)</label><input id="s-charter_type4_title" type="text" placeholder="Airline Ticketing"/></div>
+            <div class="form-group"><label>Type 4 标题 (ZH)</label><input id="s-charter_type4_title_zh" type="text" placeholder="航空机票"/></div>
+            <div class="form-group form-full"><label>Type 4 Description (EN)</label><textarea id="s-charter_type4_desc" rows="2"></textarea></div>
+            <div class="form-group form-full"><label>Type 4 描述 (ZH)</label><textarea id="s-charter_type4_desc_zh" rows="2"></textarea></div>
+          </div>
+          <button class="btn btn-primary" onclick="saveSettings()"><span data-i18n="Save All Settings">Save All Settings</span></button>
+        </div>
+      </div>
+      <div class="card" style="margin-top:20px">
+        <div class="card-header"><h2><span data-i18n="Change Password">Change Password</span></h2></div>
+        <div style="padding:24px;max-width:400px">
+          <div class="form-group"><label><span data-i18n="Current Password">Current Password</span></label><input type="password" id="pw-current"/></div>
+          <div class="form-group"><label><span data-i18n="New Password">New Password</span></label><input type="password" id="pw-new"/></div>
+          <div class="form-group"><label><span data-i18n="Confirm New Password">Confirm New Password</span></label><input type="password" id="pw-confirm"/></div>
+          <button class="btn btn-primary" onclick="changePassword()"><span data-i18n="Update Password">Update Password</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="contact-modal">
+  <div class="modal">
+    <div class="modal-header"><h3><span data-i18n="Contact Detail">Contact Detail</span></h3><button class="modal-close" onclick="closeModal('contact-modal')">×</button></div>
+    <div class="modal-body" id="contact-detail"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('contact-modal')"><span data-i18n="Close">Close</span></button>
+      <button class="btn btn-success" onclick="setContactStatus(window._cid,'replied')"><span data-i18n="Mark Replied">Mark Replied</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="news-modal">
+  <div class="modal" style="max-width:720px">
+    <div class="modal-header"><h3 id="news-modal-title"><span data-i18n="New Article">New Article</span></h3><button class="modal-close" onclick="closeModal('news-modal')">×</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="news-id"/>
+      <div class="form-group"><label><span data-i18n="Title">Title</span></label><input type="text" id="news-title"/></div>
+      <div class="form-group"><label><span data-i18n="Excerpt">Excerpt</span></label><textarea id="news-excerpt" rows="2"></textarea></div>
+      <div class="form-group"><label><span data-i18n="Body (HTML allowed)">Body (HTML allowed)</span></label><textarea id="news-body" rows="8"></textarea></div>
+      <div class="form-group"><label><span data-i18n="Cover Image (JPG/PNG/WebP, max 5MB)">Cover Image (JPG/PNG/WebP, max 5MB)</span></label><input type="file" id="news-image" accept="image/*"/></div>
+      <div style="display:flex;gap:24px;margin-top:8px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer"><input type="checkbox" id="news-published"/> Published</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer"><input type="checkbox" id="news-featured"/> Featured on homepage</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('news-modal')"><span data-i18n="Cancel">Cancel</span></button>
+      <button class="btn btn-primary" onclick="saveNews()"><span data-i18n="Save Article">Save Article</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="service-modal">
+  <div class="modal">
+    <div class="modal-header"><h3 id="svc-modal-title"><span data-i18n="New Service">New Service</span></h3><button class="modal-close" onclick="closeModal('service-modal')">×</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="svc-id"/>
+      <div class="form-grid">
+        <div class="form-group"><label><span data-i18n="Service Name">Service Name</span></label><input type="text" id="svc-name"/></div>
+        <div class="form-group"><label><span data-i18n="Icon (emoji)">Icon (emoji)</span></label><input type="text" id="svc-icon" placeholder="✈"/></div>
+        <div class="form-group form-full"><label><span data-i18n="Short Description">Short Description</span></label><textarea id="svc-desc" rows="2"></textarea></div>
+        <div class="form-group form-full"><label><span data-i18n="Full Details (HTML)">Full Details (HTML)</span></label><textarea id="svc-details" rows="5"></textarea></div>
+        <div class="form-group"><label><span data-i18n="Sort Order">Sort Order</span></label><input type="number" id="svc-order" value="0"/></div>
+        <div class="form-group"><label><span data-i18n="Image">Image</span></label><input type="file" id="svc-image" accept="image/*"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('service-modal')"><span data-i18n="Cancel">Cancel</span></button>
+      <button class="btn btn-primary" onclick="saveService()"><span data-i18n="Save Service">Save Service</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API='/api';let TOKEN=localStorage.getItem('fulfill_token');let contactPage=1,newsPage=1;
+async function doLogin(){
+  const email=document.getElementById('login-email').value;
+  const pass=document.getElementById('login-pass').value;
+  const btn=document.querySelector('.login-btn');
+  const err=document.getElementById('login-err');
+  err.style.display='none';
+  btn.textContent='Signing in...';
+  btn.disabled=true;
+  try{
+    const r=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||'Login failed ('+r.status+')');
+    TOKEN=d.token;
+    localStorage.setItem('fulfill_token',TOKEN);
+    document.getElementById('admin-name').textContent=d.name||d.email;
+    showApp();
+  }catch(e){
+    err.textContent=e.message||'Network error — check console (F12)';
+    err.style.display='block';
+    console.error('Login error:',e);
+  }finally{
+    btn.textContent='Sign In';
+    btn.disabled=false;
+  }
+}
+function doLogout(){TOKEN=null;localStorage.removeItem('fulfill_token');document.getElementById('app').style.display='none';document.getElementById('login-screen').style.display='flex';}
+function showApp(){document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='block';loadDashboard();}
+if(TOKEN){fetch('/api/stats',{headers:{Authorization:'Bearer '+TOKEN}}).then(r=>r.ok?r.json():Promise.reject()).then(()=>showApp()).catch(()=>{TOKEN=null;localStorage.removeItem('fulfill_token');});}
+async function api(method,path,body,formData){const opts={method,headers:{Authorization:'Bearer '+TOKEN}};if(formData){opts.body=formData;}else if(body){opts.headers['Content-Type']='application/json';opts.body=JSON.stringify(body);}const r=await fetch('/api'+path,opts);const d=await r.json();if(!r.ok)throw new Error(d.error||'Request failed');return d;}
+function showSection(name){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.getElementById('sec-'+name).classList.add('active');document.querySelector('[data-sec='+name+']').classList.add('active');if(name==='dashboard')loadDashboard();else if(name==='contacts')loadContacts(1);else if(name==='news')loadNews(1);else if(name==='services')loadServices();else if(name==='settings')loadSettings();else if(name==='carousel')loadCarousel();else if(name==='team')loadTeamMembers();}
+function toast(msg,type='success'){const el=document.getElementById('toast');el.textContent=msg;el.className='toast show '+type;setTimeout(()=>el.classList.remove('show'),3500);}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function openModal(id){document.getElementById(id).classList.add('open');}
+async function loadDashboard(){try{const d=await api('GET','/stats');document.getElementById('stat-new-contacts').textContent=d.newContacts;document.getElementById('stat-total-contacts').textContent=d.totalContacts;document.getElementById('stat-news').textContent=d.publishedNews;document.getElementById('stat-services').textContent=d.totalServices;document.getElementById('recent-contacts-body').innerHTML=d.recentContacts.map(c=>`<tr><td>${c.first_name} ${c.last_name}</td><td>${c.email}</td><td>${c.service||'—'}</td><td>${c.created_at.slice(0,10)}</td></tr>`).join('');}catch(e){console.error(e);}}
+async function loadContacts(page){contactPage=page;const status=document.getElementById('contact-filter').value;try{const d=await api('GET',`/contacts?page=${page}&limit=15${status?'&status='+status:''}`);document.getElementById('contacts-body').innerHTML=d.data.map(c=>`<tr><td>${c.first_name} ${c.last_name}</td><td>${c.email}</td><td>${c.company||'—'}</td><td>${c.service||'—'}</td><td>${c.created_at.slice(0,10)}</td><td><span class="badge badge-${c.status}">${c.status}</span></td><td style="display:flex;gap:6px"><button class="btn btn-outline btn-sm" onclick="viewContact(${c.id})">View</button><button class="btn btn-danger btn-sm" onclick="deleteContact(${c.id})"><span data-i18n="Del">Del</span></button></td></tr>`).join('');renderPagination('contacts-pagination',d.pages,page,loadContacts);}catch(e){toast(e.message,'error');}}
+async function viewContact(id){try{const d=await api('GET',`/contacts?page=1&limit=999`);const c=d.data.find(x=>x.id===id);window._cid=id;document.getElementById('contact-detail').innerHTML=`<table style="width:100%;border-collapse:collapse">${[['Name',c.first_name+' '+c.last_name],['Email',c.email],['Company',c.company||'—'],['Service',c.service||'—'],['Date',c.created_at],['Status','<span class="badge badge-'+c.status+'">'+c.status+'</span>'],['Message','<pre style="white-space:pre-wrap;font-family:inherit;font-size:0.88rem">'+c.message+'</pre>']].map(([k,v])=>`<tr><td style="padding:8px;font-weight:600;color:#4a5568;width:100px;vertical-align:top">${k}</td><td style="padding:8px">${v}</td></tr>`).join('')}</table>`;await api('PATCH','/contacts/'+id+'/status',{status:'read'});openModal('contact-modal');loadContacts(contactPage);}catch(e){toast(e.message,'error');}}
+async function setContactStatus(id,status){try{await api('PATCH','/contacts/'+id+'/status',{status});toast('Status updated');closeModal('contact-modal');loadContacts(contactPage);}catch(e){toast(e.message,'error');}}
+async function deleteContact(id){if(!confirm('Delete this contact submission?'))return;try{await api('DELETE','/contacts/'+id);toast('Deleted');loadContacts(contactPage);}catch(e){toast(e.message,'error');}}
+async function loadNews(page){newsPage=page;try{const d=await api('GET',`/news/admin/all?page=${page}&limit=15`);document.getElementById('news-body').innerHTML=d.data.map(n=>`<tr><td>${n.title}</td><td><span class="badge badge-${n.published?'pub':'draft'}">${n.published?'Published':'Draft'}</span></td><td>${n.featured?'Yes':'No'}</td><td>${n.created_at.slice(0,10)}</td><td style="display:flex;gap:6px"><button class="btn btn-outline btn-sm" onclick="editNews(${n.id})"><span data-i18n="Edit">Edit</span></button><button class="btn btn-danger btn-sm" onclick="deleteNews(${n.id})"><span data-i18n="Del">Del</span></button></td></tr>`).join('');renderPagination('news-pagination',Math.ceil(d.total/15),page,loadNews);}catch(e){toast(e.message,'error');}}
+function openNewsModal(data){document.getElementById('news-id').value=data?.id||'';document.getElementById('news-modal-title').textContent=data?'Edit Article':'New Article';document.getElementById('news-title').value=data?.title||'';document.getElementById('news-excerpt').value=data?.excerpt||'';document.getElementById('news-body').value=data?.body||'';document.getElementById('news-published').checked=!!data?.published;document.getElementById('news-featured').checked=!!data?.featured;document.getElementById('news-image').value='';openModal('news-modal');}
+async function editNews(id){try{const d=await api('GET','/news/admin/'+id);openNewsModal(d);}catch(e){toast(e.message,'error');}}
+async function saveNews(){const id=document.getElementById('news-id').value;const fd=new FormData();fd.append('title',document.getElementById('news-title').value);fd.append('excerpt',document.getElementById('news-excerpt').value);fd.append('body',document.getElementById('news-body').value);fd.append('published',document.getElementById('news-published').checked?'1':'0');fd.append('featured',document.getElementById('news-featured').checked?'1':'0');const img=document.getElementById('news-image').files[0];if(img)fd.append('image',img);try{if(id)await api('PUT','/news/'+id,null,fd);else await api('POST','/news',null,fd);toast('Article saved');closeModal('news-modal');loadNews(newsPage);}catch(e){toast(e.message,'error');}}
+async function deleteNews(id){if(!confirm('Delete this article?'))return;try{await api('DELETE','/news/'+id);toast('Deleted');loadNews(newsPage);}catch(e){toast(e.message,'error');}}
+async function loadServices(){try{const r=await fetch('/api'+'/services');const d=await r.json();document.getElementById('services-body').innerHTML=d.map(s=>`<tr><td style="font-size:1.4rem">${s.icon||''}</td><td>${s.name}</td><td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.description||'—'}</td><td>${s.sort_order}</td><td><span class="badge badge-${s.active?'pub':'draft'}">${s.active?'Active':'Inactive'}</span></td><td style="display:flex;gap:6px"><button class="btn btn-outline btn-sm" onclick="editService(${s.id})"><span data-i18n="Edit">Edit</span></button><button class="btn btn-danger btn-sm" onclick="deleteService(${s.id})"><span data-i18n="Del">Del</span></button></td></tr>`).join('');}catch(e){toast(e.message,'error');}}
+function openServiceModal(data){document.getElementById('svc-id').value=data?.id||'';document.getElementById('svc-modal-title').textContent=data?'Edit Service':'New Service';document.getElementById('svc-name').value=data?.name||'';document.getElementById('svc-icon').value=data?.icon||'';document.getElementById('svc-desc').value=data?.description||'';document.getElementById('svc-details').value=data?.details||'';document.getElementById('svc-order').value=data?.sort_order||0;openModal('service-modal');}
+async function editService(id){try{const r=await fetch('/api/services/id/'+id,{headers:{Authorization:'Bearer '+TOKEN}});const d=await r.json();if(!r.ok)throw new Error(d.error);openServiceModal(d);}catch(e){toast(e.message,'error');}}
+async function saveService(){const id=document.getElementById('svc-id').value;const fd=new FormData();fd.append('name',document.getElementById('svc-name').value);fd.append('icon',document.getElementById('svc-icon').value);fd.append('description',document.getElementById('svc-desc').value);fd.append('details',document.getElementById('svc-details').value);fd.append('sort_order',document.getElementById('svc-order').value);const img=document.getElementById('svc-image').files[0];if(img)fd.append('image',img);try{if(id)await api('PUT','/services/'+id,null,fd);else await api('POST','/services',null,fd);toast('Service saved');closeModal('service-modal');loadServices();}catch(e){toast(e.message,'error');}}
+async function deleteService(id){if(!confirm('Delete this service?'))return;try{await api('DELETE','/services/'+id);toast('Deleted');loadServices();}catch(e){toast(e.message,'error');}}
+async function loadSettings(){try{const d=await api('GET','/settings');Object.entries(d).forEach(([k,v])=>{const el=document.getElementById('s-'+k);if(el)el.value=v||'';});}catch(e){toast(e.message,'error');}}
+async function saveSettings(){const keys=['company_name','company_tagline','address','phone','fax','email','business_hours','business_hours_zh','hero1_tag','hero1_title','hero1_sub','hero2_tag','hero2_title','hero2_sub','stat_years','stat_destinations','stat_partners','stat_partners_label','stat_partners_label_zh','intro_text','intro_text_zh','nav_home','nav_home_zh','nav_news','nav_news_zh','nav_services','nav_services_zh','nav_charter','nav_charter_zh','nav_about','nav_about_zh','nav_contact','nav_contact_zh','charter_type1_title','charter_type1_title_zh','charter_type1_desc','charter_type1_desc_zh','charter_type2_title','charter_type2_title_zh','charter_type2_desc','charter_type2_desc_zh','charter_type3_title','charter_type3_title_zh','charter_type3_desc','charter_type3_desc_zh','charter_type4_title','charter_type4_title_zh','charter_type4_desc','charter_type4_desc_zh'];const obj={};keys.forEach(k=>{const el=document.getElementById('s-'+k);if(el)obj[k]=el.value;});try{await api('PUT','/settings',obj);toast('Settings saved');}catch(e){toast(e.message,'error');}}
+async function changePassword(){const cur=document.getElementById('pw-current').value;const nw=document.getElementById('pw-new').value;const cf=document.getElementById('pw-confirm').value;if(nw!==cf)return toast('Passwords do not match','error');if(nw.length<8)return toast('Min 8 characters','error');try{await api('POST','/auth/change-password',{currentPassword:cur,newPassword:nw});toast('Password updated');['pw-current','pw-new','pw-confirm'].forEach(id=>document.getElementById(id).value='');}catch(e){toast(e.message,'error');}}
+
+
+// ── Carousel (Company Photo Carousel Management) ──────────────────────────────
+async function loadCarousel() {
+  try {
+    const r = await fetch('/api/gallery');
+    const imgs = await r.json();
+    const grid = document.getElementById('carousel-grid');
+    const empty = document.getElementById('carousel-empty');
+    if (!imgs || !imgs.length) { grid.innerHTML=''; empty.style.display='block'; return; }
+    empty.style.display='none';
+    grid.innerHTML = imgs.map(img => `
+      <div style="position:relative;border-radius:4px;overflow:hidden;background:#f0f2f5;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+        <img src="${img.url}" style="width:100%;height:160px;object-fit:cover;display:block;"/>
+        <div style="padding:8px 10px;">
+          <div style="font-size:0.78rem;color:#4a5568;margin-bottom:4px;">${img.caption||'<em style=color:#9ba8b8>No caption</em>'}</div>
+          <div style="font-size:0.72rem;color:#9ba8b8;">Order: ${img.sort_order}</div>
+        </div>
+        <button onclick="deleteCarouselPhoto(${img.id})" style="position:absolute;top:6px;right:6px;background:rgba(220,38,38,0.85);border:none;color:white;border-radius:3px;padding:3px 8px;font-size:0.72rem;cursor:pointer;">✕</button>
+      </div>`).join('');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+function openCarouselUpload() {
+  document.getElementById('carousel-file').value='';
+  document.getElementById('carousel-caption').value='';
+  document.getElementById('carousel-order').value='0';
+  openModal('carousel-modal');
+}
+
+async function uploadCarouselPhoto() {
+  const file = document.getElementById('carousel-file').files[0];
+  if (!file) return toast('Please select a photo','error');
+  const fd = new FormData();
+  fd.append('image', file);
+  fd.append('caption', document.getElementById('carousel-caption').value);
+  fd.append('sort_order', document.getElementById('carousel-order').value);
+  try {
+    await api('POST','/gallery',null,fd);
+    toast('Photo uploaded successfully');
+    closeModal('carousel-modal');
+    loadCarousel();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function deleteCarouselPhoto(id) {
+  if (!confirm('Delete this photo from the carousel?')) return;
+  try { await api('DELETE','/gallery/'+id); toast('Photo deleted'); loadCarousel(); }
+  catch(e) { toast(e.message,'error'); }
+}
+
+
+
+// ── Team Members ──────────────────────────────────────────────────────────────
+async function loadTeamMembers() {
+  try {
+    const d = await api('GET', '/team/all');
+    const tbody = document.getElementById('team-body');
+    if (!tbody) return;
+    tbody.innerHTML = (d||[]).map(m => `
+      <tr>
+        <td>${m.photo_url ? '<img src="'+m.photo_url+'" style="width:48px;height:48px;border-radius:50%;object-fit:cover;" />' : '—'}</td>
+        <td>${m.name}</td>
+        <td>${m.name_zh||'—'}</td>
+        <td>${m.role}</td>
+        <td>${m.role_zh||'—'}</td>
+        <td>${m.sort_order}</td>
+        <td style="display:flex;gap:6px">
+          <button class="btn btn-outline btn-sm" onclick="editTeamMember(${m.id})">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteTeamMember(${m.id})">Del</button>
+        </td>
+      </tr>`).join('');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+function openTeamModal(data) {
+  document.getElementById('team-id').value = data?.id || '';
+  document.getElementById('team-modal-title').innerHTML = data ? 'Edit Member' : 'Add Member';
+  document.getElementById('team-name').value = data?.name || '';
+  document.getElementById('team-name-zh').value = data?.name_zh || '';
+  document.getElementById('team-role').value = data?.role || '';
+  document.getElementById('team-role-zh').value = data?.role_zh || '';
+  document.getElementById('team-order').value = data?.sort_order || 0;
+  document.getElementById('team-photo').value = '';
+  const prev = document.getElementById('team-photo-preview');
+  prev.innerHTML = data?.photo_url ? '<img src="'+data.photo_url+'" style="width:80px;height:80px;border-radius:50%;object-fit:cover;" />' : '';
+  openModal('team-modal');
+}
+
+async function editTeamMember(id) {
+  try {
+    const d = await api('GET', '/team/all');
+    const m = (d||[]).find(x => x.id === id);
+    if (m) openTeamModal(m);
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function saveTeamMember() {
+  const id = document.getElementById('team-id').value;
+  const fd = new FormData();
+  fd.append('name', document.getElementById('team-name').value);
+  fd.append('name_zh', document.getElementById('team-name-zh').value);
+  fd.append('role', document.getElementById('team-role').value);
+  fd.append('role_zh', document.getElementById('team-role-zh').value);
+  fd.append('sort_order', document.getElementById('team-order').value);
+  const photo = document.getElementById('team-photo').files[0];
+  if (photo) fd.append('photo', photo);
+  try {
+    if (id) await api('PUT', '/team/' + id, null, fd);
+    else await api('POST', '/team', null, fd);
+    toast('Team member saved');
+    closeModal('team-modal');
+    loadTeamMembers();
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function deleteTeamMember(id) {
+  if (!confirm('Delete this team member?')) return;
+  try { await api('DELETE', '/team/' + id); toast('Deleted'); loadTeamMembers(); }
+  catch(e) { toast(e.message,'error'); }
+}
+
+function renderPagination(cid,pages,current,fn){const el=document.getElementById(cid);if(pages<=1){el.innerHTML='';return;}el.innerHTML=Array.from({length:pages},(_,i)=>i+1).map(p=>`<button class="page-btn${p===current?' active':''}" onclick="${fn.name}(${p})">${p}</button>`).join('');}
+</script>
+
+<script>
+
+
+
+</body>
+</html>

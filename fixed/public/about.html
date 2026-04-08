@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us — Shanghai Fulfill Aviation Ground Service</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--navy:#0b1f3a;--sky:#1a6ea8;--gold:#c8a96e;--light:#f5f6f8;--white:#ffffff;--text:#1e2535;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{padding-top:68px;font-family:"Barlow",sans-serif;color:var(--text);background:var(--white);}
+    a{text-decoration:none;color:inherit;}
+    
+    
+    
+    
+    
+    
+    
+    
+    .page-hero{padding-top:70px;height:260px;background:linear-gradient(135deg,#0b1f3a,#1a6ea8);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;position:relative;}
+    .page-hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.3);}
+    .page-hero-content{position:relative;z-index:1;}
+    .page-tag{display:inline-block;background:var(--gold);color:var(--navy);font-size:0.7rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;margin-bottom:14px;}
+    .page-title{font-family:"Cormorant Garamond",serif;font-size:2.8rem;color:var(--white);font-weight:300;}
+    .container{max-width:1100px;margin:0 auto;padding:72px 40px;}
+    .section-label{font-family:"Cormorant Garamond",serif;font-size:1.6rem;color:var(--navy);border-bottom:2px solid var(--gold);padding-bottom:12px;margin-bottom:32px;display:inline-block;}
+    .img-ph{display:flex;align-items:center;justify-content:center;color:#5a7a99;font-size:0.82rem;text-align:center;background:linear-gradient(135deg,#c9d6e3,#a8bfd4);width:100%;height:100%;}
+    footer{background:var(--navy);padding:32px 10%;margin-top:80px;}
+    .foot-row{display:flex;justify-content:space-between;align-items:center;}
+    .foot-row p{color:rgba(255,255,255,0.35);font-size:0.78rem;}
+    .foot-
+    .foot-
+    .foot-nav a:hover{color:var(--gold);}
+    @media(max-width:900px){}
+
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-bottom:72px;}
+    .about-img{height:420px;background:linear-gradient(135deg,#c9d6e3,#a8bfd4);border-radius:4px;overflow:hidden;}
+    .about-img img{width:100%;height:100%;object-fit:cover;}
+    .about-body h2{font-family:"Cormorant Garamond",serif;font-size:2.2rem;color:var(--navy);font-weight:300;margin-bottom:20px;line-height:1.3;}
+    .about-body p{color:#4a5568;font-size:0.92rem;line-height:1.85;margin-bottom:16px;}
+    .about-body .gold-line{width:48px;height:3px;background:var(--gold);margin-bottom:20px;}
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--navy);margin-bottom:72px;}
+    .stat-box{padding:40px 24px;text-align:center;background:var(--navy);}
+    .stat-num{font-family:"Barlow",sans-serif;font-size:3rem;font-weight:300;color:var(--gold);display:block;}
+    .stat-lbl{color:rgba(255,255,255,0.6);font-size:0.78rem;letter-spacing:1px;margin-top:6px;}
+    .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+    .team-card{text-align:center;}
+    .team-photo{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#c9d6e3,#a8bfd4);margin:0 auto 16px;overflow:hidden;}
+    .team-photo img{width:100%;height:100%;object-fit:cover;}
+    .team-name{font-family:"Cormorant Garamond",serif;font-size:1.2rem;color:var(--navy);margin-bottom:4px;}
+    .team-role{color:var(--sky);font-size:0.8rem;letter-spacing:1px;text-transform:uppercase;}
+    @media(max-width:900px){.about-grid{grid-template-columns:1fr;}.stats-row{grid-template-columns:repeat(2,1fr);}.team-grid{grid-template-columns:1fr;}}
+
+    .office-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-bottom:72px;}
+    .office-card{border:1px solid #e5e9f0;border-radius:4px;padding:32px;transition:box-shadow 0.3s;}
+    .office-card:hover{box-shadow:0 8px 28px rgba(0,0,0,0.08);}
+    .office-city{font-family:"Cormorant Garamond",serif;font-size:1.4rem;color:var(--navy);font-weight:400;margin-bottom:20px;border-bottom:2px solid var(--gold);padding-bottom:12px;}
+    .office-city span{font-size:0.85rem;color:var(--sky);font-family:"Barlow",sans-serif;font-weight:500;}
+    .office-row{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;font-size:0.88rem;color:#4a5568;line-height:1.6;}
+    .office-icon{flex-shrink:0;font-size:1rem;margin-top:1px;}
+    @media(max-width:900px){.office-grid{grid-template-columns:1fr;}}
+
+    
+    .gallery-strip{display:flex;gap:16px;overflow-x:auto;padding:8px 0 20px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin-bottom:72px;}
+    .gallery-strip::-webkit-scrollbar{height:4px;}
+    .gallery-strip::-webkit-scrollbar-track{background:#f0f2f5;}
+    .gallery-strip::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+    .gallery-img{flex-shrink:0;width:320px;height:220px;object-fit:cover;border-radius:4px;scroll-snap-align:start;cursor:pointer;transition:opacity 0.2s;}
+    .gallery-img:hover{opacity:0.88;}
+    .gallery-placeholder{color:#9ba8b8;font-size:0.88rem;padding:40px;border:1px dashed #dde3ec;border-radius:4px;width:100%;text-align:center;}
+
+    
+    /* ── Office Carousel ── */
+    .carousel-wrap{position:relative;width:100%;overflow:hidden;background:var(--navy);border-radius:4px;margin-bottom:72px;}
+    .carousel-track{display:flex;transition:transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);}
+    .carousel-slide{flex-shrink:0;width:100%;height:480px;object-fit:cover;display:block;}
+    .carousel-placeholder{width:100%;height:480px;background:linear-gradient(135deg,#0b2d52,#1a6ea8);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
+    .carousel-placeholder span{color:rgba(255,255,255,0.4);font-size:0.88rem;letter-spacing:1px;}
+    .carousel-placeholder .c-icon{font-size:2.5rem;opacity:0.3;}
+    .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(11,31,58,0.7);border:1px solid rgba(200,169,110,0.4);color:var(--gold);width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;z-index:10;}
+    .carousel-btn:hover{background:rgba(200,169,110,0.2);border-color:var(--gold);}
+    .carousel-prev{left:16px;}
+    .carousel-next{right:16px;}
+    .carousel-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:8px;}
+    .carousel-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.35);cursor:pointer;transition:all 0.2s;border:none;}
+    .carousel-dot.active{background:var(--gold);width:22px;border-radius:4px;}
+    .carousel-caption{position:absolute;bottom:36px;left:0;right:0;text-align:center;color:rgba(255,255,255,0.7);font-size:0.8rem;letter-spacing:1px;pointer-events:none;}
+
+    </style>
+  <script src="/lang.js"></script>
+  <script src="/nav-labels.js"></script>
+</head>
+<body>
+<link rel="stylesheet" href="/nav.css"/>
+<nav class="gn">
+  <a href="/" class="gn-logo">FULFILL<span>.</span>AVIATION</a>
+  <ul class="gn-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/news.html">News</a></li>
+    <li><a href="/services.html">Services</a></li>
+    <li><a href="/charter.html">Charter &amp; Ticketing</a></li>
+    <li><a href="/about.html" class="active">About Us</a></li>
+    <li><a href="/contact.html">Contact</a></li>
+  </ul>
+  <div class="gn-right">
+    <div class="gn-lang">
+      <button data-lang="zh" onclick="setLang('zh')">中文</button>
+      <button data-lang="en" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="gn-burger" id="gn-burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="gn-mobile" id="gn-mobile">
+  <a href="/">Home</a>
+  <a href="/news.html">News</a>
+  <a href="/services.html">Services</a>
+  <a href="/charter.html">Charter &amp; Ticketing</a>
+  <a href="/about.html" class="active">About Us</a>
+  <a href="/contact.html">Contact</a>
+</div>
+<script>
+window.FA_PAGE = 'about';
+(function(){
+  var b = document.getElementById('gn-burger');
+  var m = document.getElementById('gn-mobile');
+  if (b && m) {
+    b.addEventListener('click', function() {
+      b.classList.toggle('open');
+      m.classList.toggle('open');
+    });
+    m.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        b.classList.remove('open');
+        m.classList.remove('open');
+      });
+    });
+  }
+})();
+</script>
+<div class="page-hero"><div class="page-hero-content"><span class="page-tag">Our Story</span><h1 class="page-title">About Us</h1></div></div>
+<div class="container">
+  <!-- About story -->
+  <div class="about-grid">
+    <div class="about-img"><div class="img-ph">Company photo<br>(replace with img tag)</div></div>
+    <div class="about-body">
+      <div class="gold-line"></div>
+      <h2>Leading Aviation Ground Services Since [Year]</h2>
+      <p>Shanghai Fulfill Aviation Ground Service is a professional aviation services company dedicated to providing world-class operational support and travel solutions. Edit this paragraph to tell your company story.</p>
+      <p>We specialize in commercial aviation, business aviation, and general aviation sectors, serving governments, enterprises, aircraft manufacturers, airlines, and aircraft owners. Edit this paragraph with your actual history and mission.</p>
+      <p>Our team of experienced professionals is committed to safety, reliability, and excellence in every flight we support. Add more details about your company culture and values here.</p>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-box"><span class="stat-num" id="about-stat-years">10+</span><div class="stat-lbl" id="about-stat-years-lbl">Years Experience</div></div>
+    <div class="stat-box"><span class="stat-num" id="about-stat-dest">50+</span><div class="stat-lbl">Destinations</div></div>
+    <div class="stat-box"><span class="stat-num" id="about-stat-partners">1000+</span><div class="stat-lbl" id="about-stat-partners-lbl">Annual Flights</div></div>
+    <div class="stat-box"><span class="stat-num" id="about-stat-flights">1000+</span><div class="stat-lbl" id="about-stat-flights-lbl">Flights Supported</div></div>
+  </div>
+
+  <!-- Team -->
+  <div class="section-label" id="team-label">Our Team</div>
+  <div class="team-grid" id="team-grid">
+    <!-- Loaded from /api/team -->
+  </div>
+
+  <!-- Our Office title + carousel (no "Office Photos" title) -->
+  <div class="section-label" style="margin-top:72px;">Our Office</div>
+  <div class="carousel-wrap" id="office-carousel">
+    <div class="carousel-track" id="carousel-track"></div>
+    <button class="carousel-btn carousel-prev" id="c-prev">&#8249;</button>
+    <button class="carousel-btn carousel-next" id="c-next">&#8250;</button>
+    <div class="carousel-dots" id="carousel-dots"></div>
+  </div>
+
+  <!-- Contact info at bottom — original "Get In Touch" style -->
+  <div class="section-label" style="margin-top:72px;">Get In Touch</div>
+  <div class="contact-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:40px;margin-bottom:72px;">
+    <div>
+      <div style="display:flex;gap:14px;margin-bottom:20px;align-items:flex-start;">
+        <span style="font-size:1.3rem;flex-shrink:0;">📍</span>
+        <div>
+          <div style="font-size:0.72rem;color:var(--sky);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Address</div>
+          <div id="about-address" style="color:#4a5568;font-size:0.9rem;line-height:1.6;">Room 801, 600 Yunjin Road,<br>Xuhui District, Shanghai, China</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;margin-bottom:20px;align-items:flex-start;">
+        <span style="font-size:1.3rem;flex-shrink:0;">📞</span>
+        <div>
+          <div style="font-size:0.72rem;color:var(--sky);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Phone</div>
+          <div id="about-phone" style="color:#4a5568;font-size:0.9rem;">+86 21 XXXX XXXX</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="display:flex;gap:14px;margin-bottom:20px;align-items:flex-start;">
+        <span style="font-size:1.3rem;flex-shrink:0;">✉️</span>
+        <div>
+          <div style="font-size:0.72rem;color:var(--sky);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Email</div>
+          <div style="color:#4a5568;font-size:0.9rem;"><a id="about-email" href="mailto:info@fulfill-aviation.com">info@fulfill-aviation.com</a></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;margin-bottom:20px;align-items:flex-start;">
+        <span style="font-size:1.3rem;flex-shrink:0;">🕐</span>
+        <div>
+          <div style="font-size:0.72rem;color:var(--sky);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;">Business Hours</div>
+          <div id="about-hours" style="color:#4a5568;font-size:0.9rem;line-height:1.6;">Mon – Fri: 9:00 AM – 6:00 PM<br>Sat: 9:00 AM – 12:00 PM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<footer>
+  <div class="foot-row">
+    <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
+    </div>
+</footer>
+
+
+<script>
+(function(){
+  var track = document.getElementById('carousel-track');
+  var dotsEl = document.getElementById('carousel-dots');
+  var prev = document.getElementById('c-prev');
+  var next = document.getElementById('c-next');
+  var current = 0;
+  var slides = [];
+
+  function render(imgs) {
+    if (!imgs || imgs.length === 0) {
+      track.innerHTML = '<div class="carousel-placeholder"><span class="c-icon">🏢</span><span>Upload office photos from Admin → Company Photo Carousel</span></div>';
+      prev.style.display = next.style.display = 'none';
+      return;
+    }
+    slides = imgs;
+    track.innerHTML = imgs.map(function(img) {
+      return '<img class="carousel-slide" src="' + img.url + '" alt="' + (img.caption||'Office photo') + '">';
+    }).join('');
+    dotsEl.innerHTML = imgs.map(function(_,i) {
+      return '<button class="carousel-dot' + (i===0?' active':'') + '" onclick="goTo(' + i + ')"></button>';
+    }).join('');
+    goTo(0);
+  }
+
+  window.goTo = function(n) {
+    current = (n + slides.length) % slides.length;
+    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    document.querySelectorAll('.carousel-dot').forEach(function(d,i){ d.classList.toggle('active', i===current); });
+  };
+
+  if (prev) prev.addEventListener('click', function(){ goTo(current - 1); });
+  if (next) next.addEventListener('click', function(){ goTo(current + 1); });
+
+  // Auto-advance every 5s
+  setInterval(function(){ if(slides.length > 1) goTo(current + 1); }, 5000);
+
+  fetch('/api/gallery')
+    .then(function(r){ return r.json(); })
+    .then(render)
+    .catch(function(){ render([]); });
+})();
+</script>
+
+<script>
+(function(){
+  var lang = localStorage.getItem('fa_lang') || 'en';
+
+  // Load settings
+  fetch('/api/settings/public')
+    .then(function(r){ return r.json(); })
+    .then(function(s) {
+      // Stats
+      if (s.stat_years) document.getElementById('about-stat-years').textContent = s.stat_years;
+      if (s.stat_destinations) document.getElementById('about-stat-dest').textContent = s.stat_destinations;
+      if (s.stat_partners) document.getElementById('about-stat-partners').textContent = s.stat_partners;
+      var pl = document.getElementById('about-stat-partners-lbl');
+      if (pl) pl.textContent = lang === 'zh' && s.stat_partners_label_zh ? s.stat_partners_label_zh : (s.stat_partners_label || 'Annual Flights');
+      // Contact
+      var addr = document.getElementById('about-address');
+      if (addr && s.address) addr.innerHTML = lang === 'zh' && s.address_zh ? s.address_zh : s.address.replace(',','<br>');
+      var ph = document.getElementById('about-phone');
+      if (ph && s.phone) ph.textContent = s.phone;
+      var em = document.getElementById('about-email');
+      if (em && s.email) { em.textContent = s.email; em.href = 'mailto:' + s.email; }
+      var hr = document.getElementById('about-hours');
+      if (hr && s.business_hours) hr.innerHTML = lang === 'zh' && s.business_hours_zh ? s.business_hours_zh : s.business_hours.replace(' / ','<br>');
+    }).catch(function(){});
+
+  // Load team members
+  fetch('/api/team')
+    .then(function(r){ return r.json(); })
+    .then(function(members) {
+      var grid = document.getElementById('team-grid');
+      if (!grid || !members.length) return;
+      grid.innerHTML = members.map(function(m) {
+        var photo = m.photo_url
+          ? '<img src="' + m.photo_url + '" alt="' + m.name + '" style="width:100%;height:100%;object-fit:cover;"/>'
+          : '<div class="img-ph">Photo</div>';
+        var name = lang === 'zh' && m.name_zh ? m.name_zh : m.name;
+        var role = lang === 'zh' && m.role_zh ? m.role_zh : m.role;
+        return '<div class="team-card">'
+          + '<div class="team-photo">' + photo + '</div>'
+          + '<div class="team-name">' + name + '</div>'
+          + '<div class="team-role">' + role + '</div>'
+          + '</div>';
+      }).join('');
+    }).catch(function(){});
+})();
+</script>
+</body></html>

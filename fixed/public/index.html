@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Company Name</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    /* ─── EDIT YOUR BRAND COLORS HERE ─────────────────── */
+    :root {
+      --navy:   #0b1f3a;
+      --sky:    #1a6ea8;
+      --gold:   #c8a96e;
+      --light:  #f5f6f8;
+      --white:  #ffffff;
+      --text:   #1e2535;
+      --muted:  #6b7280;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {padding-top:68px;
+      font-family: 'Barlow', sans-serif;
+      color: var(--text);
+      background: var(--white);
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── NAVIGATION ───────────────────────────────────── */
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    /* ─── HERO SLIDES ─────────────────────────────────── */
+    .hero {
+      position: relative; height: 100vh; overflow: hidden;
+    }
+
+    .slide {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      opacity: 0; transition: opacity 1.2s ease;
+    }
+    .slide.active { opacity: 1; }
+
+    /* EDIT: Replace these gradient placeholders with real image URLs */
+    .slide-1 { background: linear-gradient(135deg, #0b1f3a 0%, #1a6ea8 50%, #0b2d52 100%); }
+    .slide-2 { background: linear-gradient(135deg, #0d2640 0%, #0f4c75 60%, #1a6ea8 100%); }
+    /* To use real images, change to:
+       .slide-1 { background-image: url('your-image.jpg'); } */
+
+    .slide::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.55) 100%);
+    }
+
+    .hero-content {
+      position: absolute; z-index: 2;
+      bottom: 22%; left: 10%;
+      max-width: 640px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+
+    .hero-sub {
+      color: rgba(255,255,255,0.75);
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 12px 32px;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: all 0.3s;
+    }
+    .hero-btn:hover { background: var(--gold); color: var(--navy); }
+
+    .slide-dots {
+      position: absolute; bottom: 40px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; gap: 10px; z-index: 3;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.5);
+      background: transparent; cursor: pointer; transition: all 0.3s;
+    }
+    .dot.active { background: var(--gold); border-color: var(--gold); }
+
+    /* ─── INTRO STRIP ─────────────────────────────────── */
+    .intro-strip {
+      background: var(--navy);
+      padding: 48px 10%;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 40px;
+    }
+    .intro-text {
+      color: rgba(255,255,255,0.85);
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+      max-width: 700px;
+    }
+    .intro-divider { width: 1px; height: 80px; background: var(--gold); flex-shrink: 0; }
+    .intro-stat { text-align: center; flex-shrink: 0; }
+    .intro-stat .num {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 300;
+      font-size: 2.8rem; color: var(--gold); display: block;
+    }
+    .intro-stat .label { color: rgba(255,255,255,0.6); font-size: 0.78rem; letter-spacing: 1px; }
+
+    /* ─── SECTION HEADER ──────────────────────────────── */
+    .section-header {
+      text-align: center; padding: 72px 10% 48px;
+    }
+    .section-tag {
+      display: inline-block;
+      color: var(--sky);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 4px;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400;
+      color: var(--navy);
+    }
+
+    /* ─── NEWS ────────────────────────────────────────── */
+    .news { background: var(--light); }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 48px;
+      padding: 0 10% 72px;
+    }
+
+    .news-images {
+      display: flex; gap: 10px;
+      flex-wrap: wrap;
+    }
+    .news-img-item {
+      flex: 1 1 calc(33% - 10px);
+      min-width: 120px;
+      height: 110px;
+      background: #c9d6e3;
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .news-img-item img { width: 100%; height: 100%; object-fit: cover; }
+    .news-img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #c9d6e3, #a8bfd4);
+      color: #5a7a99; font-size: 0.68rem; text-align: center; padding: 8px;
+    }
+
+    .news-list {}
+    .news-item {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid #dde3ec;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .news-item:hover .news-item-title { color: var(--sky); }
+    .news-date {
+      flex-shrink: 0;
+      color: var(--gold);
+      font-size: 0.8rem;
+      font-weight: 500;
+      min-width: 90px;
+      padding-top: 2px;
+    }
+    .news-item-title {
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: var(--text);
+      transition: color 0.2s;
+    }
+
+    /* ─── SERVICES ────────────────────────────────────── */
+    .services { background: var(--white); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      padding: 0 0 72px;
+    }
+
+    .service-card {
+      position: relative; overflow: hidden;
+      height: 380px; cursor: pointer;
+    }
+    .service-card-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      transition: transform 0.6s ease;
+    }
+    .service-card:hover .service-card-bg { transform: scale(1.06); }
+
+    .svc-1 .service-card-bg { background: linear-gradient(160deg, #0b2d52, #1a6ea8); }
+    .svc-2 .service-card-bg { background: linear-gradient(160deg, #0d3a60, #0f5487); }
+    .svc-3 .service-card-bg { background: linear-gradient(160deg, #091a33, #14487a); }
+
+    .service-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%);
+    }
+    .service-card-content {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 32px;
+      z-index: 2;
+    }
+    .service-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
+    .service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; color: var(--white);
+      font-weight: 400; margin-bottom: 8px;
+    }
+    .service-desc {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.82rem; line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .service-link {
+      display: inline-block;
+      color: var(--gold);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 2px;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────── */
+    footer {
+      background: var(--navy);
+      padding: 56px 10%;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-brand 
+    .footer-desc {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.85rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .footer-qr {
+      width: 80px; height: 80px;
+      background: white; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      color: #999; font-size: 0.65rem; text-align: center; padding: 6px;
+    }
+    .footer-col h4 {
+      color: var(--gold);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.85rem; margin-bottom: 10px;
+      cursor: pointer; transition: color 0.2s;
+    }
+    .footer-col ul li:hover { color: var(--gold); }
+    .footer-contact p {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.85rem; margin-bottom: 10px; line-height: 1.6;
+    }
+    .footer-contact strong { color: rgba(255,255,255,0.85); }
+    .footer-bottom {
+      padding-top: 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-bottom p { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+
+    @media (max-width: 900px) {
+      
+      
+      .intro-strip { flex-direction: column; padding: 40px 6%; }
+      .news-grid { grid-template-columns: 1fr; padding: 0 6% 56px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .hero-content { left: 6%; bottom: 18%; }
+    }
+  </style>
+  <script src="/lang.js"></script>
+  <script src="/nav-labels.js"></script>
+</head>
+<body>
+<link rel="stylesheet" href="/nav.css"/>
+<nav class="gn">
+  <a href="/" class="gn-logo">FULFILL<span>.</span>AVIATION</a>
+  <ul class="gn-links">
+    <li><a href="/" class="active">Home</a></li>
+    <li><a href="/news.html">News</a></li>
+    <li><a href="/services.html">Services</a></li>
+    <li><a href="/charter.html">Charter &amp; Ticketing</a></li>
+    <li><a href="/about.html">About Us</a></li>
+    <li><a href="/contact.html">Contact</a></li>
+  </ul>
+  <div class="gn-right">
+    <div class="gn-lang">
+      <button data-lang="zh" onclick="setLang('zh')">中文</button>
+      <button data-lang="en" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="gn-burger" id="gn-burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="gn-mobile" id="gn-mobile">
+  <a href="/" class="active">Home</a>
+  <a href="/news.html">News</a>
+  <a href="/services.html">Services</a>
+  <a href="/charter.html">Charter &amp; Ticketing</a>
+  <a href="/about.html">About Us</a>
+  <a href="/contact.html">Contact</a>
+</div>
+<script>
+window.FA_PAGE = 'index';
+(function(){
+  var b = document.getElementById('gn-burger');
+  var m = document.getElementById('gn-mobile');
+  if (b && m) {
+    b.addEventListener('click', function() {
+      b.classList.toggle('open');
+      m.classList.toggle('open');
+    });
+    m.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        b.classList.remove('open');
+        m.classList.remove('open');
+      });
+    });
+  }
+})();
+</script>
+
+
+<!-- ═══ NAVIGATION ══════════════════════════════════════════ -->
+<!-- ═══ HERO ═════════════════════════════════════════════════ -->
+<section class="hero">
+
+  <div class="slide slide-1 active">
+    <!-- EDIT: To use a real photo instead of gradient:
+         <style>.slide-1 { background-image: url('your-photo.jpg'); }</style> -->
+    <div class="hero-content">
+      <span class="hero-tag">Trusted Since 2015</span>        <!-- EDIT -->
+      <h1 class="hero-title">
+        Technology&#8209;Led,<br>
+        Talent&#8209;Driven,<br>
+        World-Class Aviation                                   <!-- EDIT: main headline -->
+      </h1>
+      <p class="hero-sub">Professional. Reliable. Global.</p>  <!-- EDIT: subline -->
+      <a href="/about.html" class="hero-btn">Learn More</a>
+    </div>
+  </div>
+
+  <div class="slide slide-2">
+    <div class="hero-content">
+      <span class="hero-tag">Expanding Horizons</span>         <!-- EDIT -->
+      <h1 class="hero-title">
+        Opening Skies,<br>
+        Enabling Journeys                                      <!-- EDIT -->
+      </h1>
+      <p class="hero-sub">Making flight better for everyone.</p>
+      <a href="/services.html" class="hero-btn">Our Services</a>
+    </div>
+  </div>
+
+  <div class="slide-dots">
+    <div class="dot active" onclick="goSlide(0)"></div>
+    <div class="dot" onclick="goSlide(1)"></div>
+  </div>
+</section>
+
+<!-- ═══ INTRO STRIP ═════════════════════════════════════════ -->
+<div class="intro-strip">
+  <p class="intro-text">
+    <!-- EDIT: Company description -->
+    <span id="intro-text">Shanghai Fulfill Aviation Ground Service is a professional aviation services company specializing in operational support and travel solutions for governments, enterprises, aircraft manufacturers, airlines, and aircraft owners.</span>
+  </p>
+  <div class="intro-divider"></div>
+  <div class="intro-stat">
+    <span class="num" id="stat-years">10+</span>
+    <span class="label" id="stat-years-label">Years Experience</span>
+  </div>
+  <div class="intro-divider"></div>
+  <div class="intro-stat">
+    <span class="num" id="stat-destinations">50+</span>
+    <span class="label">Destinations</span>
+  </div>
+  <div class="intro-divider"></div>
+  <div class="intro-stat">
+    <span class="num" id="stat-partners">1000+</span>
+    <span class="label" id="stat-partners-label">Annual Flights</span>
+  </div>
+</div>
+
+<!-- ═══ NEWS ════════════════════════════════════════════════ -->
+<section class="news">
+  <div class="section-header">
+    <span class="section-tag">Latest Updates</span>
+    <h2 class="section-title">Recent News</h2>  <!-- EDIT -->
+  </div>
+
+  <div class="news-grid">
+
+    <!-- EDIT: Replace placeholder divs with real <img> tags
+         <div class="news-img-item"><img src="your-photo.jpg" alt="News photo"/></div> -->
+    <div class="news-images">
+      <div class="news-img-item"><div class="news-img-placeholder">Photo 1<br>Replace with img</div></div>
+      <div class="news-img-item"><div class="news-img-placeholder">Photo 2</div></div>
+      <div class="news-img-item"><div class="news-img-placeholder">Photo 3</div></div>
+      <div class="news-img-item"><div class="news-img-placeholder">Photo 4</div></div>
+      <div class="news-img-item"><div class="news-img-placeholder">Photo 5</div></div>
+      <div class="news-img-item"><div class="news-img-placeholder">Photo 6</div></div>
+    </div>
+
+    <!-- EDIT: Your news items below -->
+    <div class="news-list">
+      <div class="news-item">
+        <span class="news-date">2026-02-14</span>
+        <span class="news-item-title">Your latest news headline goes here — click to read more</span>
+      </div>
+      <div class="news-item">
+        <span class="news-date">2025-12-10</span>
+        <span class="news-item-title">Second news story — describe a recent milestone or event</span>
+      </div>
+      <div class="news-item">
+        <span class="news-date">2025-11-17</span>
+        <span class="news-item-title">Third headline — a new partnership, award, or achievement</span>
+      </div>
+      <div class="news-item">
+        <span class="news-date">2025-09-12</span>
+        <span class="news-item-title">Fourth story — expansion into a new market or region</span>
+      </div>
+      <div class="news-item">
+        <span class="news-date">2025-07-18</span>
+        <span class="news-item-title">Fifth headline — product launch or service update</span>
+      </div>
+      <div class="news-item">
+        <span class="news-date">2025-04-13</span>
+        <span class="news-item-title">Sixth story — team growth, event recap, or press coverage</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ SERVICES ════════════════════════════════════════════ -->
+<section class="services">
+  <div class="section-header">
+    <span class="section-tag">What We Do</span>
+    <h2 class="section-title">Our Services</h2>  <!-- EDIT -->
+  </div>
+
+  <div class="services-grid">
+
+    <!-- SERVICE 1 — EDIT name, desc, icon, link -->
+    <div class="service-card svc-1">
+      <div class="service-card-bg"></div>
+      <!-- Use real photo: <div class="service-card-bg" style="background-image:url('photo.jpg')"></div> -->
+      <div class="service-card-overlay"></div>
+      <div class="service-card-content">
+        <span class="service-icon">✈</span>
+        <div class="service-name">Flight Operations Support</div>
+        <p class="service-desc">Foreign &amp; domestic airline operational support — permits, handling, and coordination.</p>
+        <a href="/services.html" class="service-link">Learn More</a>
+      </div>
+    </div>
+
+    <!-- SERVICE 2 -->
+    <div class="service-card svc-2">
+      <div class="service-card-bg"></div>
+      <div class="service-card-overlay"></div>
+      <div class="service-card-content">
+        <span class="service-icon">⛽</span>
+        <div class="service-name">Aviation Fuel Supply</div>
+        <p class="service-desc">JetA-1 / TS1 / JP8 / AvGas supply with global sourcing and competitive pricing.</p>
+        <a href="/services.html" class="service-link">Learn More</a>
+      </div>
+    </div>
+
+    <!-- SERVICE 3 -->
+    <div class="service-card svc-3">
+      <div class="service-card-bg"></div>
+      <div class="service-card-overlay"></div>
+      <div class="service-card-content">
+        <span class="service-icon">🛫</span>
+        <div class="service-name">Charter &amp; Ticketing</div>
+        <p class="service-desc">Group charter / private charter / cargo charter / airline ticketing solutions.</p>
+        <a href="/services.html" class="service-link">Learn More</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-grid">
+
+    <div class="footer-brand">
+      <span class="nav-logo" id="footer-logo">FULFILL<span>.</span>AVIATION</span>
+      <p class="footer-desc">
+        Professional aviation services company — operational support and travel solutions worldwide.  <!-- EDIT -->
+      </p>
+      <div class="footer-qr">QR Code<br>(replace with img)</div>
+    </div>
+
+    <div class="footer-col">
+      <h4 id="footer-ql-title">Quick Links</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/news.html">News</a></li>
+        <li><a href="/services.html">Services</a></li>
+        <li><a href="/charter.html">Charter &amp; Ticketing</a></li>
+        <li><a href="/about.html">About Us</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col footer-contact">
+      <h4>Contact Us</h4>
+      <p><strong>Address:</strong><br><span id="footer-address">Room 801, 600 Yunjin Road, Xuhui District, Shanghai</span></p>
+      <p><strong>Phone:</strong> <span id="footer-phone">+86 21 XXXX XXXX</span></p>
+      <p><strong>Fax:</strong> <span id="footer-fax">+86 21 XXXX XXXX</span></p>
+      <p><strong>Email:</strong> <a id="footer-email" href="mailto:info@fulfill-aviation.com">info@fulfill-aviation.com</a></p>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p id="footer-copyright">© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const dots   = document.querySelectorAll('.dot');
+
+  function goSlide(n) {
+    slides[current].classList.remove('active');
+    dots[current].c
