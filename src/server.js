@@ -71,6 +71,7 @@ app.use('/api/settings', require('./routes/settings'));
 app.use('/api/upload',   require('./routes/upload'));
 app.use('/api/stats',    require('./routes/stats'));
 app.use('/api/gallery',  require('./routes/gallery'));
+app.use('/api/team',     require('./routes/team'));
 
 // ── Health check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));

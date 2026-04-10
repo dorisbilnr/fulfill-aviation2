@@ -62,7 +62,24 @@ db.exec(`
     value TEXT,
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
+  CREATE TABLE IF NOT EXISTS team_members (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL DEFAULT 'Team Member Name',
+    name_zh TEXT NOT NULL DEFAULT '团队成员',
+    role TEXT NOT NULL DEFAULT 'Position',
+    role_zh TEXT NOT NULL DEFAULT '职位',
+    photo_url TEXT,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    active INTEGER NOT NULL DEFAULT 1
+  );
+  CREATE TABLE IF NOT EXISTS gallery (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    url TEXT NOT NULL,
+    caption TEXT,
+    sort_order INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT (datetime('now'))
+  );
 `);
 
-console.log('Database tables created successfully');
+console.log('Database setup complete');
 db.close();

@@ -16,8 +16,9 @@
     'Opening Skies,': '开拓天空，', 'Enabling Journeys': '成就旅程',
     'Making flight better for everyone.': '让每一次飞行都更美好。',
     'What We Do': '我们的服务', 'Our Services': '服务项目',
-    'Years Experience': '年经验', 'Destinations': '目的地', 'Partners': '合作伙伴',
+    'Years Experience': '年经验', 'Destinations': '目的地', 'Partners': '合作伙伴', 'Annual Flights': '年度航班运营量',
     'Latest Updates': '最新动态', 'Recent News': '近期新闻',
+    'Quick Links': '快速链接', 'Contact Us': '联系我们', 'All News': '全部新闻',
     'News & Events': '新闻与活动', 'Latest': '最新',
     'Read More': '阅读更多', 'All News': '全部新闻',
     'Flight Operations Support': '航班运营支持',
@@ -150,6 +151,18 @@
       btn.style.borderColor = active ? '#c8a96e' : 'rgba(255,255,255,0.3)';
       btn.style.color = active ? '#c8a96e' : 'rgba(255,255,255,0.7)';
     });
+
+    /* Update nav labels for the new language */
+    if (window.applyNavLabels && window.__navSettings) {
+      window.applyNavLabels(window.__navSettings, lang);
+    }
+
+    /* Handle logo: toggle CSS class on <html> element */
+    if (lang === 'zh') {
+      document.documentElement.classList.add('lang-zh');
+    } else {
+      document.documentElement.classList.remove('lang-zh');
+    }
   }
 
   document.addEventListener('DOMContentLoaded', function() {

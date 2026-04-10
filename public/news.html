@@ -59,7 +59,7 @@
 <body>
 <link rel="stylesheet" href="/nav.css"/>
 <nav class="gn">
-  <a href="/" class="gn-logo">FULFILL<span>.</span>AVIATION</a>
+  <a href="/" class="gn-logo"><span class="logo-en">FULFILL<span>.</span>AVIATION</span><span class="logo-zh">赋瞻<span>.</span>航空</span></a>
   <ul class="gn-links">
     <li><a href="/">Home</a></li>
     <li><a href="/news.html" class="active">News</a></li>
@@ -86,88 +86,73 @@
 </div>
 <script>
 window.FA_PAGE = 'news';
-(function(){
-  var b = document.getElementById('gn-burger');
-  var m = document.getElementById('gn-mobile');
-  if (b && m) {
-    b.addEventListener('click', function() {
-      b.classList.toggle('open');
-      m.classList.toggle('open');
-    });
-    m.querySelectorAll('a').forEach(function(a) {
-      a.addEventListener('click', function() {
-        b.classList.remove('open');
-        m.classList.remove('open');
-      });
-    });
-  }
-})();
+(function(){var b=document.getElementById('gn-burger'),m=document.getElementById('gn-mobile');if(b&&m){b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('open');m.classList.remove('open');});});}}
+)();
 </script>
 <div class="page-hero"><div class="page-hero-content"><span class="page-tag">Latest Updates</span><h1 class="page-title">News &amp; Events</h1></div></div>
 <div class="container">
-  <div class="news-featured">
-    <div class="nf-img"><div class="img-ph">Featured photo<br>(replace with img tag)</div></div>
-    <div class="nf-body">
-      <span class="news-cat">Latest</span>
-      <div class="nf-date">2026-02-14</div>
-      <h2 class="nf-title">Your most recent news headline goes here</h2>
-      <p class="nf-exc">Write a 2-3 sentence summary of this story here. Describe what happened and why it matters for your company and clients.</p>
-      <a href="#" class="btn">Read More</a>
-    </div>
+  <div class="news-featured" id="news-featured">
+  <div class="nf-img"><div class="img-ph">Loading...</div></div>
+  <div class="nf-body">
+    <span class="news-cat">Latest</span>
+    <div class="nf-date" id="nf-date">—</div>
+    <div class="nf-title" id="nf-title">Loading latest news...</div>
+    <p class="nf-exc" id="nf-excerpt"></p>
+    <a href="#" class="btn" id="nf-link">Read More</a>
   </div>
-  <div class="section-label">All News</div>
-  <div class="news-grid">
-    <div class="nc">
-      <div class="nc-img"><div class="img-ph">Photo 2<br>(replace with img)</div></div>
-      <div class="nc-body">
-        <div class="nc-date">2025-12-10</div>
-        <div class="nc-title">News headline #2 — edit this title</div>
-        <p class="nc-exc">Short 1-2 sentence description. Edit this text.</p>
-      </div>
-    </div>
-    <div class="nc">
-      <div class="nc-img"><div class="img-ph">Photo 3<br>(replace with img)</div></div>
-      <div class="nc-body">
-        <div class="nc-date">2025-11-17</div>
-        <div class="nc-title">News headline #3 — edit this title</div>
-        <p class="nc-exc">Short 1-2 sentence description. Edit this text.</p>
-      </div>
-    </div>
-    <div class="nc">
-      <div class="nc-img"><div class="img-ph">Photo 4<br>(replace with img)</div></div>
-      <div class="nc-body">
-        <div class="nc-date">2025-09-12</div>
-        <div class="nc-title">News headline #4 — edit this title</div>
-        <p class="nc-exc">Short 1-2 sentence description. Edit this text.</p>
-      </div>
-    </div>
-    <div class="nc">
-      <div class="nc-img"><div class="img-ph">Photo 5<br>(replace with img)</div></div>
-      <div class="nc-body">
-        <div class="nc-date">2025-07-18</div>
-        <div class="nc-title">News headline #5 — edit this title</div>
-        <p class="nc-exc">Short 1-2 sentence description. Edit this text.</p>
-      </div>
-    </div>
-    <div class="nc">
-      <div class="nc-img"><div class="img-ph">Photo 6<br>(replace with img)</div></div>
-      <div class="nc-body">
-        <div class="nc-date">2025-04-13</div>
-        <div class="nc-title">News headline #6 — edit this title</div>
-        <p class="nc-exc">Short 1-2 sentence description. Edit this text.</p>
-      </div>
-    </div>
-    <div class="nc">
-      <div class="nc-img"><div class="img-ph">Photo 7<br>(replace with img)</div></div>
-      <div class="nc-body">
-        <div class="nc-date">2025-02-08</div>
-        <div class="nc-title">News headline #7 — edit this title</div>
-        <p class="nc-exc">Short 1-2 sentence description. Edit this text.</p>
-      </div>
-    </div>
-  </div>
+</div>
+
+<div class="section-label" style="margin-top:48px;margin-bottom:24px;">All News</div>
+<div class="news-grid" id="news-grid">
+  <!-- Populated from /api/news -->
+</div>
 </div><footer>
   <div class="foot-row">
     <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
     </div>
-</footer></body></html>
+</footer>
+<script>
+(function(){
+  fetch('/api/news?limit=10')
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      var articles = data.data || [];
+      if (!articles.length) return;
+
+      // Featured: first article
+      var f = articles[0];
+      var featImg = document.querySelector('#news-featured .nf-img');
+      if (featImg) featImg.innerHTML = f.image_url
+        ? '<img src="' + f.image_url + '" style="width:100%;height:100%;object-fit:cover;" alt=""/>'
+        : '<div class="img-ph">Featured photo</div>';
+      var nfDate = document.getElementById('nf-date');
+      if (nfDate) nfDate.textContent = f.created_at ? f.created_at.slice(0,10) : '';
+      var nfTitle = document.getElementById('nf-title');
+      if (nfTitle) nfTitle.textContent = f.title;
+      var nfExc = document.getElementById('nf-excerpt');
+      if (nfExc) nfExc.textContent = f.excerpt || '';
+      var nfLink = document.getElementById('nf-link');
+      if (nfLink) nfLink.href = '/news/' + f.slug;
+
+      // Grid: remaining articles
+      var grid = document.getElementById('news-grid');
+      if (!grid) return;
+      var rest = articles.slice(1);
+      if (!rest.length) { grid.style.display = 'none'; return; }
+      grid.innerHTML = rest.map(function(a) {
+        var img = a.image_url
+          ? '<img src="' + a.image_url + '" style="width:100%;height:100%;object-fit:cover;" alt=""/>'
+          : '<div class="img-ph">Photo</div>';
+        return '<div class="nc" onclick="window.location='/news/' + a.slug + ''">'
+          + '<div class="nc-img" style="height:180px;overflow:hidden;">' + img + '</div>'
+          + '<div class="nc-body" style="padding:16px;">'
+            + '<div class="news-cat" style="margin-bottom:6px;">' + (a.created_at||'').slice(0,10) + '</div>'
+            + '<div class="nf-title" style="font-size:1rem;margin-bottom:8px;">' + a.title + '</div>'
+            + '<p style="font-size:0.85rem;color:#4a5568;line-height:1.6;">' + (a.excerpt||'') + '</p>'
+          + '</div>'
+        + '</div>';
+      }).join('');
+    }).catch(function(e){ console.error('News load error:', e); });
+})();
+</script>
+</body></html>

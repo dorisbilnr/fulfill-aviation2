@@ -344,7 +344,7 @@
 <body>
 <link rel="stylesheet" href="/nav.css"/>
 <nav class="gn">
-  <a href="/" class="gn-logo">FULFILL<span>.</span>AVIATION</a>
+  <a href="/" class="gn-logo"><span class="logo-en">FULFILL<span>.</span>AVIATION</span><span class="logo-zh">赋瞻<span>.</span>航空</span></a>
   <ul class="gn-links">
     <li><a href="/" class="active">Home</a></li>
     <li><a href="/news.html">News</a></li>
@@ -371,22 +371,8 @@
 </div>
 <script>
 window.FA_PAGE = 'index';
-(function(){
-  var b = document.getElementById('gn-burger');
-  var m = document.getElementById('gn-mobile');
-  if (b && m) {
-    b.addEventListener('click', function() {
-      b.classList.toggle('open');
-      m.classList.toggle('open');
-    });
-    m.querySelectorAll('a').forEach(function(a) {
-      a.addEventListener('click', function() {
-        b.classList.remove('open');
-        m.classList.remove('open');
-      });
-    });
-  }
-})();
+(function(){var b=document.getElementById('gn-burger'),m=document.getElementById('gn-mobile');if(b&&m){b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('open');m.classList.remove('open');});});}}
+)();
 </script>
 
 
@@ -405,7 +391,7 @@ window.FA_PAGE = 'index';
         World-Class Aviation                                   <!-- EDIT: main headline -->
       </h1>
       <p class="hero-sub">Professional. Reliable. Global.</p>  <!-- EDIT: subline -->
-      <a href="#" class="hero-btn">Learn More</a>
+      <a href="/about.html" class="hero-btn">Learn More</a>
     </div>
   </div>
 
@@ -417,7 +403,7 @@ window.FA_PAGE = 'index';
         Enabling Journeys                                      <!-- EDIT -->
       </h1>
       <p class="hero-sub">Making flight better for everyone.</p>
-      <a href="#" class="hero-btn">Our Services</a>
+      <a href="/services.html" class="hero-btn">Our Services</a>
     </div>
   </div>
 
@@ -431,22 +417,22 @@ window.FA_PAGE = 'index';
 <div class="intro-strip">
   <p class="intro-text">
     <!-- EDIT: Company description -->
-    Your Company Name is a professional aviation services company. We specialize in operational support and travel solutions for governments, enterprises, aircraft manufacturers, airlines, and aircraft owners across commercial, business, and general aviation sectors.
+    <span id="intro-text">Shanghai Fulfill Aviation Ground Service is a professional aviation services company specializing in operational support and travel solutions for governments, enterprises, aircraft manufacturers, airlines, and aircraft owners.</span>
   </p>
   <div class="intro-divider"></div>
   <div class="intro-stat">
-    <span class="num">10+</span>   <!-- EDIT -->
-    <span class="label">Years Experience</span>
+    <span class="num" id="stat-years">10+</span>
+    <span class="label" id="stat-years-label">Years Experience</span>
   </div>
   <div class="intro-divider"></div>
   <div class="intro-stat">
-    <span class="num">50+</span>   <!-- EDIT -->
+    <span class="num" id="stat-destinations">50+</span>
     <span class="label">Destinations</span>
   </div>
   <div class="intro-divider"></div>
   <div class="intro-stat">
-    <span class="num">200+</span>  <!-- EDIT -->
-    <span class="label">Partners</span>
+    <span class="num" id="stat-partners">1000+</span>
+    <span class="label" id="stat-partners-label">Annual Flights</span>
   </div>
 </div>
 
@@ -508,45 +494,8 @@ window.FA_PAGE = 'index';
     <h2 class="section-title">Our Services</h2>  <!-- EDIT -->
   </div>
 
-  <div class="services-grid">
-
-    <!-- SERVICE 1 — EDIT name, desc, icon, link -->
-    <div class="service-card svc-1">
-      <div class="service-card-bg"></div>
-      <!-- Use real photo: <div class="service-card-bg" style="background-image:url('photo.jpg')"></div> -->
-      <div class="service-card-overlay"></div>
-      <div class="service-card-content">
-        <span class="service-icon">✈</span>
-        <div class="service-name">Flight Operations Support</div>
-        <p class="service-desc">Foreign &amp; domestic airline operational support — permits, handling, and coordination.</p>
-        <a href="#" class="service-link">Learn More</a>
-      </div>
-    </div>
-
-    <!-- SERVICE 2 -->
-    <div class="service-card svc-2">
-      <div class="service-card-bg"></div>
-      <div class="service-card-overlay"></div>
-      <div class="service-card-content">
-        <span class="service-icon">⛽</span>
-        <div class="service-name">Aviation Fuel Supply</div>
-        <p class="service-desc">JetA-1 / TS1 / JP8 / AvGas supply with global sourcing and competitive pricing.</p>
-        <a href="#" class="service-link">Learn More</a>
-      </div>
-    </div>
-
-    <!-- SERVICE 3 -->
-    <div class="service-card svc-3">
-      <div class="service-card-bg"></div>
-      <div class="service-card-overlay"></div>
-      <div class="service-card-content">
-        <span class="service-icon">🛫</span>
-        <div class="service-name">Charter &amp; Ticketing</div>
-        <p class="service-desc">Group charter / private charter / cargo charter / airline ticketing solutions.</p>
-        <a href="#" class="service-link">Learn More</a>
-      </div>
-    </div>
-
+  <div class="services-grid" id="services-grid">
+    <!-- loaded from /api/services -->
   </div>
 </section>
 
@@ -555,7 +504,7 @@ window.FA_PAGE = 'index';
   <div class="footer-grid">
 
     <div class="footer-brand">
-      <span class="nav-logo">YOUR<span>.</span>BRAND</span>  <!-- EDIT -->
+      <span class="nav-logo gn-logo"><span class="logo-en">FULFILL<span>.</span>AVIATION</span><span class="logo-zh">赋瞻<span>.</span>航空</span></span>
       <p class="footer-desc">
         Professional aviation services company — operational support and travel solutions worldwide.  <!-- EDIT -->
       </p>
@@ -563,35 +512,77 @@ window.FA_PAGE = 'index';
     </div>
 
     <div class="footer-col">
-      <h4>Quick Links</h4>
+      <h4 id="footer-ql-title">Quick Links</h4>
       <ul>
-        <li>Home</li>
-        <li>News</li>
-        <li>Services</li>   <!-- EDIT: match your nav -->
-        <li>About Us</li>
-        <li>Contact</li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/news.html">News</a></li>
+        <li><a href="/services.html">Services</a></li>
+        <li><a href="/charter.html">Charter &amp; Ticketing</a></li>
+        <li><a href="/about.html">About Us</a></li>
+        <li><a href="/contact.html">Contact</a></li>
       </ul>
     </div>
 
     <div class="footer-col footer-contact">
       <h4>Contact Us</h4>
-      <p><strong>Address:</strong><br>
-        Your Street Address,<br>   <!-- EDIT -->
-        City, Country
-      </p>
-      <p><strong>Phone:</strong> +XX XXX XXXX XXXX</p>  <!-- EDIT -->
-      <p><strong>Fax:</strong> +XX XXX XXXX XXXX</p>
-      <p><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5d34333b321d2432282f3e32302d3c3324733e3230">[email&#160;protected]</a></p>  <!-- EDIT -->
+      <p><strong>Address:</strong><br><span id="footer-address">Room 801, 600 Yunjin Road, Xuhui District, Shanghai</span></p>
+      <p><strong>Phone:</strong> <span id="footer-phone">+86 21 XXXX XXXX</span></p>
+      <p><strong>Fax:</strong> <span id="footer-fax">+86 21 XXXX XXXX</span></p>
+      <p><strong>Email:</strong> <a id="footer-email" href="mailto:info@fulfill-aviation.com">info@fulfill-aviation.com</a></p>
     </div>
 
   </div>
 
   <div class="footer-bottom">
-    <p>© 2026 Your Company Name. All rights reserved.</p>  <!-- EDIT -->
-    <p>Registration / ICP No. (if applicable)</p>
+    <p id="footer-copyright">© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
   </div>
 </footer>
 
+
+<script>
+fetch('/api/settings/public')
+  .then(function(r){ return r.json(); })
+  .then(function(s) {
+    var lang = localStorage.getItem('fa_lang') || 'en';
+    if (s.stat_years) { var el=document.getElementById('stat-years'); if(el) el.textContent=s.stat_years; }
+    if (s.stat_destinations) { var el=document.getElementById('stat-destinations'); if(el) el.textContent=s.stat_destinations; }
+    if (s.stat_partners) { var el=document.getElementById('stat-partners'); if(el) el.textContent=s.stat_partners; }
+    var pl=document.getElementById('stat-partners-label');
+    if (pl) pl.textContent = lang==='zh' && s.stat_partners_label_zh ? s.stat_partners_label_zh : (s.stat_partners_label||'Annual Flights');
+    var intro=document.getElementById('intro-text');
+    if (intro) intro.textContent = lang==='zh' && s.intro_text_zh ? s.intro_text_zh : (s.intro_text||intro.textContent);
+    var fa=document.getElementById('footer-address'); if(fa&&s.address) fa.textContent=lang==='zh'&&s.address_zh?s.address_zh:s.address;
+    var fp=document.getElementById('footer-phone'); if(fp&&s.phone) fp.textContent=s.phone;
+    var ff=document.getElementById('footer-fax'); if(ff&&s.fax) ff.textContent=s.fax;
+    var fe=document.getElementById('footer-email'); if(fe&&s.email){fe.textContent=s.email;fe.href='mailto:'+s.email;}
+  }).catch(function(){});
+  // Load services (with images) into homepage grid
+  fetch('/api/services')
+    .then(function(r){return r.json();})
+    .then(function(svcs){
+      var grid=document.getElementById('services-grid');
+      if(!grid||!svcs||!svcs.length)return;
+      var bgs=['linear-gradient(160deg,#0b2d52,#1a6ea8)','linear-gradient(160deg,#0d3a60,#0f5487)','linear-gradient(160deg,#091a33,#14487a)'];
+      // Show first 3 only on homepage
+      grid.innerHTML=svcs.slice(0,3).map(function(s,i){
+        var bg=s.image_url?'background-image:url('+s.image_url+');background-size:cover;background-position:center':('background:'+bgs[i%bgs.length]);
+        return '<div class="service-card" style="cursor:pointer" onclick="window.location='/services.html'">'
+          +'<div class="service-card-bg" style="'+bg+';position:absolute;inset:0;transition:transform 0.6s ease;"></div>'
+          +'<div class="service-card-overlay"></div>'
+          +'<div class="service-card-content">'
+            +'<span class="service-icon">'+(s.icon||'')+'</span>'
+            +'<div class="service-name">'+s.name+'</div>'
+            +'<p class="service-desc">'+(s.description||'')+'</p>'
+            +'<a href="/services.html" class="service-link">Learn More</a>'
+          +'</div></div>';
+      }).join('');
+      grid.querySelectorAll('.service-card').forEach(function(c){
+        var bg=c.querySelector('.service-card-bg');
+        c.addEventListener('mouseenter',function(){bg.style.transform='scale(1.06)';});
+        c.addEventListener('mouseleave',function(){bg.style.transform='scale(1)';});
+      });
+    }).catch(function(){});
+</script>
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   let current = 0;
   const slides = document.querySelectorAll('.slide');

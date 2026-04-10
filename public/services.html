@@ -52,7 +52,37 @@
     @media(max-width:900px){.svc-grid{grid-template-columns:1fr;}}
 </style>
   <link rel="stylesheet" href="/nav.css"/>
-  <script src="/lang.js"></script>
+<nav class="gn">
+  <a href="/" class="gn-logo"><span class="logo-en">FULFILL<span>.</span>AVIATION</span><span class="logo-zh">赋瞻<span>.</span>航空</span></a>
+  <ul class="gn-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/news.html">News</a></li>
+    <li><a href="/services.html" class="active">Services</a></li>
+    <li><a href="/charter.html">Charter &amp; Ticketing</a></li>
+    <li><a href="/about.html">About Us</a></li>
+    <li><a href="/contact.html">Contact</a></li>
+  </ul>
+  <div class="gn-right">
+    <div class="gn-lang">
+      <button data-lang="zh" onclick="setLang('zh')">中文</button>
+      <button data-lang="en" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="gn-burger" id="gn-burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="gn-mobile" id="gn-mobile">
+  <a href="/">Home</a>
+  <a href="/news.html">News</a>
+  <a href="/services.html" class="active">Services</a>
+  <a href="/charter.html">Charter &amp; Ticketing</a>
+  <a href="/about.html">About Us</a>
+  <a href="/contact.html">Contact</a>
+</div>
+<script>
+window.FA_PAGE = 'services';
+(function(){var b=document.getElementById('gn-burger'),m=document.getElementById('gn-mobile');if(b&&m){b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('open');m.classList.remove('open');});});}}
+)();
+</script>
   <script src="/nav-labels.js"></script>
 </head>
 <body>

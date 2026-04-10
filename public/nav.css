@@ -157,3 +157,8 @@ nav.gn .gn-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-4
 @media (max-width: 480px) {
   nav.gn { padding: 0 16px; }
 }
+
+/* ── Logo bilingual: EN/ZH hardcoded, toggled by CSS class ── */
+.logo-zh { display: none; }
+html.lang-zh .logo-en { display: none; }
+html.lang-zh .logo-zh { display: inline; }

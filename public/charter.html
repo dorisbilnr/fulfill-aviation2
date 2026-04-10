@@ -58,7 +58,7 @@
 <body>
 <link rel="stylesheet" href="/nav.css"/>
 <nav class="gn">
-  <a href="/" class="gn-logo">FULFILL<span>.</span>AVIATION</a>
+  <a href="/" class="gn-logo"><span class="logo-en">FULFILL<span>.</span>AVIATION</span><span class="logo-zh">赋瞻<span>.</span>航空</span></a>
   <ul class="gn-links">
     <li><a href="/">Home</a></li>
     <li><a href="/news.html">News</a></li>
@@ -85,24 +85,10 @@
 </div>
 <script>
 window.FA_PAGE = 'charter';
-(function(){
-  var b = document.getElementById('gn-burger');
-  var m = document.getElementById('gn-mobile');
-  if (b && m) {
-    b.addEventListener('click', function() {
-      b.classList.toggle('open');
-      m.classList.toggle('open');
-    });
-    m.querySelectorAll('a').forEach(function(a) {
-      a.addEventListener('click', function() {
-        b.classList.remove('open');
-        m.classList.remove('open');
-      });
-    });
-  }
-})();
+(function(){var b=document.getElementById('gn-burger'),m=document.getElementById('gn-mobile');if(b&&m){b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){b.classList.remove('open');m.classList.remove('open');});});}}
+)();
 </script>
-<div class="page-hero"><div class="page-hero-content"><span class="page-tag">Charter Services</span><h1 class="page-title">Charter &amp; Ticketing</h1></div></div>
+<div class="page-hero"><div class="page-hero-content"><span class="page-tag">Charter Services</span><h1 class="page-title" id="charter-page-title">Charter &amp; Ticketing</h1></div></div>
 <div class="container">
   <div class="charter-intro">
     <h2>Professional Charter Solutions</h2>
@@ -114,32 +100,32 @@ window.FA_PAGE = 'charter';
     <div class="ct-card">
       <div class="ct-img">&#128101;</div>
       <div class="ct-body">
-        <div class="ct-title">Group Charter</div>
-        <p class="ct-desc">Dedicated charter flights for corporate delegations, government missions, conferences, sports teams, and large-scale group travel. Full coordination from departure to arrival.</p>
+        <div class="ct-title" id="ct-title-1">Group Charter</div>
+        <p class="ct-desc" id="ct-desc-1">Dedicated charter flights for corporate delegations, government missions, conferences, sports teams, and large-scale group travel. Full coordination from departure to arrival.</p>
         <a href="contact.html" class="ct-link">Request Quote</a>
       </div>
     </div>
     <div class="ct-card">
       <div class="ct-img">&#129309;</div>
       <div class="ct-body">
-        <div class="ct-title">Private Charter</div>
-        <p class="ct-desc">Exclusive private jet charter for executives, VIP delegations, and diplomatic missions. Flexible scheduling, premium cabin standards, and complete discretion guaranteed.</p>
+        <div class="ct-title" id="ct-title-2">Private Charter</div>
+        <p class="ct-desc" id="ct-desc-2">Exclusive private jet charter for executives, VIP delegations, and diplomatic missions. Flexible scheduling, premium cabin standards, and complete discretion guaranteed.</p>
         <a href="contact.html" class="ct-link">Request Quote</a>
       </div>
     </div>
     <div class="ct-card">
       <div class="ct-img">&#128230;</div>
       <div class="ct-body">
-        <div class="ct-title">Cargo Charter</div>
-        <p class="ct-desc">Air cargo charter solutions for time-critical shipments, oversized freight, hazardous materials, and special handling requirements. Global network, competitive rates.</p>
+        <div class="ct-title" id="ct-title-3">Cargo Charter</div>
+        <p class="ct-desc" id="ct-desc-3">Air cargo charter solutions for time-critical shipments, oversized freight, hazardous materials, and special handling requirements. Global network, competitive rates.</p>
         <a href="contact.html" class="ct-link">Request Quote</a>
       </div>
     </div>
     <div class="ct-card">
       <div class="ct-img">&#127915;</div>
       <div class="ct-body">
-        <div class="ct-title">Airline Ticketing</div>
-        <p class="ct-desc">Full-service airline ticketing for domestic and international routes on behalf of corporate clients and partner airlines. Competitive group fares and flexible booking arrangements.</p>
+        <div class="ct-title" id="ct-title-4">Airline Ticketing</div>
+        <p class="ct-desc" id="ct-desc-4">Full-service airline ticketing for domestic and international routes on behalf of corporate clients and partner airlines. Competitive group fares and flexible booking arrangements.</p>
         <a href="contact.html" class="ct-link">Book Now</a>
       </div>
     </div>
@@ -154,4 +140,27 @@ window.FA_PAGE = 'charter';
   <div class="foot-row">
     <p>© 2026 Shanghai Fulfill Aviation Ground Service. All rights reserved.</p>
     </div>
-</footer></body></html>
+</footer>
+<script>
+fetch('/api/settings/public')
+  .then(function(r){ return r.json(); })
+  .then(function(s) {
+    var lang = localStorage.getItem('fa_lang') || 'en';
+    // Update page title to match nav tab name
+    var lang = localStorage.getItem('fa_lang') || 'en';
+    var ptEl = document.getElementById('charter-page-title');
+    if (ptEl) {
+      var title = (lang === 'zh' && s.nav_charter_zh) ? s.nav_charter_zh : (s.nav_charter || 'Charter & Ticketing');
+      ptEl.textContent = title;
+    }
+    for (var i = 1; i <= 4; i++) {
+      var tk = 'charter_type' + i + '_title';
+      var dk = 'charter_type' + i + '_desc';
+      var te = document.getElementById('ct-title-' + i);
+      var de = document.getElementById('ct-desc-' + i);
+      if (te && s[tk]) te.textContent = lang === 'zh' && s[tk+'_zh'] ? s[tk+'_zh'] : s[tk];
+      if (de && s[dk]) de.textContent = lang === 'zh' && s[dk+'_zh'] ? s[dk+'_zh'] : s[dk];
+    }
+  }).catch(function(){});
+</script>
+</body></html>

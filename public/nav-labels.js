@@ -1,37 +1,38 @@
-/* nav-labels.js — fetches tab names from admin settings and applies them */
+/* nav-labels.js — fetches nav labels (EN+ZH) from settings and applies them */
 (function(){
-  var NAV_KEYS = {
-    'nav_home':    { en: 'Home',               href: '/' },
-    'nav_news':    { en: 'News',               href: '/news.html' },
-    'nav_services':{ en: 'Services',           href: '/services.html' },
-    'nav_charter': { en: 'Charter & Ticketing',href: '/charter.html' },
-    'nav_about':   { en: 'About Us',           href: '/about.html' },
-    'nav_contact': { en: 'Contact',            href: '/contact.html' },
+  var currentLang = localStorage.getItem('fa_lang') || 'en';
+
+  var NAV_MAP = {
+    'nav_home':    '/',
+    'nav_news':    '/news.html',
+    'nav_services':'/services.html',
+    'nav_charter': '/charter.html',
+    'nav_about':   '/about.html',
+    'nav_contact': '/contact.html',
   };
 
-  function applyLabels(settings) {
-    // Update desktop nav links
-    document.querySelectorAll('nav.gn .gn-links a').forEach(function(a) {
-      var href = a.getAttribute('href');
-      Object.keys(NAV_KEYS).forEach(function(key) {
-        if (NAV_KEYS[key].href === href && settings[key]) {
-          a.textContent = settings[key];
-        }
-      });
-    });
-    // Update mobile nav links
-    document.querySelectorAll('.gn-mobile a').forEach(function(a) {
-      var href = a.getAttribute('href');
-      Object.keys(NAV_KEYS).forEach(function(key) {
-        if (NAV_KEYS[key].href === href && settings[key]) {
-          a.textContent = settings[key];
-        }
+  window.__navSettings = {};
+
+  function applyNavLabels(settings, lang) {
+    lang = lang || currentLang;
+    Object.keys(NAV_MAP).forEach(function(key) {
+      var href = NAV_MAP[key];
+      var label = (lang === 'zh' && settings[key + '_zh']) ? settings[key + '_zh'] : (settings[key] || null);
+      if (!label) return;
+      document.querySelectorAll('nav.gn .gn-links a, .gn-mobile a').forEach(function(a) {
+        if (a.getAttribute('href') === href) a.textContent = label;
       });
     });
   }
 
   fetch('/api/settings/public')
     .then(function(r){ return r.json(); })
-    .then(applyLabels)
-    .catch(function(){});  // fail silently — defaults remain
+    .then(function(settings) {
+      window.__navSettings = settings;
+      applyNavLabels(settings, currentLang);
+    })
+    .catch(function(){});
+
+  // Expose so lang.js can call this when language switches
+  window.applyNavLabels = applyNavLabels;
 })();
