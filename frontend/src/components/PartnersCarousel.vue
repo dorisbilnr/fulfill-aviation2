@@ -51,24 +51,29 @@ onMounted(async () => {
   font-size: clamp(1.6rem, 2.5vw, 2.2rem); font-weight: 400; color: var(--navy);
 }
 .partners-track {
-  display: flex; flex-wrap: wrap; gap: 24px;
-  align-items: center; justify-content: center;
+  display: flex; flex-wrap: nowrap; gap: 32px;
+  align-items: stretch;
+  overflow-x: auto;
+  padding: 8px 4px 16px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
+.partners-track::-webkit-scrollbar { height: 4px; }
+.partners-track::-webkit-scrollbar-track { background: #eaecf0; border-radius: 2px; }
+.partners-track::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
 .partner-logo {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
-  width: 160px; min-height: 90px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  flex-shrink: 0;
+  width: 220px; height: 140px;
   background: white;
   border: 1px solid #e5e9f0;
-  border-radius: 4px;
-  padding: 14px 16px;
+  border-radius: 6px;
+  padding: 20px 20px 16px;
   transition: box-shadow 0.2s, border-color 0.2s;
   text-decoration: none;
+  scroll-snap-align: start;
 }
-.partner-logo:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-color: var(--gold); }
-.partner-logo img { max-width: 100%; max-height: 52px; object-fit: contain; }
-.partner-name { font-size: 0.78rem; color: #4a5568; text-align: center; font-weight: 500; line-height: 1.3; }
-
-@media (max-width: 600px) {
-  .partner-logo { width: 110px; height: 60px; }
-}
+.partner-logo:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.1); border-color: var(--gold); }
+.partner-logo img { max-width: 100%; max-height: 80px; object-fit: contain; }
+.partner-name { font-size: 0.9rem; color: #1e2535; text-align: center; font-weight: 600; line-height: 1.3; }
 </style>
