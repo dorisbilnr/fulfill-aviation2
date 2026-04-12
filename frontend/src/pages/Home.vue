@@ -1,109 +1,117 @@
 <template>
-  <div class="home">
-    <!-- ── Hero ── -->
-    <section class="hero" :style="{ backgroundImage: heroBg }">
-      <div class="hero-overlay"></div>
-      <div class="container hero-content">
-        <transition name="fade" mode="out-in">
-          <div :key="slide" class="hero-text">
-            <span class="section-tag">{{ currentSlide.tag }}</span>
-            <h1>{{ currentSlide.title }}</h1>
-            <p>{{ currentSlide.sub }}</p>
-            <RouterLink :to="slide === 0 ? '/about' : '/services'" class="btn btn-primary">
-              {{ slide === 0 ? (isZh ? '了解更多' : 'Learn More') : (isZh ? '我们的服务' : 'Our Services') }}
-            </RouterLink>
-          </div>
-        </transition>
-      </div>
-      <!-- Slide indicators -->
-      <div class="hero-dots">
-        <button v-for="i in 2" :key="i" :class="{ active: slide === i-1 }" @click="slide = i-1"></button>
-      </div>
-    </section>
-
-    <!-- ── Stats bar ── -->
-    <section class="stats-bar">
-      <div class="container stats-grid">
-        <div class="stat-item">
-          <span class="stat-num">{{ s.stat_years || '10+' }}</span>
-          <span class="stat-lbl">{{ isZh ? '年经验' : 'Years Experience' }}</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-num">{{ s.stat_destinations || '50+' }}</span>
-          <span class="stat-lbl">{{ isZh ? '目的地' : 'Destinations' }}</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-num">{{ s.stat_partners || '1000+' }}</span>
-          <span class="stat-lbl">{{ isZh ? (s.stat_partners_label_zh || '年度航班运营量') : (s.stat_partners_label || 'Annual Flights') }}</span>
+  <div>
+    <!-- ═══ HERO ═══════════════════════════════════════════════════ -->
+    <section class="hero">
+      <div class="slide slide-1" :class="{ active: slide === 0 }">
+        <div class="hero-content">
+          <span class="hero-tag">{{ isZh ? (s.hero1_tag_zh || s.hero1_tag || 'Trusted Since 2015') : (s.hero1_tag || 'Trusted Since 2015') }}</span>
+          <h1 class="hero-title" v-html="(isZh ? (s.hero1_title_zh || s.hero1_title) : s.hero1_title) || 'Technology&#8209;Led,<br>Talent&#8209;Driven,<br>World-Class Aviation'"></h1>
+          <p class="hero-sub">{{ isZh ? (s.hero1_sub_zh || s.hero1_sub || 'Professional. Reliable. Global.') : (s.hero1_sub || 'Professional. Reliable. Global.') }}</p>
+          <RouterLink to="/about" class="hero-btn">{{ isZh ? '了解更多' : 'Learn More' }}</RouterLink>
         </div>
       </div>
-      <div class="container intro-text">
-        <p>{{ isZh ? s.intro_text_zh : s.intro_text }}</p>
+      <div class="slide slide-2" :class="{ active: slide === 1 }">
+        <div class="hero-content">
+          <span class="hero-tag">{{ isZh ? (s.hero2_tag_zh || s.hero2_tag || 'Expanding Horizons') : (s.hero2_tag || 'Expanding Horizons') }}</span>
+          <h1 class="hero-title" v-html="(isZh ? (s.hero2_title_zh || s.hero2_title) : s.hero2_title) || 'Opening Skies,<br>Enabling Journeys'"></h1>
+          <p class="hero-sub">{{ isZh ? (s.hero2_sub_zh || s.hero2_sub || 'Making flight better for everyone.') : (s.hero2_sub || 'Making flight better for everyone.') }}</p>
+          <RouterLink to="/services" class="hero-btn">{{ isZh ? '我们的服务' : 'Our Services' }}</RouterLink>
+        </div>
+      </div>
+      <div class="slide-dots">
+        <div class="dot" :class="{ active: slide === 0 }" @click="goSlide(0)"></div>
+        <div class="dot" :class="{ active: slide === 1 }" @click="goSlide(1)"></div>
       </div>
     </section>
 
-    <!-- ── News preview ── -->
-    <section class="news-section">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <span class="section-tag">{{ isZh ? '最新动态' : 'Latest Updates' }}</span>
-            <h2 class="section-title">{{ isZh ? '近期新闻' : 'Recent News' }}</h2>
-          </div>
-          <RouterLink to="/news" class="btn btn-outline">{{ isZh ? '全部新闻' : 'All News' }}</RouterLink>
-        </div>
+    <!-- ═══ INTRO STRIP ═══════════════════════════════════════════ -->
+    <div class="intro-strip">
+      <p class="intro-text">{{ isZh ? (s.intro_text_zh || s.intro_text) : (s.intro_text || '') }}</p>
+      <div class="intro-divider"></div>
+      <div class="intro-stat">
+        <span class="num">{{ s.stat_years || '10+' }}</span>
+        <span class="label">{{ isZh ? '年经验' : 'Years Experience' }}</span>
+      </div>
+      <div class="intro-divider"></div>
+      <div class="intro-stat">
+        <span class="num">{{ s.stat_destinations || '50+' }}</span>
+        <span class="label">{{ isZh ? '目的地' : 'Destinations' }}</span>
+      </div>
+      <div class="intro-divider"></div>
+      <div class="intro-stat">
+        <span class="num">{{ s.stat_partners || '2000+' }}</span>
+        <span class="label">{{ isZh ? (s.stat_partners_label_zh || '年度航班运营量') : (s.stat_partners_label || 'Annual Flights') }}</span>
+      </div>
+    </div>
 
-        <div v-if="newsLoading" class="spinner"></div>
-        <div v-else class="news-grid">
+    <!-- ═══ NEWS ══════════════════════════════════════════════════ -->
+    <section class="news">
+      <div class="section-header">
+        <span class="section-tag">{{ isZh ? '最新动态' : 'Latest Updates' }}</span>
+        <h2 class="section-title">{{ isZh ? '近期新闻' : 'Recent News' }}</h2>
+      </div>
+      <div class="news-grid">
+        <!-- 图片区 -->
+        <div class="news-images">
           <RouterLink
-            v-for="item in newsItems"
+            v-for="item in newsItems.slice(0, 6)"
             :key="item.id"
             :to="`/news/${item.slug}`"
-            class="news-card card"
+            class="news-img-item"
           >
-            <div class="news-img" :style="{ backgroundImage: item.image_url ? `url(${item.image_url})` : 'none' }">
-              <span v-if="!item.image_url" class="news-img-placeholder">✈</span>
-            </div>
-            <div class="news-body">
-              <p class="news-date">{{ item.created_at?.slice(0, 10) }}</p>
-              <h3>{{ isZh ? item.title : (item.title_en || item.title) }}</h3>
-            </div>
+            <img v-if="item.image_url" :src="item.image_url" :alt="item.title" />
+            <div v-else class="news-img-placeholder"></div>
           </RouterLink>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── Services preview ── -->
-    <section class="services-section">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <span class="section-tag">{{ isZh ? '我们的服务' : 'What We Do' }}</span>
-            <h2 class="section-title">{{ isZh ? '服务项目' : 'Our Services' }}</h2>
+          <!-- fill empty slots -->
+          <div v-for="i in Math.max(0, 6 - newsItems.length)" :key="'ph'+i" class="news-img-item">
+            <div class="news-img-placeholder"></div>
           </div>
-          <RouterLink to="/services" class="btn btn-outline">{{ isZh ? '全部服务' : 'All Services' }}</RouterLink>
         </div>
-        <div class="grid-3">
+        <!-- 列表 -->
+        <div class="news-list">
           <RouterLink
-            v-for="svc in topServices"
-            :key="svc.id"
-            :to="`/services/${svc.slug}`"
-            class="svc-card card"
+            v-for="item in newsItems.slice(0, 6)"
+            :key="item.id"
+            :to="`/news/${item.slug}`"
+            class="news-item"
           >
-            <div class="svc-img" :style="{ backgroundImage: svc.image_url ? `url(${svc.image_url})` : 'none' }">
-              <span v-if="!svc.image_url" class="svc-icon">{{ svc.icon }}</span>
-            </div>
-            <div class="svc-body">
-              <h3>{{ isZh ? (svc.name_zh || svc.name) : svc.name }}</h3>
-              <p>{{ isZh ? (svc.description_zh || svc.description) : svc.description }}</p>
-              <span class="learn-more">{{ isZh ? '了解更多 →' : 'Learn More →' }}</span>
-            </div>
+            <span class="news-date">{{ item.created_at?.slice(0, 10) }}</span>
+            <span class="news-item-title">{{ isZh ? item.title : (item.title_en || item.title) }}</span>
           </RouterLink>
         </div>
       </div>
     </section>
 
-    <!-- ── Partners ── -->
+    <!-- ═══ SERVICES ══════════════════════════════════════════════ -->
+    <section class="services">
+      <div class="section-header">
+        <span class="section-tag">{{ isZh ? '我们的服务' : 'What We Do' }}</span>
+        <h2 class="section-title">{{ isZh ? '服务项目' : 'Our Services' }}</h2>
+      </div>
+      <div class="services-grid">
+        <RouterLink
+          v-for="(svc, i) in topServices"
+          :key="svc.id"
+          :to="`/services/${svc.slug}`"
+          class="service-card"
+        >
+          <div class="service-card-bg"
+            :style="svc.image_url
+              ? { backgroundImage: `url(${svc.image_url})` }
+              : { background: BG_GRADIENTS[i % BG_GRADIENTS.length] }">
+          </div>
+          <div class="service-card-overlay"></div>
+          <div class="service-card-content">
+            <span class="service-icon">{{ svc.icon }}</span>
+            <div class="service-name">{{ isZh ? (svc.name_zh || svc.name) : svc.name }}</div>
+            <p class="service-desc">{{ isZh ? (svc.description_zh || svc.description) : svc.description }}</p>
+            <span class="service-link">{{ isZh ? '了解更多' : 'Learn More' }}</span>
+          </div>
+        </RouterLink>
+      </div>
+    </section>
+
+    <!-- ═══ PARTNERS ═══════════════════════════════════════════════ -->
     <PartnersCarousel />
   </div>
 </template>
@@ -117,46 +125,39 @@ import PartnersCarousel from '@/components/PartnersCarousel.vue'
 
 const settings = useSettingsStore()
 const servicesStore = useServicesStore()
-const langStore = useLangStore()
-const { isZh } = langStore
+const { isZh } = useLangStore()
 const s = settings.data
+
+const BG_GRADIENTS = [
+  'linear-gradient(160deg,#0b2d52,#1a6ea8)',
+  'linear-gradient(160deg,#0d3a60,#0f5487)',
+  'linear-gradient(160deg,#091a33,#14487a)',
+  'linear-gradient(160deg,#0b2540,#1a5a8a)',
+  'linear-gradient(160deg,#102030,#1a4060)',
+  'linear-gradient(160deg,#0a1828,#1a3858)',
+]
 
 const slide = ref(0)
 const newsItems = ref([])
-const newsLoading = ref(true)
 let slideTimer = null
 
-const heroBg = ref('linear-gradient(135deg, #0b1f3a 0%, #1a3a5c 100%)')
+const topServices = computed(() => servicesStore.list.slice(0, 6))
 
-const currentSlide = computed(() => {
-  const zh = isZh.value
-  if (slide.value === 0) return {
-    tag:   zh ? (s.hero1_tag_zh   || s.hero1_tag   || 'Professional Aviation Services') : (s.hero1_tag   || 'Professional Aviation Services'),
-    title: zh ? (s.hero1_title_zh || s.hero1_title || 'Technology-Led Aviation') : (s.hero1_title || 'Technology-Led Aviation'),
-    sub:   zh ? (s.hero1_sub_zh   || s.hero1_sub   || '') : (s.hero1_sub   || ''),
-  }
-  return {
-    tag:   zh ? (s.hero2_tag_zh   || s.hero2_tag   || 'Expanding Horizons') : (s.hero2_tag   || 'Expanding Horizons'),
-    title: zh ? (s.hero2_title_zh || s.hero2_title || 'Opening Skies') : (s.hero2_title || 'Opening Skies'),
-    sub:   zh ? (s.hero2_sub_zh   || s.hero2_sub   || '') : (s.hero2_sub   || ''),
-  }
-})
-
-const topServices = computed(() => servicesStore.list.slice(0, 3))
+function goSlide(n) {
+  slide.value = n
+}
 
 onMounted(async () => {
-  // Auto-advance slides
-  slideTimer = setInterval(() => { slide.value = slide.value === 0 ? 1 : 0 }, 6000)
+  slideTimer = setInterval(() => {
+    slide.value = slide.value === 0 ? 1 : 0
+  }, 6000)
 
-  // Fetch news
   try {
     const r = await fetch('/api/news?page=1&limit=6')
     const d = await r.json()
     newsItems.value = d.data || []
   } catch (e) {
     console.error(e)
-  } finally {
-    newsLoading.value = false
   }
 })
 
@@ -164,122 +165,66 @@ onUnmounted(() => clearInterval(slideTimer))
 </script>
 
 <style scoped>
-/* ── Hero ── */
-.hero {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0b1f3a 0%, #1a3a5c 100%);
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex; align-items: center;
-}
-.hero-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to right, rgba(11,31,58,0.85) 40%, rgba(11,31,58,0.4));
-}
-.hero-content { position: relative; z-index: 1; padding-top: 70px; }
-.hero-text { max-width: 680px; }
-.hero-text .section-tag { display: block; margin-bottom: 16px; }
-.hero-text h1 {
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  font-weight: 700; color: white;
-  line-height: 1.15; margin-bottom: 20px;
-}
-.hero-text p { font-size: 1.05rem; color: rgba(255,255,255,0.75); margin-bottom: 32px; }
-.hero-dots {
-  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 10px; z-index: 2;
-}
-.hero-dots button {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: rgba(255,255,255,0.35); border: none;
-  transition: background 0.2s, transform 0.2s;
-}
-.hero-dots button.active { background: var(--gold); transform: scale(1.3); }
-.fade-enter-active, .fade-leave-active { transition: opacity 0.5s; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
+/* ── HERO ── */
+.hero { position: relative; height: 100vh; overflow: hidden; }
+.slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.2s ease; }
+.slide.active { opacity: 1; }
+.slide-1 { background: linear-gradient(135deg, #0b1f3a 0%, #1a6ea8 50%, #0b2d52 100%); }
+.slide-2 { background: linear-gradient(135deg, #0d2640 0%, #0f4c75 60%, #1a6ea8 100%); }
+.slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.55) 100%); }
+.hero-content { position: absolute; z-index: 2; bottom: 22%; left: 10%; max-width: 640px; }
+.hero-tag { display: inline-block; background: var(--gold); color: var(--navy); font-size: 0.7rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; padding: 5px 14px; margin-bottom: 20px; }
+.hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 4.5vw, 3.8rem); font-weight: 300; color: var(--white); line-height: 1.25; margin-bottom: 20px; }
+.hero-sub { color: rgba(255,255,255,0.75); font-size: 1rem; font-weight: 300; line-height: 1.7; margin-bottom: 32px; }
+.hero-btn { display: inline-block; border: 1px solid var(--gold); color: var(--gold); padding: 12px 32px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; transition: all 0.3s; font-family: 'Barlow', sans-serif; }
+.hero-btn:hover { background: var(--gold); color: var(--navy); }
+.slide-dots { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 3; }
+.dot { width: 8px; height: 8px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.5); background: transparent; cursor: pointer; transition: all 0.3s; }
+.dot.active { background: var(--gold); border-color: var(--gold); }
 
-/* ── Stats bar ── */
-.stats-bar {
-  background: #0f2d4f;
-  padding: 48px 0 40px;
-  color: white;
-}
-.stats-grid {
-  display: grid; grid-template-columns: repeat(3,1fr);
-  gap: 0; text-align: center; margin-bottom: 32px;
-}
-.stat-item {
-  padding: 24px;
-  border-right: 1px solid rgba(255,255,255,0.1);
-}
-.stat-item:last-child { border-right: none; }
-.stat-num {
-  display: block;
-  font-size: 2.4rem; font-weight: 700; color: var(--gold);
-  margin-bottom: 6px;
-}
-.stat-lbl { font-size: 0.82rem; letter-spacing: 1px; color: rgba(255,255,255,0.6); }
-.intro-text {
-  max-width: 800px;
-  text-align: center;
-  font-size: 1rem;
-  color: rgba(255,255,255,0.7);
-  line-height: 1.8;
-  margin: 0 auto;
-  padding: 0 24px;
-}
+/* ── INTRO STRIP ── */
+.intro-strip { background: var(--navy); padding: 48px 10%; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+.intro-text { color: rgba(255,255,255,0.85); font-size: 1rem; font-weight: 300; line-height: 1.8; max-width: 700px; }
+.intro-divider { width: 1px; height: 80px; background: var(--gold); flex-shrink: 0; }
+.intro-stat { text-align: center; flex-shrink: 0; }
+.intro-stat .num { font-family: 'Barlow', sans-serif; font-weight: 300; font-size: 2.8rem; color: var(--gold); display: block; }
+.intro-stat .label { color: rgba(255,255,255,0.6); font-size: 0.78rem; letter-spacing: 1px; }
 
-/* ── News ── */
-.news-section { padding: 80px 0; background: white; }
-.section-head {
-  display: flex; align-items: flex-end;
-  justify-content: space-between; margin-bottom: 40px;
-}
-.news-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-.news-card { text-decoration: none; }
-.news-img {
-  height: 200px;
-  background: var(--light) center/cover;
-  display: flex; align-items: center; justify-content: center;
-}
-.news-img-placeholder { font-size: 2.5rem; opacity: 0.3; }
-.news-body { padding: 20px; }
-.news-date { font-size: 0.75rem; color: var(--gold); margin-bottom: 8px; font-weight: 600; }
-.news-body h3 {
-  font-size: 0.95rem; font-weight: 600;
-  color: var(--navy); line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+/* ── SECTION HEADER ── */
+.section-header { text-align: center; padding: 72px 10% 48px; }
+.section-tag { display: inline-block; color: var(--sky); font-size: 0.72rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; border-bottom: 2px solid var(--gold); padding-bottom: 4px; margin-bottom: 16px; }
+.section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 400; color: var(--navy); }
 
-/* ── Services ── */
-.services-section { padding: 80px 0; background: var(--light); }
-.svc-card { text-decoration: none; }
-.svc-img {
-  height: 220px;
-  background: var(--navy) center/cover;
-  display: flex; align-items: center; justify-content: center;
-}
-.svc-icon { font-size: 3rem; }
-.svc-body { padding: 24px; }
-.svc-body h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
-.svc-body p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; }
-.learn-more { font-size: 0.8rem; font-weight: 600; color: var(--sky); letter-spacing: 0.5px; }
+/* ── NEWS ── */
+.news { background: var(--light); }
+.news-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; padding: 0 10% 72px; }
+.news-images { display: flex; gap: 10px; flex-wrap: wrap; align-content: flex-start; }
+.news-img-item { flex: 1 1 calc(33% - 10px); min-width: 120px; height: 110px; background: #c9d6e3; border-radius: 2px; overflow: hidden; cursor: pointer; display: block; }
+.news-img-item img { width: 100%; height: 100%; object-fit: cover; }
+.news-img-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #c9d6e3, #a8bfd4); }
+.news-item { display: flex; align-items: flex-start; gap: 16px; padding: 18px 0; border-bottom: 1px solid #dde3ec; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+.news-item:hover .news-item-title { color: var(--sky); }
+.news-date { flex-shrink: 0; color: var(--gold); font-size: 0.8rem; font-weight: 500; min-width: 90px; padding-top: 2px; }
+.news-item-title { font-size: 0.9rem; line-height: 1.55; color: var(--text); transition: color 0.2s; }
+
+/* ── SERVICES ── */
+.services { background: var(--white); }
+.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 0 0 72px; }
+.service-card { position: relative; overflow: hidden; height: 380px; display: block; text-decoration: none; }
+.service-card-bg { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 0.6s ease; }
+.service-card:hover .service-card-bg { transform: scale(1.06); }
+.service-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%); }
+.service-card-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 32px; z-index: 2; }
+.service-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
+.service-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--white); font-weight: 400; margin-bottom: 8px; }
+.service-desc { color: rgba(255,255,255,0.7); font-size: 0.82rem; line-height: 1.6; margin-bottom: 16px; }
+.service-link { display: inline-block; color: var(--gold); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--gold); padding-bottom: 2px; }
 
 @media (max-width: 900px) {
-  .news-grid { grid-template-columns: repeat(2,1fr); }
-}
-@media (max-width: 600px) {
-  .news-grid, .stats-grid { grid-template-columns: 1fr; }
-  .section-head { flex-direction: column; align-items: flex-start; gap: 16px; }
-  .stats-bar { padding: 32px 0 24px; }
-  .news-section, .services-section { padding: 56px 0; }
+  .intro-strip { flex-direction: column; padding: 40px 6%; }
+  .intro-divider { width: 80px; height: 1px; }
+  .news-grid { grid-template-columns: 1fr; padding: 0 6% 56px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .hero-content { left: 6%; bottom: 18%; }
 }
 </style>

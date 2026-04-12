@@ -1,35 +1,54 @@
 <template>
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <!-- Left: Brand + description -->
-      <div class="footer-col">
-        <div class="footer-logo">
-          <span v-if="!isZh" class="logo-en">FULFILL<span class="dot">.</span>AVIATION</span>
-          <span v-else class="logo-zh">赋瞻航空</span>
+  <footer>
+    <div class="footer-grid">
+      <!-- Brand -->
+      <div class="footer-brand">
+        <RouterLink to="/" class="gn-logo">
+          <span class="logo-en">FULFILL<span>.</span>AVIATION</span>
+          <span class="logo-zh">赋瞻<span>.</span>航空</span>
+        </RouterLink>
+        <p class="footer-desc">
+          {{ isZh ? (s.intro_text_zh || s.intro_text) : (s.intro_text || '') }}
+        </p>
+        <div v-if="s.wechat_qr" class="footer-qr">
+          <img :src="s.wechat_qr" alt="WeChat QR" />
         </div>
-        <p class="footer-desc">{{ isZh ? s.intro_text_zh : s.intro_text }}</p>
       </div>
 
-      <!-- Middle: Quick links -->
+      <!-- Quick Links -->
       <div class="footer-col">
-        <h4 class="footer-heading">{{ isZh ? '快速链接' : 'Quick Links' }}</h4>
-        <nav class="footer-links">
-          <RouterLink v-for="item in navItems" :key="item.to" :to="item.to">{{ item.label }}</RouterLink>
-        </nav>
+        <h4>{{ isZh ? '快速链接' : 'Quick Links' }}</h4>
+        <ul>
+          <li v-for="item in navItems" :key="item.to">
+            <RouterLink :to="item.to">{{ item.label }}</RouterLink>
+          </li>
+        </ul>
       </div>
 
-      <!-- Right: Contact (email only) -->
-      <div class="footer-col">
-        <h4 class="footer-heading">{{ isZh ? '联络方式' : 'Contact Us' }}</h4>
-        <a v-if="s.email" :href="`mailto:${s.email}`" class="footer-email">{{ s.email }}</a>
+      <!-- Contact -->
+      <div class="footer-col footer-contact">
+        <h4>{{ isZh ? '联络方式' : 'Contact Us' }}</h4>
+        <p v-if="s.address || s.address_zh">
+          <strong>{{ isZh ? '地址：' : 'Address:' }}</strong><br>
+          {{ isZh ? (s.address_zh || s.address) : (s.address || s.address_zh) }}
+        </p>
+        <p v-if="s.phone">
+          <strong>{{ isZh ? '电话：' : 'Phone:' }}</strong>
+          {{ s.phone }}
+        </p>
+        <p v-if="s.fax">
+          <strong>{{ isZh ? '传真：' : 'Fax:' }}</strong>
+          {{ s.fax }}
+        </p>
+        <p v-if="s.email">
+          <strong>{{ isZh ? '邮箱：' : 'Email:' }}</strong>
+          <a :href="`mailto:${s.email}`">{{ s.email }}</a>
+        </p>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <div class="container">
-        <span v-if="!isZh">© {{ year }} {{ s.company_name || 'Shanghai Fulfill Aviation Ground Service Co., Ltd.' }} All rights reserved.</span>
-        <span v-else>© {{ year }} {{ s.company_name_zh || '上海赋瞻航空地面服务有限公司' }} 版权所有</span>
-      </div>
+      <p>© {{ year }} {{ isZh ? (s.company_name_zh || '上海赋瞻航空地面服务有限公司') : (s.company_name || 'Shanghai Fulfill Aviation Ground Service Co., Ltd.') }}. {{ isZh ? '版权所有' : 'All rights reserved.' }}</p>
     </div>
   </footer>
 </template>
@@ -40,73 +59,105 @@ import { useSettingsStore } from '@/stores/settings'
 import { useLangStore } from '@/stores/lang'
 
 const settings = useSettingsStore()
-const langStore = useLangStore()
-const { isZh } = langStore
+const { isZh } = useLangStore()
 const s = settings.data
 const year = new Date().getFullYear()
 
 const navItems = computed(() => [
-  { to: '/',         label: isZh.value ? (s.nav_home_zh     || '首页')        : (s.nav_home     || 'Home') },
-  { to: '/news',     label: isZh.value ? (s.nav_news_zh     || '新闻')        : (s.nav_news     || 'News') },
-  { to: '/services', label: isZh.value ? (s.nav_services_zh || '服务')        : (s.nav_services || 'Services') },
-  { to: '/charter',  label: isZh.value ? (s.nav_charter_zh  || '定班和包机')  : (s.nav_charter  || 'Scheduled & Charter') },
-  { to: '/about',    label: isZh.value ? (s.nav_about_zh    || '关于我们')    : (s.nav_about    || 'About Us') },
-  { to: '/contact',  label: isZh.value ? (s.nav_contact_zh  || '联系我们')    : (s.nav_contact  || 'Contact') },
+  { to: '/',         label: isZh.value ? (s.nav_home_zh     || '首页')       : (s.nav_home     || 'Home') },
+  { to: '/news',     label: isZh.value ? (s.nav_news_zh     || '新闻动态')   : (s.nav_news     || 'News') },
+  { to: '/services', label: isZh.value ? (s.nav_services_zh || '服务')       : (s.nav_services || 'Services') },
+  { to: '/charter',  label: isZh.value ? (s.nav_charter_zh  || '定班和包机') : (s.nav_charter  || 'Scheduled & Charter') },
+  { to: '/about',    label: isZh.value ? (s.nav_about_zh    || '关于我们')   : (s.nav_about    || 'About Us') },
+  { to: '/contact',  label: isZh.value ? (s.nav_contact_zh  || '联系我们')   : (s.nav_contact  || 'Contact') },
 ])
 </script>
 
 <style scoped>
-.site-footer {
+footer {
   background: var(--navy);
-  color: rgba(255,255,255,0.7);
-  margin-top: auto;
+  padding: 56px 10%;
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 1.5fr 1fr 1fr;
   gap: 48px;
-  padding: 60px 24px 48px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
-.footer-col {}
-.footer-logo { margin-bottom: 16px; }
-.logo-en {
-  font-size: 1rem; font-weight: 700;
-  letter-spacing: 3px; color: white;
+.gn-logo {
+  font-family: 'Barlow', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 3px;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+  margin-bottom: 16px;
 }
-.logo-en .dot { color: var(--gold); }
-.logo-zh { font-size: 1.1rem; font-weight: 700; color: white; }
+.gn-logo span { color: #c8a96e; }
+.logo-zh { display: none; font-size: 1.1rem; }
 .footer-desc {
-  font-size: 0.85rem; line-height: 1.7;
   color: rgba(255,255,255,0.55);
-  max-width: 320px;
+  font-size: 0.85rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
 }
-.footer-heading {
-  font-size: 0.72rem; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 16px;
+.footer-qr {
+  width: 80px; height: 80px;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
 }
-.footer-links {
-  display: flex; flex-direction: column; gap: 10px;
+.footer-qr img { width: 100%; height: 100%; object-fit: contain; }
+
+.footer-col h4 {
+  color: var(--gold);
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  font-family: 'Barlow', sans-serif;
 }
-.footer-links a {
-  font-size: 0.85rem; color: rgba(255,255,255,0.65);
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul li a {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.85rem;
+  transition: color 0.2s;
+  text-decoration: none;
+}
+.footer-col ul li a:hover { color: var(--gold); }
+
+.footer-contact p {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+.footer-contact strong { color: rgba(255,255,255,0.85); }
+.footer-contact a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
   transition: color 0.2s;
 }
-.footer-links a:hover { color: var(--gold); }
-.footer-email {
-  font-size: 0.85rem; color: rgba(255,255,255,0.65);
-  word-break: break-all;
-  transition: color 0.2s;
-}
-.footer-email:hover { color: var(--gold); }
+.footer-contact a:hover { color: var(--gold); }
+
 .footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.08);
-  padding: 18px 0;
-  font-size: 0.78rem;
-  color: rgba(255,255,255,0.4);
-  text-align: center;
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-@media (max-width: 768px) {
-  .footer-grid { grid-template-columns: 1fr; gap: 32px; padding: 40px 24px 32px; }
+.footer-bottom p {
+  color: rgba(255,255,255,0.35);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 900px) {
+  footer { padding: 40px 6%; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
 }
 </style>

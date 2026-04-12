@@ -1,166 +1,221 @@
 <template>
-  <header class="navbar" :class="{ scrolled: isScrolled }">
-    <div class="container nav-inner">
-      <!-- Logo -->
-      <RouterLink to="/" class="nav-logo">
-        <span v-if="!isZh" class="logo-en">FULFILL<span class="dot">.</span>AVIATION</span>
-        <span v-else class="logo-zh">赋瞻航空</span>
-      </RouterLink>
+  <nav class="gn">
+    <RouterLink to="/" class="gn-logo">
+      <span class="logo-en">FULFILL<span>.</span>AVIATION</span>
+      <span class="logo-zh">赋瞻<span>.</span>航空</span>
+    </RouterLink>
 
-      <!-- Nav links -->
-      <nav class="nav-links">
-        <RouterLink v-for="item in navItems" :key="item.to" :to="item.to" class="nav-link">
-          {{ item.label }}
-        </RouterLink>
-      </nav>
+    <ul class="gn-links">
+      <li v-for="item in navItems" :key="item.to">
+        <RouterLink :to="item.to" :class="{ active: isActive(item.to) }">{{ item.label }}</RouterLink>
+      </li>
+    </ul>
 
-      <!-- Language switcher -->
-      <div class="lang-switcher">
-        <button :class="{ active: !isZh }" @click="setLang('en')">EN</button>
+    <div class="gn-right">
+      <div class="gn-lang">
         <button :class="{ active: isZh }" @click="setLang('zh')">中文</button>
+        <button :class="{ active: !isZh }" @click="setLang('en')">EN</button>
       </div>
-
-      <!-- Mobile hamburger -->
-      <button class="hamburger" @click="menuOpen = !menuOpen" aria-label="Menu">
+      <button class="gn-burger" :class="{ open: menuOpen }" @click="menuOpen = !menuOpen">
         <span></span><span></span><span></span>
       </button>
     </div>
+  </nav>
 
-    <!-- Mobile menu -->
-    <div class="mobile-menu" :class="{ open: menuOpen }">
-      <RouterLink v-for="item in navItems" :key="item.to" :to="item.to" class="mobile-link" @click="menuOpen = false">
-        {{ item.label }}
-      </RouterLink>
-      <div class="mobile-lang">
-        <button :class="{ active: !isZh }" @click="setLang('en'); menuOpen=false">EN</button>
-        <button :class="{ active: isZh }" @click="setLang('zh'); menuOpen=false">中文</button>
-      </div>
-    </div>
-  </header>
+  <div class="gn-mobile" :class="{ open: menuOpen }">
+    <RouterLink v-for="item in navItems" :key="item.to" :to="item.to"
+      :class="{ active: isActive(item.to) }"
+      @click="menuOpen = false">
+      {{ item.label }}
+    </RouterLink>
+  </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useSettingsStore } from '@/stores/settings'
 import { useLangStore } from '@/stores/lang'
 
 const settings = useSettingsStore()
 const langStore = useLangStore()
 const { isZh, setLang } = langStore
-
-const isScrolled = ref(false)
+const route = useRoute()
 const menuOpen = ref(false)
 
 const navItems = computed(() => {
   const s = settings.data
   const zh = isZh.value
   return [
-    { to: '/',        label: zh ? (s.nav_home_zh     || '首页')        : (s.nav_home     || 'Home') },
-    { to: '/news',    label: zh ? (s.nav_news_zh     || '新闻')        : (s.nav_news     || 'News') },
-    { to: '/services',label: zh ? (s.nav_services_zh || '服务')        : (s.nav_services || 'Services') },
-    { to: '/charter', label: zh ? (s.nav_charter_zh  || '定班和包机')  : (s.nav_charter  || 'Scheduled & Charter') },
-    { to: '/about',   label: zh ? (s.nav_about_zh    || '关于我们')    : (s.nav_about    || 'About Us') },
-    { to: '/contact', label: zh ? (s.nav_contact_zh  || '联系我们')    : (s.nav_contact  || 'Contact') },
+    { to: '/',         label: zh ? (s.nav_home_zh     || '首页')       : (s.nav_home     || 'Home') },
+    { to: '/news',     label: zh ? (s.nav_news_zh     || '新闻动态')   : (s.nav_news     || 'News') },
+    { to: '/services', label: zh ? (s.nav_services_zh || '服务')       : (s.nav_services || 'Services') },
+    { to: '/charter',  label: zh ? (s.nav_charter_zh  || '定班和包机') : (s.nav_charter  || 'Scheduled & Charter') },
+    { to: '/about',    label: zh ? (s.nav_about_zh    || '关于我们')   : (s.nav_about    || 'About Us') },
+    { to: '/contact',  label: zh ? (s.nav_contact_zh  || '联系我们')   : (s.nav_contact  || 'Contact') },
   ]
 })
 
-function onScroll() { isScrolled.value = window.scrollY > 40 }
-onMounted(() => window.addEventListener('scroll', onScroll))
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
+function isActive(to) {
+  if (to === '/') return route.path === '/'
+  return route.path.startsWith(to)
+}
 </script>
 
 <style scoped>
-.navbar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: transparent;
-  transition: background 0.3s, box-shadow 0.3s;
+/* ── Main bar ── */
+nav.gn {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  background: rgba(11, 31, 58, 0.97);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-family: 'Barlow', sans-serif;
 }
-.navbar.scrolled {
-  background: var(--navy);
-  box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+
+/* ── Logo ── */
+nav.gn .gn-logo {
+  font-family: 'Barlow', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 3px;
+  text-decoration: none;
+  flex-shrink: 0;
+  text-transform: uppercase;
 }
-.nav-inner {
-  display: flex; align-items: center; gap: 32px;
-  height: 70px;
+nav.gn .gn-logo span { color: #c8a96e; }
+.logo-zh { display: none; font-size: 1.1rem; }
+
+/* ── Desktop links ── */
+nav.gn .gn-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
 }
-.nav-logo { flex-shrink: 0; }
-.logo-en {
-  font-size: 1.1rem; font-weight: 700; letter-spacing: 3px;
-  color: white; text-transform: uppercase;
-}
-.logo-en .dot { color: var(--gold); }
-.logo-zh {
-  font-size: 1.2rem; font-weight: 700;
-  color: white; letter-spacing: 2px;
-}
-.nav-links {
-  display: flex; gap: 4px; flex: 1; justify-content: center;
-}
-.nav-link {
-  padding: 6px 14px;
-  color: rgba(255,255,255,0.8);
-  font-size: 0.82rem; font-weight: 500; letter-spacing: 0.5px;
+nav.gn .gn-links a {
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 4px 0;
   border-bottom: 2px solid transparent;
   transition: color 0.2s, border-color 0.2s;
-  white-space: nowrap;
+  display: block;
 }
-.nav-link:hover,
-.nav-link.router-link-active { color: white; border-bottom-color: var(--gold); }
+nav.gn .gn-links a:hover,
+nav.gn .gn-links a.active,
+nav.gn .gn-links a.router-link-active {
+  color: #c8a96e;
+  border-bottom-color: #c8a96e;
+}
 
-.lang-switcher { display: flex; gap: 6px; flex-shrink: 0; }
-.lang-switcher button {
+/* ── Right side ── */
+nav.gn .gn-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+nav.gn .gn-lang {
+  display: flex;
+  gap: 6px;
+}
+nav.gn .gn-lang button {
   background: none;
-  border: 1px solid rgba(255,255,255,0.3);
-  color: rgba(255,255,255,0.65);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.7);
   padding: 4px 10px;
-  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px;
-  transition: all 0.2s;
+  font-size: 0.72rem;
+  font-family: 'Barlow', sans-serif;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
 }
-.lang-switcher button.active {
-  border-color: var(--gold); color: var(--gold);
-}
-.lang-switcher button:hover { border-color: white; color: white; }
+nav.gn .gn-lang button:hover { border-color: #c8a96e; color: #c8a96e; }
+nav.gn .gn-lang button.active { border-color: #c8a96e; color: #c8a96e; }
 
-.hamburger {
-  display: none; flex-direction: column; gap: 5px;
-  background: none; border: none; padding: 4px;
-}
-.hamburger span {
-  display: block; width: 22px; height: 2px;
-  background: white; transition: all 0.2s;
-}
-
-.mobile-menu {
+/* ── Burger ── */
+nav.gn .gn-burger {
   display: none;
   flex-direction: column;
-  background: var(--navy);
-  padding: 0;
-  max-height: 0; overflow: hidden;
-  transition: max-height 0.3s ease;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+  background: none;
+  border: none;
 }
-.mobile-menu.open { max-height: 500px; padding: 12px 0; }
-.mobile-link {
-  padding: 12px 24px;
-  color: rgba(255,255,255,0.8);
-  font-size: 0.9rem;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+nav.gn .gn-burger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.85);
+  transition: transform 0.3s, opacity 0.3s;
 }
-.mobile-link:hover,
-.mobile-link.router-link-active { color: var(--gold); }
-.mobile-lang {
-  display: flex; gap: 10px; padding: 12px 24px;
-}
-.mobile-lang button {
-  background: none; border: 1px solid rgba(255,255,255,0.3);
-  color: rgba(255,255,255,0.65);
-  padding: 5px 14px; font-size: 0.8rem; font-weight: 600;
-}
-.mobile-lang button.active { border-color: var(--gold); color: var(--gold); }
+nav.gn .gn-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+nav.gn .gn-burger.open span:nth-child(2) { opacity: 0; }
+nav.gn .gn-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-@media (max-width: 900px) {
-  .nav-links { display: none; }
-  .lang-switcher { display: none; }
-  .hamburger { display: flex; margin-left: auto; }
-  .mobile-menu { display: flex; }
+/* ── Mobile dropdown ── */
+.gn-mobile {
+  display: none;
+  position: fixed;
+  top: 68px; left: 0; right: 0;
+  background: rgba(11, 31, 58, 0.99);
+  padding: 12px 0;
+  z-index: 999;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.gn-mobile.open { display: block; }
+.gn-mobile a {
+  display: block;
+  padding: 13px 32px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.gn-mobile a:hover,
+.gn-mobile a.active,
+.gn-mobile a.router-link-active {
+  color: #c8a96e;
+  border-left-color: #c8a96e;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  nav.gn { padding: 0 28px; }
+  nav.gn .gn-links { gap: 14px; }
+  nav.gn .gn-links a { font-size: 0.78rem; letter-spacing: 0.5px; }
+}
+@media (max-width: 860px) {
+  nav.gn .gn-links { display: none; }
+  nav.gn .gn-burger { display: flex; }
+  .gn-mobile { display: none; } /* shown via .open class */
+  .gn-mobile.open { display: block; }
+}
+@media (max-width: 480px) {
+  nav.gn { padding: 0 16px; }
 }
 </style>

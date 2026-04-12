@@ -1,48 +1,59 @@
 <template>
   <div>
-    <div class="page-banner">
-      <div class="container">
-        <span class="section-tag">{{ isZh ? '最新动态' : 'Latest Updates' }}</span>
-        <h1>{{ isZh ? '新闻与活动' : 'News & Events' }}</h1>
+    <!-- Page Hero -->
+    <div class="page-hero">
+      <div class="page-hero-content">
+        <span class="page-tag">{{ isZh ? '最新动态' : 'Latest Updates' }}</span>
+        <h1 class="page-title">{{ isZh ? '新闻动态' : 'News & Events' }}</h1>
       </div>
     </div>
 
-    <section class="news-list-section">
-      <div class="container">
-        <div v-if="loading" class="spinner"></div>
-        <template v-else>
-          <div class="news-grid">
-            <RouterLink
-              v-for="item in news"
-              :key="item.id"
-              :to="`/news/${item.slug}`"
-              class="news-card card"
-            >
-              <div class="news-img" :style="{ backgroundImage: item.image_url ? `url(${item.image_url})` : 'none' }">
-                <span v-if="!item.image_url" class="placeholder">✈</span>
-              </div>
-              <div class="news-body">
-                <p class="news-date">{{ item.created_at?.slice(0, 10) }}</p>
-                <h2>{{ isZh ? item.title : (item.title_en || item.title) }}</h2>
-                <p class="excerpt">{{ isZh ? item.excerpt : (item.excerpt_en || item.excerpt) }}</p>
-                <span class="read-more">{{ isZh ? '阅读更多 →' : 'Read More →' }}</span>
-              </div>
-            </RouterLink>
-          </div>
+    <div class="container">
+      <div class="spinner" v-if="loading"></div>
 
-          <p v-if="!news.length" class="empty">{{ isZh ? '暂无新闻' : 'No news available.' }}</p>
-
-          <!-- Pagination -->
-          <div v-if="totalPages > 1" class="pagination">
-            <button
-              v-for="p in totalPages" :key="p"
-              :class="{ active: p === page }"
-              @click="loadPage(p)"
-            >{{ p }}</button>
+      <!-- Featured article -->
+      <template v-if="!loading && featured">
+        <div class="news-featured">
+          <div class="nf-img">
+            <img v-if="featured.image_url" :src="featured.image_url" :alt="featuredTitle" />
+            <div v-else class="img-ph">Photo</div>
           </div>
-        </template>
+          <div class="nf-body">
+            <span class="news-cat">{{ isZh ? '最新' : 'Latest' }}</span>
+            <div class="nf-date">{{ featured.created_at?.slice(0, 10) }}</div>
+            <div class="nf-title">{{ featuredTitle }}</div>
+            <p class="nf-exc">{{ featuredExcerpt }}</p>
+            <RouterLink :to="`/news/${featured.slug}`" class="read-btn">{{ isZh ? '阅读全文' : 'Read More' }}</RouterLink>
+          </div>
+        </div>
+      </template>
+
+      <template v-if="!loading && rest.length">
+        <div class="section-label">{{ isZh ? '全部新闻' : 'All News' }}</div>
+        <div class="news-grid">
+          <RouterLink
+            v-for="item in rest"
+            :key="item.id"
+            :to="`/news/${item.slug}`"
+            class="nc"
+          >
+            <div class="nc-img">
+              <img v-if="item.image_url" :src="item.image_url" :alt="isZh ? item.title : (item.title_en || item.title)" />
+              <div v-else class="img-ph">Photo</div>
+            </div>
+            <div class="nc-body">
+              <div class="nc-date">{{ item.created_at?.slice(0, 10) }}</div>
+              <div class="nc-title">{{ isZh ? item.title : (item.title_en || item.title) }}</div>
+              <p class="nc-exc">{{ (isZh ? (item.excerpt || '') : (item.excerpt_en || item.excerpt || '')).slice(0, 120) }}</p>
+            </div>
+          </RouterLink>
+        </div>
+      </template>
+
+      <div v-if="!loading && !articles.length" style="text-align:center;color:#9ba8b8;padding:80px 0;">
+        {{ isZh ? '暂无新闻' : 'No news yet.' }}
       </div>
-    </section>
+    </div>
   </div>
 </template>
 
@@ -51,69 +62,79 @@ import { ref, computed, onMounted } from 'vue'
 import { useLangStore } from '@/stores/lang'
 
 const { isZh } = useLangStore()
-const news = ref([])
-const total = ref(0)
-const page = ref(1)
+const articles = ref([])
 const loading = ref(true)
-const LIMIT = 9
 
-const totalPages = computed(() => Math.ceil(total.value / LIMIT))
+const featured = computed(() => articles.value[0] || null)
+const rest = computed(() => articles.value.slice(1))
 
-async function loadPage(p) {
-  page.value = p
-  loading.value = true
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+const featuredTitle = computed(() => {
+  if (!featured.value) return ''
+  return isZh.value ? featured.value.title : (featured.value.title_en || featured.value.title)
+})
+const featuredExcerpt = computed(() => {
+  if (!featured.value) return ''
+  return isZh.value ? (featured.value.excerpt || '') : (featured.value.excerpt_en || featured.value.excerpt || '')
+})
+
+onMounted(async () => {
   try {
-    const r = await fetch(`/api/news?page=${p}&limit=${LIMIT}`)
+    const r = await fetch('/api/news?page=1&limit=10')
     const d = await r.json()
-    news.value = d.data || []
-    total.value = d.total || 0
+    articles.value = d.data || []
   } catch (e) {
     console.error(e)
   } finally {
     loading.value = false
   }
-}
-
-onMounted(() => loadPage(1))
+})
 </script>
 
 <style scoped>
-.news-list-section { padding: 64px 0 80px; }
-.news-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-  margin-bottom: 40px;
-}
-.news-card { text-decoration: none; }
-.news-img {
-  height: 210px;
-  background: var(--light) center/cover;
+.page-hero {
+  padding-top: 70px; height: 260px;
+  background: linear-gradient(135deg, #0b1f3a, #1a6ea8);
   display: flex; align-items: center; justify-content: center;
+  flex-direction: column; text-align: center; position: relative;
 }
-.placeholder { font-size: 2.5rem; opacity: 0.25; }
-.news-body { padding: 22px; }
-.news-date { font-size: 0.75rem; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
-.news-body h2 {
-  font-size: 1rem; font-weight: 700; color: var(--navy);
-  margin-bottom: 10px; line-height: 1.4;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+.page-hero::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
+.page-hero-content { position: relative; z-index: 1; }
+.page-tag { display: inline-block; background: var(--gold); color: var(--navy); font-size: 0.7rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; padding: 5px 14px; margin-bottom: 14px; }
+.page-title { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; color: var(--white); font-weight: 300; }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 72px 40px; }
+.spinner { width: 36px; height: 36px; border: 3px solid #dde3ec; border-top-color: var(--sky); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 60px auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.section-label { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--navy); border-bottom: 2px solid var(--gold); padding-bottom: 12px; margin-bottom: 32px; display: inline-block; }
+
+/* Featured */
+.news-featured { display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; margin-bottom: 56px; }
+.nf-img { height: 320px; border-radius: 4px; overflow: hidden; }
+.nf-img img { width: 100%; height: 100%; object-fit: cover; }
+.img-ph { width: 100%; height: 100%; min-height: 180px; display: flex; align-items: center; justify-content: center; color: #5a7a99; font-size: 0.85rem; background: linear-gradient(135deg, #c9d6e3, #a8bfd4); }
+.nf-body { display: flex; flex-direction: column; justify-content: center; }
+.news-cat { display: inline-block; color: var(--sky); font-size: 0.72rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; border-bottom: 2px solid var(--gold); padding-bottom: 3px; margin-bottom: 14px; }
+.nf-date { color: var(--gold); font-size: 0.82rem; margin-bottom: 10px; }
+.nf-title { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 400; color: var(--navy); line-height: 1.3; margin-bottom: 14px; }
+.nf-exc { color: #4a5568; font-size: 0.9rem; line-height: 1.75; margin-bottom: 24px; }
+.read-btn { display: inline-block; background: var(--navy); color: white; padding: 12px 32px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; transition: background 0.3s; font-family: 'Barlow', sans-serif; text-decoration: none; }
+.read-btn:hover { background: var(--sky); }
+
+/* Grid */
+.news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 16px; }
+.nc { cursor: pointer; border: 1px solid #e5e9f0; border-radius: 4px; overflow: hidden; transition: box-shadow 0.2s; text-decoration: none; display: block; color: inherit; }
+.nc:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.09); }
+.nc-img { height: 180px; overflow: hidden; }
+.nc-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.nc-body { padding: 16px; }
+.nc-date { font-size: 0.78rem; color: var(--gold); margin-bottom: 6px; }
+.nc-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--navy); margin-bottom: 8px; line-height: 1.4; }
+.nc-exc { font-size: 0.85rem; color: #4a5568; line-height: 1.6; }
+
+@media (max-width: 900px) {
+  .news-featured { grid-template-columns: 1fr; }
+  .news-grid { grid-template-columns: 1fr; }
+  .container { padding: 48px 24px; }
 }
-.excerpt {
-  font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px;
-  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-}
-.read-more { font-size: 0.8rem; font-weight: 600; color: var(--sky); }
-.empty { text-align: center; color: var(--text-muted); padding: 60px 0; }
-.pagination { display: flex; gap: 8px; justify-content: center; margin-top: 40px; }
-.pagination button {
-  padding: 6px 14px; border: 1px solid var(--border);
-  background: white; border-radius: 3px; font-size: 0.85rem; cursor: pointer;
-  transition: all 0.2s;
-}
-.pagination button.active { background: var(--navy); color: white; border-color: var(--navy); }
-.pagination button:hover:not(.active) { border-color: var(--sky); color: var(--sky); }
-@media (max-width: 900px) { .news-grid { grid-template-columns: repeat(2,1fr); } }
-@media (max-width: 600px) { .news-grid { grid-template-columns: 1fr; } }
 </style>
