@@ -79,7 +79,37 @@ db.exec(`
     sort_order INTEGER DEFAULT 0,
     created_at TEXT DEFAULT (datetime('now'))
   );
+  CREATE TABLE IF NOT EXISTS partners (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    logo_url TEXT,
+    website_url TEXT,
+    sort_order INTEGER DEFAULT 0,
+    active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT (datetime('now'))
+  );
 `);
 
-console.log('Database setup complete');
+// Add new columns to existing tables if they don't already exist
+// (ALTER TABLE IF NOT EXISTS col is not supported in SQLite; use try/catch)
+const addColumn = (table, col, type) => {
+  try {
+    db.prepare(`ALTER TABLE ${table} ADD COLUMN ${col} ${type}`).run();
+    console.log(`[setup] Added column ${table}.${col}`);
+  } catch (e) {
+    // Column already exists — ignore
+  }
+};
+
+// services: bilingual fields
+addColumn('services', 'name_zh', 'TEXT');
+addColumn('services', 'description_zh', 'TEXT');
+addColumn('services', 'details_zh', 'TEXT');
+
+// news: English fields
+addColumn('news', 'title_en', 'TEXT');
+addColumn('news', 'excerpt_en', 'TEXT');
+addColumn('news', 'content_en', 'TEXT');
+
+console.log('[setup] Database setup complete.');
 db.close();

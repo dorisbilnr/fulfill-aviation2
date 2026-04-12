@@ -23,11 +23,11 @@ const upload = multer({
   },
 });
 
-// Public: list published news
+// Public: list published news (includes bilingual fields)
 router.get('/', (req, res) => {
   const { page = 1, limit = 10, featured } = req.query;
   const offset = (page - 1) * limit;
-  let q = 'SELECT id,title,slug,excerpt,image_url,featured,created_at FROM news WHERE published=1';
+  let q = 'SELECT id,title,title_en,slug,excerpt,excerpt_en,image_url,featured,created_at FROM news WHERE published=1';
   if (featured === '1') q += ' AND featured=1';
   q += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
   const rows = db.prepare(q).all(parseInt(limit), parseInt(offset));
@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
   res.json({ data: rows, total, page: parseInt(page) });
 });
 
-// Public: single news by slug
+// Public: single news by slug (full content including EN fields)
 router.get('/:slug', (req, res) => {
   const row = db.prepare('SELECT * FROM news WHERE slug=? AND published=1').get(req.params.slug);
   if (!row) return res.status(404).json({ error: 'Not found' });
@@ -46,12 +46,12 @@ router.get('/:slug', (req, res) => {
 router.get('/admin/all', auth, (req, res) => {
   const { page = 1, limit = 20 } = req.query;
   const offset = (page - 1) * limit;
-  const rows = db.prepare('SELECT id,title,slug,published,featured,created_at FROM news ORDER BY created_at DESC LIMIT ? OFFSET ?').all(parseInt(limit), parseInt(offset));
+  const rows = db.prepare('SELECT id,title,title_en,slug,published,featured,created_at FROM news ORDER BY created_at DESC LIMIT ? OFFSET ?').all(parseInt(limit), parseInt(offset));
   const total = db.prepare('SELECT COUNT(*) as n FROM news').get().n;
   res.json({ data: rows, total });
 });
 
-// Admin: get single for editing
+// Admin: get single for editing (all fields)
 router.get('/admin/:id', auth, (req, res) => {
   const row = db.prepare('SELECT * FROM news WHERE id=?').get(req.params.id);
   if (!row) return res.status(404).json({ error: 'Not found' });
@@ -67,16 +67,16 @@ router.post('/', auth, upload.single('image'), [
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ error: errors.array()[0].msg });
 
-  const { title, excerpt, body: articleBody, published = 0, featured = 0 } = req.body;
+  const { title, title_en, excerpt, excerpt_en, body: articleBody, content_en, published = 0, featured = 0 } = req.body;
   let slug = slugify(title);
-  // ensure unique slug
-  let existing = db.prepare('SELECT id FROM news WHERE slug=?').get(slug);
+  const existing = db.prepare('SELECT id FROM news WHERE slug=?').get(slug);
   if (existing) slug = slug + '-' + Date.now();
 
   const image_url = req.file ? '/uploads/news/' + req.file.filename : null;
   const result = db.prepare(
-    `INSERT INTO news(title,slug,excerpt,body,image_url,published,featured) VALUES(?,?,?,?,?,?,?)`
-  ).run(title, slug, excerpt||null, articleBody||null, image_url, parseInt(published), parseInt(featured));
+    `INSERT INTO news(title,title_en,slug,excerpt,excerpt_en,body,content_en,image_url,published,featured)
+     VALUES(?,?,?,?,?,?,?,?,?,?)`
+  ).run(title, title_en||null, slug, excerpt||null, excerpt_en||null, articleBody||null, content_en||null, image_url, parseInt(published), parseInt(featured));
 
   res.json({ success: true, id: result.lastInsertRowid, slug });
 });
@@ -86,7 +86,7 @@ router.put('/:id', auth, upload.single('image'), (req, res) => {
   const row = db.prepare('SELECT * FROM news WHERE id=?').get(req.params.id);
   if (!row) return res.status(404).json({ error: 'Not found' });
 
-  const { title, excerpt, body: articleBody, published, featured } = req.body;
+  const { title, title_en, excerpt, excerpt_en, body: articleBody, content_en, published, featured } = req.body;
   const image_url = req.file ? '/uploads/news/' + req.file.filename : row.image_url;
   const slug = title && title !== row.title ? (() => {
     let s = slugify(title);
@@ -94,12 +94,25 @@ router.put('/:id', auth, upload.single('image'), (req, res) => {
     return ex ? s + '-' + Date.now() : s;
   })() : row.slug;
 
-  db.prepare(`UPDATE news SET title=?,slug=?,excerpt=?,body=?,image_url=?,published=?,featured=?,updated_at=datetime('now') WHERE id=?`)
-    .run(title??row.title, slug, excerpt??row.excerpt, articleBody??row.body, image_url, published!=null?parseInt(published):row.published, featured!=null?parseInt(featured):row.featured, req.params.id);
+  db.prepare(
+    `UPDATE news SET title=?,title_en=?,slug=?,excerpt=?,excerpt_en=?,body=?,content_en=?,image_url=?,published=?,featured=?,updated_at=datetime('now') WHERE id=?`
+  ).run(
+    title ?? row.title,
+    title_en ?? row.title_en,
+    slug,
+    excerpt ?? row.excerpt,
+    excerpt_en ?? row.excerpt_en,
+    articleBody ?? row.body,
+    content_en ?? row.content_en,
+    image_url,
+    published != null ? parseInt(published) : row.published,
+    featured != null ? parseInt(featured) : row.featured,
+    req.params.id
+  );
   res.json({ success: true, slug });
 });
 
-// Admin: delete news
+// Admin: delete news (also removes image file)
 router.delete('/:id', auth, (req, res) => {
   const row = db.prepare('SELECT image_url FROM news WHERE id=?').get(req.params.id);
   if (row && row.image_url) {

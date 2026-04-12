@@ -72,7 +72,7 @@ tr:last-child td{border-bottom:none;}tr:hover td{background:#fafbfc;}
 .sec-card h3{font-size:0.9rem;font-weight:600;color:var(--navy);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:none;align-items:center;justify-content:center;}
 .modal-overlay.open{display:flex;}
-.modal{background:white;border-radius:8px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
+.modal{background:white;border-radius:8px;width:100%;max-width:720px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);}
 .modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .modal-header h3{font-size:1.05rem;font-weight:600;color:var(--navy);}
 .modal-close{background:none;border:none;font-size:1.3rem;color:#6b7280;line-height:1;}
@@ -83,12 +83,14 @@ tr:last-child td{border-bottom:none;}tr:hover td{background:#fafbfc;}
 .page-btn{padding:5px 12px;border:1px solid var(--border);border-radius:3px;background:white;font-size:0.82rem;cursor:pointer;}
 .page-btn.active{background:var(--navy);color:white;border-color:var(--navy);}
 .section{display:none;}.section.active{display:block;}
+.img-preview{max-width:120px;max-height:80px;object-fit:contain;border:1px solid var(--border);border-radius:4px;margin-top:6px;}
+.partner-logo-thumb{max-width:80px;max-height:48px;object-fit:contain;}
 </style>
 <script>
 var ADMIN_LANG_KEY='admin_lang';
 var adminLang=localStorage.getItem(ADMIN_LANG_KEY)||'en';
 var ADMIN_T={
-  'Dashboard':'控制台','Contacts':'联系表单','News':'新闻文章','Services':'服务管理',
+  'Dashboard':'控制台','Contacts':'联系表单','News':'新闻文章','Services':'服务管理','Partners':'合作伙伴',
   'Photo Carousel':'照片轮播','Company Info':'公司信息','Nav Labels':'导航标签',
   'Homepage':'首页内容','Charter Types':'包机类型','Account':'账号设置',
   'New Inquiries':'新询盘','Total Contacts':'总联系数','Published Articles':'已发布文章',
@@ -142,6 +144,7 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
       <div class="nav-item" onclick="showSection('contacts')" data-sec="contacts"><span class="ico">✉️</span> <span data-i18n="Contacts">Contacts</span></div>
       <div class="nav-item" onclick="showSection('news')" data-sec="news"><span class="ico">📰</span> <span data-i18n="News">News</span></div>
       <div class="nav-item" onclick="showSection('services')" data-sec="services"><span class="ico">✈️</span> <span data-i18n="Services">Services</span></div>
+      <div class="nav-item" onclick="showSection('partners')" data-sec="partners"><span class="ico">🤝</span> <span data-i18n="Partners">Partners</span></div>
       <div class="nav-item" onclick="showSection('carousel')" data-sec="carousel"><span class="ico">🖼️</span> <span data-i18n="Photo Carousel">Photo Carousel</span></div>
       <div class="nav-group-label">设置</div>
       <div class="nav-item" onclick="showSection('company')" data-sec="company"><span class="ico">🏢</span> <span data-i18n="Company Info">Company Info</span></div>
@@ -206,8 +209,17 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
     <div class="section" id="sec-services">
       <div class="page-header"><h1><span data-i18n="Services">Services</span></h1><button class="btn btn-primary" onclick="openServiceModal()">+ Add Service</button></div>
       <div class="card">
-        <table><thead><tr><th><span data-i18n="Icon">Icon</span></th><th><span data-i18n="Name">Name</span></th><th><span data-i18n="Description">Description</span></th><th><span data-i18n="Order">Order</span></th><th><span data-i18n="Status">Status</span></th><th><span data-i18n="Actions">Actions</span></th></tr></thead>
+        <table><thead><tr><th><span data-i18n="Icon">Icon</span></th><th><span data-i18n="Name">Name</span></th><th>中文名称</th><th><span data-i18n="Order">Order</span></th><th><span data-i18n="Status">Status</span></th><th><span data-i18n="Actions">Actions</span></th></tr></thead>
         <tbody id="services-body"></tbody></table>
+      </div>
+    </div>
+
+    <!-- PARTNERS -->
+    <div class="section" id="sec-partners">
+      <div class="page-header"><h1><span data-i18n="Partners">Partners</span></h1><button class="btn btn-primary" onclick="openPartnerModal()">+ Add Partner</button></div>
+      <div class="card">
+        <table><thead><tr><th>Logo</th><th><span data-i18n="Name">Name</span></th><th>Website</th><th><span data-i18n="Order">Order</span></th><th><span data-i18n="Status">Status</span></th><th><span data-i18n="Actions">Actions</span></th></tr></thead>
+        <tbody id="partners-body"></tbody></table>
       </div>
     </div>
 
@@ -244,10 +256,26 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
           <div class="form-group"><label>Phone / 电话</label><input id="s-phone" type="text"/></div>
           <div class="form-group"><label>Fax / 传真</label><input id="s-fax" type="text"/></div>
           <div class="form-group form-full"><label>Email / 邮箱</label><input id="s-email" type="text"/></div>
-          <div class="form-group form-full"><label>Business Hours (EN)</label><input id="s-business_hours" type="text" placeholder="Mon – Fri: 9:00 AM – 6:00 PM / Sat: 9:00 AM – 12:00 PM"/></div>
-          <div class="form-group form-full"><label>营业时间 (ZH)</label><input id="s-business_hours_zh" type="text" placeholder="周一至周五：9:00–18:00 / 周六：9:00–12:00"/></div>
+          <div class="form-group form-full"><label>Business Hours (EN)</label><input id="s-business_hours" type="text"/></div>
+          <div class="form-group form-full"><label>营业时间 (ZH)</label><input id="s-business_hours_zh" type="text"/></div>
         </div>
-        <button class="btn btn-primary" onclick="saveSection(['company_name','company_name_zh','address','address_zh','phone','fax','email','business_hours','business_hours_zh'])">Save / 保存</button>
+      </div>
+      <div class="sec-card">
+        <h3>公司简介 / Intro Text</h3>
+        <div class="form-grid">
+          <div class="form-group form-full"><label>Intro Paragraph (EN)</label><textarea id="s-intro_text" rows="3"></textarea></div>
+          <div class="form-group form-full"><label>公司简介 (ZH)</label><textarea id="s-intro_text_zh" rows="3"></textarea></div>
+        </div>
+      </div>
+      <div class="sec-card">
+        <h3>关于我们页面 / About Us Page</h3>
+        <div class="form-grid">
+          <div class="form-group"><label>About Page Title (EN)</label><input id="s-about_title" type="text" placeholder="Our Story"/></div>
+          <div class="form-group"><label>关于我们标题 (ZH)</label><input id="s-about_title_zh" type="text" placeholder="我们的故事"/></div>
+          <div class="form-group form-full"><label>About Body Text (EN)</label><textarea id="s-about_body" rows="4"></textarea></div>
+          <div class="form-group form-full"><label>关于我们正文 (ZH)</label><textarea id="s-about_body_zh" rows="4"></textarea></div>
+        </div>
+        <button class="btn btn-primary" onclick="saveSection(['company_name','company_name_zh','address','address_zh','phone','fax','email','business_hours','business_hours_zh','intro_text','intro_text_zh','about_title','about_title_zh','about_body','about_body_zh'])">Save / 保存</button>
       </div>
     </div>
 
@@ -263,8 +291,8 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
           <div class="form-group"><label>新闻 (ZH)</label><input id="s-nav_news_zh" type="text" placeholder="新闻"/></div>
           <div class="form-group"><label>Services (EN)</label><input id="s-nav_services" type="text" placeholder="Services"/></div>
           <div class="form-group"><label>服务 (ZH)</label><input id="s-nav_services_zh" type="text" placeholder="服务"/></div>
-          <div class="form-group"><label>Charter Tab (EN)</label><input id="s-nav_charter" type="text" placeholder="Charter &amp; Ticketing"/></div>
-          <div class="form-group"><label>包机与机票 (ZH)</label><input id="s-nav_charter_zh" type="text" placeholder="包机与机票"/></div>
+          <div class="form-group"><label>Charter Tab (EN)</label><input id="s-nav_charter" type="text" placeholder="Scheduled &amp; Charter"/></div>
+          <div class="form-group"><label>定班和包机 (ZH)</label><input id="s-nav_charter_zh" type="text" placeholder="定班和包机"/></div>
           <div class="form-group"><label>About Us (EN)</label><input id="s-nav_about" type="text" placeholder="About Us"/></div>
           <div class="form-group"><label>关于我们 (ZH)</label><input id="s-nav_about_zh" type="text" placeholder="关于我们"/></div>
           <div class="form-group"><label>Contact (EN)</label><input id="s-nav_contact" type="text" placeholder="Contact"/></div>
@@ -278,7 +306,7 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
     <div class="section" id="sec-homepage">
       <div class="page-header"><h1><span data-i18n="Homepage">Homepage</span></h1></div>
       <div class="sec-card">
-        <h3>Hero Slide 1</h3>
+        <h3>Hero Slide 1 — 英文 / English</h3>
         <div class="form-grid">
           <div class="form-group"><label>Tag (small gold label)</label><input id="s-hero1_tag" type="text"/></div>
           <div class="form-group"><label>Sub (small text below title)</label><input id="s-hero1_sub" type="text"/></div>
@@ -286,11 +314,27 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
         </div>
       </div>
       <div class="sec-card">
-        <h3>Hero Slide 2</h3>
+        <h3>Hero Slide 1 — 中文 / Chinese</h3>
+        <div class="form-grid">
+          <div class="form-group"><label>标签 (ZH Tag)</label><input id="s-hero1_tag_zh" type="text"/></div>
+          <div class="form-group"><label>副标题 (ZH Sub)</label><input id="s-hero1_sub_zh" type="text"/></div>
+          <div class="form-group form-full"><label>大标题 (ZH Title)</label><input id="s-hero1_title_zh" type="text"/></div>
+        </div>
+      </div>
+      <div class="sec-card">
+        <h3>Hero Slide 2 — 英文 / English</h3>
         <div class="form-grid">
           <div class="form-group"><label>Tag</label><input id="s-hero2_tag" type="text"/></div>
           <div class="form-group"><label>Sub</label><input id="s-hero2_sub" type="text"/></div>
           <div class="form-group form-full"><label>Title</label><input id="s-hero2_title" type="text"/></div>
+        </div>
+      </div>
+      <div class="sec-card">
+        <h3>Hero Slide 2 — 中文 / Chinese</h3>
+        <div class="form-grid">
+          <div class="form-group"><label>标签 (ZH Tag)</label><input id="s-hero2_tag_zh" type="text"/></div>
+          <div class="form-group"><label>副标题 (ZH Sub)</label><input id="s-hero2_sub_zh" type="text"/></div>
+          <div class="form-group form-full"><label>大标题 (ZH Title)</label><input id="s-hero2_title_zh" type="text"/></div>
         </div>
       </div>
       <div class="sec-card">
@@ -302,14 +346,7 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
           <div class="form-group"><label>Annual Flights label (EN)</label><input id="s-stat_partners_label" type="text" placeholder="Annual Flights"/></div>
           <div class="form-group"><label>年度航班标签 (ZH)</label><input id="s-stat_partners_label_zh" type="text" placeholder="年度航班运营量"/></div>
         </div>
-      </div>
-      <div class="sec-card">
-        <h3>公司简介 / Intro Text</h3>
-        <div class="form-grid">
-          <div class="form-group form-full"><label>Intro Paragraph (EN)</label><textarea id="s-intro_text" rows="3"></textarea></div>
-          <div class="form-group form-full"><label>公司简介 (ZH)</label><textarea id="s-intro_text_zh" rows="3"></textarea></div>
-        </div>
-        <button class="btn btn-primary" onclick="saveSection(['hero1_tag','hero1_title','hero1_sub','hero2_tag','hero2_title','hero2_sub','stat_years','stat_destinations','stat_partners','stat_partners_label','stat_partners_label_zh','intro_text','intro_text_zh'])">Save / 保存</button>
+        <button class="btn btn-primary" onclick="saveSection(['hero1_tag','hero1_title','hero1_sub','hero1_tag_zh','hero1_title_zh','hero1_sub_zh','hero2_tag','hero2_title','hero2_sub','hero2_tag_zh','hero2_title_zh','hero2_sub_zh','stat_years','stat_destinations','stat_partners','stat_partners_label','stat_partners_label_zh'])">Save / 保存</button>
       </div>
     </div>
 
@@ -317,12 +354,24 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
     <div class="section" id="sec-charter">
       <div class="page-header"><h1><span data-i18n="Charter Types">Charter Types</span></h1></div>
       <div class="sec-card">
+        <h3>页面介绍文字 / Page Intro</h3>
+        <div class="form-grid">
+          <div class="form-group form-full"><label>Charter Page Intro (EN)</label><textarea id="s-charter_intro" rows="3"></textarea></div>
+          <div class="form-group form-full"><label>包机页介绍 (ZH)</label><textarea id="s-charter_intro_zh" rows="3"></textarea></div>
+        </div>
+      </div>
+      <div class="sec-card">
         <h3>包机类型 1</h3>
         <div class="form-grid">
           <div class="form-group"><label>Title (EN)</label><input id="s-charter_type1_title" type="text"/></div>
           <div class="form-group"><label>标题 (ZH)</label><input id="s-charter_type1_title_zh" type="text"/></div>
           <div class="form-group form-full"><label>Description (EN)</label><textarea id="s-charter_type1_desc" rows="3"></textarea></div>
           <div class="form-group form-full"><label>描述 (ZH)</label><textarea id="s-charter_type1_desc_zh" rows="3"></textarea></div>
+          <div class="form-group form-full">
+            <label>Image / 图片 (JPG/PNG/WebP, optional)</label>
+            <input type="file" id="charter-img-1" accept="image/jpeg,image/png,image/webp"/>
+            <div id="charter-img-1-preview"></div>
+          </div>
         </div>
       </div>
       <div class="sec-card">
@@ -332,6 +381,11 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
           <div class="form-group"><label>标题 (ZH)</label><input id="s-charter_type2_title_zh" type="text"/></div>
           <div class="form-group form-full"><label>Description (EN)</label><textarea id="s-charter_type2_desc" rows="3"></textarea></div>
           <div class="form-group form-full"><label>描述 (ZH)</label><textarea id="s-charter_type2_desc_zh" rows="3"></textarea></div>
+          <div class="form-group form-full">
+            <label>Image / 图片 (JPG/PNG/WebP, optional)</label>
+            <input type="file" id="charter-img-2" accept="image/jpeg,image/png,image/webp"/>
+            <div id="charter-img-2-preview"></div>
+          </div>
         </div>
       </div>
       <div class="sec-card">
@@ -341,6 +395,11 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
           <div class="form-group"><label>标题 (ZH)</label><input id="s-charter_type3_title_zh" type="text"/></div>
           <div class="form-group form-full"><label>Description (EN)</label><textarea id="s-charter_type3_desc" rows="3"></textarea></div>
           <div class="form-group form-full"><label>描述 (ZH)</label><textarea id="s-charter_type3_desc_zh" rows="3"></textarea></div>
+          <div class="form-group form-full">
+            <label>Image / 图片 (JPG/PNG/WebP, optional)</label>
+            <input type="file" id="charter-img-3" accept="image/jpeg,image/png,image/webp"/>
+            <div id="charter-img-3-preview"></div>
+          </div>
         </div>
       </div>
       <div class="sec-card">
@@ -350,8 +409,13 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
           <div class="form-group"><label>标题 (ZH)</label><input id="s-charter_type4_title_zh" type="text"/></div>
           <div class="form-group form-full"><label>Description (EN)</label><textarea id="s-charter_type4_desc" rows="3"></textarea></div>
           <div class="form-group form-full"><label>描述 (ZH)</label><textarea id="s-charter_type4_desc_zh" rows="3"></textarea></div>
+          <div class="form-group form-full">
+            <label>Image / 图片 (JPG/PNG/WebP, optional)</label>
+            <input type="file" id="charter-img-4" accept="image/jpeg,image/png,image/webp"/>
+            <div id="charter-img-4-preview"></div>
+          </div>
         </div>
-        <button class="btn btn-primary" onclick="saveSection(['charter_type1_title','charter_type1_title_zh','charter_type1_desc','charter_type1_desc_zh','charter_type2_title','charter_type2_title_zh','charter_type2_desc','charter_type2_desc_zh','charter_type3_title','charter_type3_title_zh','charter_type3_desc','charter_type3_desc_zh','charter_type4_title','charter_type4_title_zh','charter_type4_desc','charter_type4_desc_zh'])">Save All / 全部保存</button>
+        <button class="btn btn-primary" onclick="saveCharterTypes()">Save All / 全部保存</button>
       </div>
     </div>
 
@@ -372,7 +436,7 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
 
 <!-- MODALS -->
 <div class="modal-overlay" id="contact-modal">
-  <div class="modal">
+  <div class="modal" style="max-width:560px">
     <div class="modal-header"><h3>Contact Detail</h3><button class="modal-close" onclick="closeModal('contact-modal')">×</button></div>
     <div class="modal-body" id="contact-detail"></div>
     <div class="modal-footer">
@@ -382,15 +446,22 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
   </div>
 </div>
 
+<!-- NEWS MODAL -->
 <div class="modal-overlay" id="news-modal">
-  <div class="modal" style="max-width:720px">
+  <div class="modal" style="max-width:800px">
     <div class="modal-header"><h3 id="news-modal-title">New Article</h3><button class="modal-close" onclick="closeModal('news-modal')">×</button></div>
     <div class="modal-body">
       <input type="hidden" id="news-id"/>
-      <div class="form-group"><label>Title / 标题</label><input type="text" id="news-title"/></div>
-      <div class="form-group"><label>Excerpt / 摘要</label><textarea id="news-excerpt" rows="2"></textarea></div>
-      <div class="form-group"><label>Body (HTML allowed) / 正文</label><textarea id="news-body-field" rows="8"></textarea></div>
-      <div class="form-group"><label>Cover Image (JPG/PNG/WebP, max 5MB)</label><input type="file" id="news-image" accept="image/*"/></div>
+      <p style="font-size:0.8rem;color:#6b7280;margin-bottom:16px;">中文为主要语言字段，英文为可选翻译字段（EN显示时优先使用）</p>
+      <div class="form-grid">
+        <div class="form-group form-full"><label>Title 标题（中文，主字段）</label><input type="text" id="news-title"/></div>
+        <div class="form-group form-full"><label>Title (EN) 英文标题（可选，EN版本显示）</label><input type="text" id="news-title-en" placeholder="Leave blank to use Chinese title for both languages"/></div>
+        <div class="form-group form-full"><label>Excerpt 摘要（中文）</label><textarea id="news-excerpt" rows="2"></textarea></div>
+        <div class="form-group form-full"><label>Excerpt (EN) 英文摘要（可选）</label><textarea id="news-excerpt-en" rows="2" placeholder="Leave blank to use Chinese excerpt"></textarea></div>
+        <div class="form-group form-full"><label>Body 正文 HTML（中文）</label><textarea id="news-body-field" rows="7"></textarea></div>
+        <div class="form-group form-full"><label>Content (EN) 英文正文 HTML（可选）</label><textarea id="news-content-en" rows="7" placeholder="Leave blank to use Chinese body"></textarea></div>
+        <div class="form-group form-full"><label>Cover Image (JPG/PNG/WebP, max 5MB)</label><input type="file" id="news-image" accept="image/*"/></div>
+      </div>
       <div style="display:flex;gap:24px;margin-top:8px">
         <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer"><input type="checkbox" id="news-published"/> Published / 已发布</label>
         <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer"><input type="checkbox" id="news-featured"/> Featured / 首页推荐</label>
@@ -403,18 +474,23 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
   </div>
 </div>
 
+<!-- SERVICE MODAL -->
 <div class="modal-overlay" id="service-modal">
-  <div class="modal">
+  <div class="modal" style="max-width:800px">
     <div class="modal-header"><h3 id="svc-modal-title">New Service</h3><button class="modal-close" onclick="closeModal('service-modal')">×</button></div>
     <div class="modal-body">
       <input type="hidden" id="svc-id"/>
+      <p style="font-size:0.8rem;color:#6b7280;margin-bottom:16px;">英文为主要语言字段，中文为新增双语字段</p>
       <div class="form-grid">
-        <div class="form-group"><label>Service Name / 服务名称</label><input type="text" id="svc-name"/></div>
+        <div class="form-group"><label>Service Name (EN) / 英文名称</label><input type="text" id="svc-name"/></div>
+        <div class="form-group"><label>服务名称 (ZH) / 中文名称</label><input type="text" id="svc-name-zh" placeholder="中文服务名称"/></div>
         <div class="form-group"><label>Icon (emoji) / 图标</label><input type="text" id="svc-icon" placeholder="✈"/></div>
-        <div class="form-group form-full"><label>Short Description / 简短描述</label><textarea id="svc-desc" rows="2"></textarea></div>
-        <div class="form-group form-full"><label>Full Details (HTML) / 详细内容</label><textarea id="svc-details" rows="5"></textarea></div>
         <div class="form-group"><label>Sort Order / 排序</label><input type="number" id="svc-order" value="0"/></div>
-        <div class="form-group"><label>Image / 图片 (JPG/PNG, max 5MB)</label><input type="file" id="svc-image" accept="image/*"/></div>
+        <div class="form-group form-full"><label>Short Description (EN) / 英文简介</label><textarea id="svc-desc" rows="2"></textarea></div>
+        <div class="form-group form-full"><label>简短描述 (ZH) / 中文简介</label><textarea id="svc-desc-zh" rows="2" placeholder="中文简短描述"></textarea></div>
+        <div class="form-group form-full"><label>Full Details HTML (EN) / 英文详情</label><textarea id="svc-details" rows="5"></textarea></div>
+        <div class="form-group form-full"><label>详细内容 HTML (ZH) / 中文详情</label><textarea id="svc-details-zh" rows="5" placeholder="中文详细内容"></textarea></div>
+        <div class="form-group form-full"><label>Image / 图片 (JPG/PNG/WebP, max 5MB)</label><input type="file" id="svc-image" accept="image/*"/></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -424,6 +500,30 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
   </div>
 </div>
 
+<!-- PARTNER MODAL -->
+<div class="modal-overlay" id="partner-modal">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header"><h3 id="partner-modal-title">New Partner</h3><button class="modal-close" onclick="closeModal('partner-modal')">×</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="partner-id"/>
+      <div class="form-group"><label>Partner Name / 合作伙伴名称</label><input type="text" id="partner-name" placeholder="e.g. Shunfeng Airlines"/></div>
+      <div class="form-group"><label>Logo (PNG recommended, transparent bg, max 2MB)</label><input type="file" id="partner-logo" accept="image/jpeg,image/png,image/webp"/><div id="partner-logo-preview"></div></div>
+      <div class="form-group"><label>Website URL / 网址（选填，点击跳转）</label><input type="url" id="partner-website" placeholder="https://"/></div>
+      <div class="form-group"><label>Sort Order / 排序（数字小先显示）</label><input type="number" id="partner-order" value="0"/></div>
+      <div class="form-group">
+        <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer">
+          <input type="checkbox" id="partner-active" checked/> Active / 显示在前台
+        </label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('partner-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="savePartner()">Save Partner</button>
+    </div>
+  </div>
+</div>
+
+<!-- CAROUSEL MODAL -->
 <div class="modal-overlay" id="carousel-modal">
   <div class="modal" style="max-width:480px">
     <div class="modal-header"><h3>Upload Office Photo / 上传办公室照片</h3><button class="modal-close" onclick="closeModal('carousel-modal')">×</button></div>
@@ -483,8 +583,9 @@ function showSection(name){
   else if(name==='contacts')loadContacts(1);
   else if(name==='news')loadNews(1);
   else if(name==='services')loadServices();
+  else if(name==='partners')loadPartners();
   else if(name==='carousel')loadCarousel();
-  else if(name==='company'||name==='navlabels'||name==='homepage'||name==='charter'||name==='account')loadSettings();
+  else if(['company','navlabels','homepage','charter','account'].includes(name))loadSettings();
 }
 
 function toast(msg,type='success'){const el=document.getElementById('toast');el.textContent=msg;el.className='toast show '+type;setTimeout(()=>el.classList.remove('show'),3500);}
@@ -534,11 +635,12 @@ async function viewContact(id){
 async function setContactStatus(id,status){try{await api('PATCH','/contacts/'+id+'/status',{status});toast('Updated');closeModal('contact-modal');loadContacts(contactPage);}catch(e){toast(e.message,'error');}}
 async function deleteContact(id){if(!confirm('Delete?'))return;try{await api('DELETE','/contacts/'+id);toast('Deleted');loadContacts(contactPage);}catch(e){toast(e.message,'error');}}
 
+// ── NEWS ──────────────────────────────────────────────────────────────────────
 async function loadNews(page){
   newsPage=page;
   try{const d=await api('GET',`/news/admin/all?page=${page}&limit=15`);
     document.getElementById('news-body').innerHTML=d.data.map(n=>`<tr>
-      <td>${n.title}</td>
+      <td>${n.title}${n.title_en?'<br><small style="color:#6b7280">EN: '+n.title_en+'</small>':''}</td>
       <td><span class="badge badge-${n.published?'pub':'draft'}">${n.published?'Published':'Draft'}</span></td>
       <td>${n.featured?'✓':'—'}</td><td>${n.created_at.slice(0,10)}</td>
       <td style="display:flex;gap:6px">
@@ -553,8 +655,11 @@ function openNewsModal(data){
   document.getElementById('news-id').value=data?.id||'';
   document.getElementById('news-modal-title').textContent=data?'Edit Article':'New Article';
   document.getElementById('news-title').value=data?.title||'';
+  document.getElementById('news-title-en').value=data?.title_en||'';
   document.getElementById('news-excerpt').value=data?.excerpt||'';
+  document.getElementById('news-excerpt-en').value=data?.excerpt_en||'';
   document.getElementById('news-body-field').value=data?.body||'';
+  document.getElementById('news-content-en').value=data?.content_en||'';
   document.getElementById('news-published').checked=!!data?.published;
   document.getElementById('news-featured').checked=!!data?.featured;
   document.getElementById('news-image').value='';
@@ -566,8 +671,11 @@ async function saveNews(){
   const id=document.getElementById('news-id').value;
   const fd=new FormData();
   fd.append('title',document.getElementById('news-title').value);
+  fd.append('title_en',document.getElementById('news-title-en').value);
   fd.append('excerpt',document.getElementById('news-excerpt').value);
+  fd.append('excerpt_en',document.getElementById('news-excerpt-en').value);
   fd.append('body',document.getElementById('news-body-field').value);
+  fd.append('content_en',document.getElementById('news-content-en').value);
   fd.append('published',document.getElementById('news-published').checked?'1':'0');
   fd.append('featured',document.getElementById('news-featured').checked?'1':'0');
   const img=document.getElementById('news-image').files[0];if(img)fd.append('image',img);
@@ -575,11 +683,13 @@ async function saveNews(){
 }
 async function deleteNews(id){if(!confirm('Delete?'))return;try{await api('DELETE','/news/'+id);toast('Deleted');loadNews(newsPage);}catch(e){toast(e.message,'error');}}
 
+// ── SERVICES ──────────────────────────────────────────────────────────────────
 async function loadServices(){
   try{const r=await fetch('/api/services');const d=await r.json();
     document.getElementById('services-body').innerHTML=d.map(s=>`<tr>
-      <td style="font-size:1.4rem">${s.icon||''}</td><td>${s.name}</td>
-      <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.description||'—'}</td>
+      <td style="font-size:1.4rem">${s.icon||''}</td>
+      <td>${s.name}</td>
+      <td style="color:#6b7280">${s.name_zh||'—'}</td>
       <td>${s.sort_order}</td>
       <td><span class="badge badge-${s.active?'pub':'draft'}">${s.active?'Active':'Inactive'}</span></td>
       <td style="display:flex;gap:6px">
@@ -593,10 +703,14 @@ function openServiceModal(data){
   document.getElementById('svc-id').value=data?.id||'';
   document.getElementById('svc-modal-title').textContent=data?'Edit Service':'New Service';
   document.getElementById('svc-name').value=data?.name||'';
+  document.getElementById('svc-name-zh').value=data?.name_zh||'';
   document.getElementById('svc-icon').value=data?.icon||'';
   document.getElementById('svc-desc').value=data?.description||'';
+  document.getElementById('svc-desc-zh').value=data?.description_zh||'';
   document.getElementById('svc-details').value=data?.details||'';
+  document.getElementById('svc-details-zh').value=data?.details_zh||'';
   document.getElementById('svc-order').value=data?.sort_order||0;
+  document.getElementById('svc-image').value='';
   openModal('service-modal');
 }
 
@@ -609,18 +723,83 @@ async function saveService(){
   const id=document.getElementById('svc-id').value;
   const fd=new FormData();
   fd.append('name',document.getElementById('svc-name').value);
+  fd.append('name_zh',document.getElementById('svc-name-zh').value);
   fd.append('icon',document.getElementById('svc-icon').value);
   fd.append('description',document.getElementById('svc-desc').value);
+  fd.append('description_zh',document.getElementById('svc-desc-zh').value);
   fd.append('details',document.getElementById('svc-details').value);
+  fd.append('details_zh',document.getElementById('svc-details-zh').value);
   fd.append('sort_order',document.getElementById('svc-order').value);
   const img=document.getElementById('svc-image').files[0];if(img)fd.append('image',img);
   try{if(id)await api('PUT','/services/'+id,null,fd);else await api('POST','/services',null,fd);toast('Saved');closeModal('service-modal');loadServices();}catch(e){toast(e.message,'error');}
 }
 async function deleteService(id){if(!confirm('Delete?'))return;try{await api('DELETE','/services/'+id);toast('Deleted');loadServices();}catch(e){toast(e.message,'error');}}
 
+// ── PARTNERS ──────────────────────────────────────────────────────────────────
+async function loadPartners(){
+  try{const d=await api('GET','/partners/admin/all');
+    document.getElementById('partners-body').innerHTML=d.map(p=>`<tr>
+      <td>${p.logo_url?`<img src="${p.logo_url}" class="partner-logo-thumb"/>`:'—'}</td>
+      <td>${p.name}</td>
+      <td>${p.website_url?`<a href="${p.website_url}" target="_blank" style="color:var(--sky)">${p.website_url.replace(/^https?:\/\//,'').slice(0,30)}</a>`:'—'}</td>
+      <td>${p.sort_order}</td>
+      <td><span class="badge badge-${p.active?'pub':'draft'}">${p.active?'Active':'Hidden'}</span></td>
+      <td style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm" onclick="editPartner(${p.id})">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deletePartner(${p.id})">Del</button>
+      </td></tr>`).join('');
+  }catch(e){toast(e.message,'error');}
+}
+
+function openPartnerModal(data){
+  document.getElementById('partner-id').value=data?.id||'';
+  document.getElementById('partner-modal-title').textContent=data?'Edit Partner':'New Partner';
+  document.getElementById('partner-name').value=data?.name||'';
+  document.getElementById('partner-website').value=data?.website_url||'';
+  document.getElementById('partner-order').value=data?.sort_order||0;
+  document.getElementById('partner-active').checked=data?!!data.active:true;
+  document.getElementById('partner-logo').value='';
+  const prev=document.getElementById('partner-logo-preview');
+  prev.innerHTML=data?.logo_url?`<img src="${data.logo_url}" class="img-preview"/>` :'';
+  openModal('partner-modal');
+}
+
+async function editPartner(id){
+  try{const d=await api('GET','/partners/admin/all');
+    const p=d.find(x=>x.id===id);if(p)openPartnerModal(p);
+  }catch(e){toast(e.message,'error');}
+}
+
+async function savePartner(){
+  const id=document.getElementById('partner-id').value;
+  const fd=new FormData();
+  fd.append('name',document.getElementById('partner-name').value);
+  fd.append('website_url',document.getElementById('partner-website').value);
+  fd.append('sort_order',document.getElementById('partner-order').value);
+  fd.append('active',document.getElementById('partner-active').checked?'1':'0');
+  const logo=document.getElementById('partner-logo').files[0];if(logo)fd.append('logo',logo);
+  try{
+    if(id)await api('PUT','/partners/'+id,null,fd);
+    else await api('POST','/partners',null,fd);
+    toast('Saved');closeModal('partner-modal');loadPartners();
+  }catch(e){toast(e.message,'error');}
+}
+
+async function deletePartner(id){
+  if(!confirm('Delete this partner?'))return;
+  try{await api('DELETE','/partners/'+id);toast('Deleted');loadPartners();}catch(e){toast(e.message,'error');}
+}
+
+// ── SETTINGS ──────────────────────────────────────────────────────────────────
 async function loadSettings(){
   try{const d=await api('GET','/settings');
     Object.entries(d).forEach(([k,v])=>{const el=document.getElementById('s-'+k);if(el)el.value=v||'';});
+    // Show existing charter images
+    for(let i=1;i<=4;i++){
+      const url=d['charter_type'+i+'_image'];
+      const prev=document.getElementById('charter-img-'+i+'-preview');
+      if(prev)prev.innerHTML=url?`<img src="${url}" class="img-preview"/>` :'';
+    }
   }catch(e){toast(e.message,'error');}
 }
 
@@ -628,6 +807,44 @@ async function saveSection(keys){
   const obj={};
   keys.forEach(k=>{const el=document.getElementById('s-'+k);if(el)obj[k]=el.value;});
   try{await api('PUT','/settings',obj);toast('Saved successfully ✓');}catch(e){toast(e.message,'error');}
+}
+
+async function saveCharterTypes(){
+  // Save text fields
+  const textKeys=['charter_intro','charter_intro_zh',
+    'charter_type1_title','charter_type1_title_zh','charter_type1_desc','charter_type1_desc_zh',
+    'charter_type2_title','charter_type2_title_zh','charter_type2_desc','charter_type2_desc_zh',
+    'charter_type3_title','charter_type3_title_zh','charter_type3_desc','charter_type3_desc_zh',
+    'charter_type4_title','charter_type4_title_zh','charter_type4_desc','charter_type4_desc_zh'];
+  const obj={};
+  textKeys.forEach(k=>{const el=document.getElementById('s-'+k);if(el)obj[k]=el.value;});
+  try{
+    await api('PUT','/settings',obj);
+    // Upload charter images if selected
+    const uploads=[];
+    for(let i=1;i<=4;i++){
+      const file=document.getElementById('charter-img-'+i).files[0];
+      if(file){
+        const fd=new FormData();
+        fd.append('file',file);
+        uploads.push(
+          fetch('/api/upload',{method:'POST',headers:{Authorization:'Bearer '+TOKEN},body:fd})
+          .then(r=>r.json())
+          .then(d=>{
+            if(d.url){
+              const key='charter_type'+i+'_image';
+              return api('PUT','/settings',{[key]:d.url}).then(()=>{
+                const prev=document.getElementById('charter-img-'+i+'-preview');
+                if(prev)prev.innerHTML=`<img src="${d.url}" class="img-preview"/>`;
+              });
+            }
+          })
+        );
+      }
+    }
+    if(uploads.length)await Promise.all(uploads);
+    toast('Charter types saved ✓');
+  }catch(e){toast(e.message,'error');}
 }
 
 async function changePassword(){
@@ -641,6 +858,7 @@ async function changePassword(){
   }catch(e){toast(e.message,'error');}
 }
 
+// ── CAROUSEL ──────────────────────────────────────────────────────────────────
 async function loadCarousel(){
   try{const r=await fetch('/api/gallery');const imgs=await r.json();
     const grid=document.getElementById('carousel-grid');
@@ -683,7 +901,7 @@ async function deleteCarouselPhoto(id){
 
 function renderPagination(cid,pages,current,fn){
   const el=document.getElementById(cid);
-  if(pages<=1){el.innerHTML='';return;}
+  if(!pages||pages<=1){el.innerHTML='';return;}
   el.innerHTML=Array.from({length:pages},(_,i)=>i+1).map(p=>`<button class="page-btn${p===current?' active':''}" onclick="${fn.name}(${p})">${p}</button>`).join('');
 }
 </script>

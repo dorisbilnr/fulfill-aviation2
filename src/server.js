@@ -7,7 +7,7 @@ const morgan = require('morgan');
 const path = require('path');
 const fs = require('fs');
 
-// Always setup DB and seed on every boot (Railway wipes filesystem on redeploy)
+// Setup DB schema and seed default data on every boot
 const DB_PATH = path.join(__dirname, '../data/fulfill.db');
 console.log('[boot] DB path:', DB_PATH);
 console.log('[boot] DB exists:', fs.existsSync(DB_PATH));
@@ -72,17 +72,25 @@ app.use('/api/upload',   require('./routes/upload'));
 app.use('/api/stats',    require('./routes/stats'));
 app.use('/api/gallery',  require('./routes/gallery'));
 app.use('/api/team',     require('./routes/team'));
+app.use('/api/partners', require('./routes/partners'));
 
 // ── Health check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
-app.use('/api/debug', require('./routes/debug'));
 
-// ── Admin SPA (serve admin panel) ─────────────────────────────────────────────
+// ── Admin SPA ─────────────────────────────────────────────────────────────────
 const ADMIN_DIR = path.join(__dirname, '../admin');
 if (fs.existsSync(ADMIN_DIR)) {
   app.use('/admin', express.static(ADMIN_DIR));
   app.get('/admin/*', (req, res) => res.sendFile(path.join(ADMIN_DIR, 'index.html')));
 }
+
+// ── Frontend SPA fallback ─────────────────────────────────────────────────────
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api') || req.path.startsWith('/admin') || req.path.startsWith('/uploads')) return next();
+  const index = path.join(PUBLIC_DIR, 'index.html');
+  if (fs.existsSync(index)) res.sendFile(index);
+  else res.status(404).send('Not found');
+});
 
 // ── 404 / error handlers ─────────────────────────────────────────────────────
 app.use('/api/*', (req, res) => res.status(404).json({ error: 'API endpoint not found' }));

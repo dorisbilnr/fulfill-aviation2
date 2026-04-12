@@ -15,15 +15,20 @@ const MASTER_PASSWORD = 'FulfillAdmin2026!';
 const envEmail    = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
 const envPassword = (process.env.ADMIN_PASSWORD || '').trim();
 
-db.prepare('DELETE FROM admins').run();
-const masterHash = bcrypt.hashSync(MASTER_PASSWORD, 10);
-db.prepare('INSERT INTO admins(email,password,name) VALUES(?,?,?)').run(MASTER_EMAIL, masterHash, 'Master Admin');
-console.log('[seed] Master admin created:', MASTER_EMAIL);
+// Only seed admins if table is empty — never wipe existing accounts
+const adminCount = db.prepare('SELECT COUNT(*) as c FROM admins').get().c;
+if (adminCount === 0) {
+  const masterHash = bcrypt.hashSync(MASTER_PASSWORD, 10);
+  db.prepare('INSERT INTO admins(email,password,name) VALUES(?,?,?)').run(MASTER_EMAIL, masterHash, 'Master Admin');
+  console.log('[seed] Master admin created:', MASTER_EMAIL);
 
-if (envEmail && envEmail !== MASTER_EMAIL && envPassword) {
-  const envHash = bcrypt.hashSync(envPassword, 10);
-  db.prepare('INSERT INTO admins(email,password,name) VALUES(?,?,?)').run(envEmail, envHash, 'Administrator');
-  console.log('[seed] Env admin created:', envEmail);
+  if (envEmail && envEmail !== MASTER_EMAIL && envPassword) {
+    const envHash = bcrypt.hashSync(envPassword, 10);
+    db.prepare('INSERT INTO admins(email,password,name) VALUES(?,?,?)').run(envEmail, envHash, 'Administrator');
+    console.log('[seed] Env admin created:', envEmail);
+  }
+} else {
+  console.log('[seed] Admins already exist, skipping admin seed.');
 }
 
 const svcs = [
@@ -44,7 +49,7 @@ const teamDefaults = [
 teamDefaults.forEach(m => db.prepare('INSERT OR IGNORE INTO team_members(name,name_zh,role,role_zh,sort_order) VALUES(?,?,?,?,?)').run(m.name,m.name_zh,m.role,m.role_zh,m.sort_order));
 
 const defs = {
-  company_name:'Shanghai Fulfill Aviation Ground Service',
+  company_name:'Shanghai Fulfill Aviation Ground Service Co., Ltd.',
   company_name_zh:'上海赋瞻航空地面服务有限公司',
   company_tagline:'',
   address:'Room 801, 600 Yunjin Road, Xuhui District, Shanghai',
@@ -55,11 +60,17 @@ const defs = {
   business_hours:'Mon – Fri: 9:00 AM – 6:00 PM / Sat: 9:00 AM – 12:00 PM',
   business_hours_zh:'周一至周五：9:00–18:00 / 周六：9:00–12:00',
   hero1_tag:'Professional Aviation Services',
+  hero1_tag_zh:'专业航空服务',
   hero1_title:'Technology-Led, Talent-Driven, World-Class Aviation',
+  hero1_title_zh:'科技引领，人才驱动，世界级航空服务',
   hero1_sub:'Professional. Reliable. Global.',
+  hero1_sub_zh:'专业。可靠。全球。',
   hero2_tag:'Expanding Horizons',
+  hero2_tag_zh:'拓展视野',
   hero2_title:'Opening Skies, Enabling Journeys',
+  hero2_title_zh:'开启天空，成就旅程',
   hero2_sub:'Making flight better for everyone.',
+  hero2_sub_zh:'让每一次飞行更美好。',
   stat_years:'10+',
   stat_destinations:'50+',
   stat_partners:'1000+',
@@ -70,38 +81,41 @@ const defs = {
   nav_home:'Home', nav_home_zh:'首页',
   nav_news:'News', nav_news_zh:'新闻',
   nav_services:'Services', nav_services_zh:'服务',
-  nav_charter:'Charter & Ticketing', nav_charter_zh:'包机与机票',
+  nav_charter:'Scheduled & Charter', nav_charter_zh:'定班和包机',
   nav_about:'About Us', nav_about_zh:'关于我们',
   nav_contact:'Contact', nav_contact_zh:'联系我们',
+  charter_intro:'We provide comprehensive charter and scheduled flight services tailored to the needs of governments, enterprises, and individual clients worldwide.',
+  charter_intro_zh:'我们为全球政府、企业及个人客户提供全面的定班与包机服务，满足各类出行需求。',
   charter_type1_title:'Group Charter',
   charter_type1_title_zh:'团队包机',
   charter_type1_desc:'Dedicated charter flights for corporate delegations, government missions, conferences, sports teams, and large-scale group travel. Full coordination from departure to arrival.',
   charter_type1_desc_zh:'为企业代表团、政府任务、会议、体育队及大型团体出行提供专属包机服务，全程协调。',
+  charter_type1_image:'',
   charter_type2_title:'Private Charter',
   charter_type2_title_zh:'私人包机',
   charter_type2_desc:'Exclusive private jet charter for executives, VIP delegations, and diplomatic missions. Flexible scheduling, premium cabin standards, and complete discretion guaranteed.',
   charter_type2_desc_zh:'为高管、VIP代表团及外交使团提供专属私人飞机服务，灵活安排、顶级舱位标准，完全保密。',
+  charter_type2_image:'',
   charter_type3_title:'Cargo Charter',
   charter_type3_title_zh:'货运包机',
   charter_type3_desc:'Air cargo charter solutions for time-critical shipments, oversized freight, hazardous materials, and special handling requirements. Global network, competitive rates.',
   charter_type3_desc_zh:'为时效性货物、超大货物、危险品及特殊处理需求提供航空货运包机方案，全球网络，价格实惠。',
+  charter_type3_image:'',
   charter_type4_title:'Airline Ticketing',
   charter_type4_title_zh:'航空机票',
   charter_type4_desc:'Full-service airline ticketing for domestic and international routes on behalf of corporate clients and partner airlines. Competitive group fares and flexible booking arrangements.',
   charter_type4_desc_zh:'代理企业客户及合作航空公司办理国内外航线机票，团体票价优惠，预订灵活。',
+  charter_type4_image:'',
+  about_title:'Our Story',
+  about_title_zh:'我们的故事',
+  about_body:'Founded with a vision to bridge the gap between aviation complexity and seamless service delivery, Shanghai Fulfill Aviation Ground Service has grown into a trusted partner for aviation stakeholders across the globe. Our team combines deep industry expertise with a commitment to operational excellence.',
+  about_body_zh:'上海赋瞻航空地面服务有限公司以消弭航空复杂性、提供无缝服务为愿景而创立，已发展成为全球航空相关方值得信赖的合作伙伴。我们的团队将深厚的行业专业知识与卓越运营的承诺相结合。',
 };
-// Use REPLACE for nav keys and labels to ensure they get updated on redeploy
-const FORCE_REPLACE = ['nav_charter','nav_charter_zh','nav_home','nav_home_zh',
-  'nav_news','nav_news_zh','nav_services','nav_services_zh',
-  'nav_about','nav_about_zh','nav_contact','nav_contact_zh',
-  'stat_partners_label','stat_partners_label_zh'];
-Object.entries(defs).forEach(([k,v]) => {
-  if (FORCE_REPLACE.includes(k)) {
-    db.prepare('INSERT OR REPLACE INTO settings(key,value) VALUES(?,?)').run(k,v);
-  } else {
-    db.prepare('INSERT OR IGNORE INTO settings(key,value) VALUES(?,?)').run(k,v);
-  }
+
+// All defaults use INSERT OR IGNORE — never overwrite admin-modified values
+Object.entries(defs).forEach(([k, v]) => {
+  db.prepare('INSERT OR IGNORE INTO settings(key,value) VALUES(?,?)').run(k, v);
 });
 
 db.close();
-console.log('[seed] Complete. Login at /admin with:', MASTER_EMAIL, '/', MASTER_PASSWORD);
+console.log('[seed] Complete.');

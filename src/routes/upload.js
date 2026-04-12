@@ -4,11 +4,14 @@ const path = require('path');
 const fs = require('fs');
 const auth = require('../middleware/auth');
 
-const UPLOAD_DIR = path.join(__dirname, '../../uploads/general');
-if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+// Pre-create all upload subdirectories
+['general', 'news', 'services', 'partners'].forEach(dir => {
+  const p = path.join(__dirname, '../../uploads', dir);
+  if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true });
+});
 
 const storage = multer.diskStorage({
-  destination: UPLOAD_DIR,
+  destination: path.join(__dirname, '../../uploads/general'),
   filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname.replace(/[^a-zA-Z0-9.\-_]/g,'_')),
 });
 const upload = multer({
