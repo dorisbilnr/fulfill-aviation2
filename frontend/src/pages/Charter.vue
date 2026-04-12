@@ -3,7 +3,7 @@
     <!-- Page Hero -->
     <div class="page-hero">
       <div class="page-hero-content">
-        <span class="page-tag">Charter Services</span>
+        <span class="page-tag">{{ isZh ? '包机服务' : 'Charter Services' }}</span>
         <h1 class="page-title">{{ isZh ? (s.nav_charter_zh || '定班和包机') : (s.nav_charter || 'Scheduled & Charter') }}</h1>
       </div>
     </div>
