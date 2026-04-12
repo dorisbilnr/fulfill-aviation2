@@ -59,9 +59,10 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useLangStore } from '@/stores/lang'
 
-const { isZh } = useLangStore()
+const { isZh } = storeToRefs(useLangStore())
 const articles = ref([])
 const loading = ref(true)
 

@@ -111,14 +111,15 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useSettingsStore } from '@/stores/settings'
 import { useServicesStore } from '@/stores/services'
 import { useLangStore } from '@/stores/lang'
 
 const settings = useSettingsStore()
 const servicesStore = useServicesStore()
-const { isZh } = useLangStore()
-const s = settings.data
+const { isZh } = storeToRefs(useLangStore())
+const { data: s } = storeToRefs(settings)
 const services = computed(() => servicesStore.list)
 
 const form = ref({ first_name: '', last_name: '', email: '', company: '', service: '', message: '' })

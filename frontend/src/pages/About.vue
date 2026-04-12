@@ -109,12 +109,13 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useSettingsStore } from '@/stores/settings'
 import { useLangStore } from '@/stores/lang'
 
 const settings = useSettingsStore()
-const { isZh } = useLangStore()
-const s = settings.data
+const { isZh } = storeToRefs(useLangStore())
+const { data: s } = storeToRefs(settings)
 const gallery = ref([])
 const current = ref(0)
 let timer = null

@@ -118,6 +118,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useSettingsStore } from '@/stores/settings'
 import { useServicesStore } from '@/stores/services'
 import { useLangStore } from '@/stores/lang'
@@ -125,8 +126,8 @@ import PartnersCarousel from '@/components/PartnersCarousel.vue'
 
 const settings = useSettingsStore()
 const servicesStore = useServicesStore()
-const { isZh } = useLangStore()
-const s = settings.data
+const { isZh } = storeToRefs(useLangStore())
+const { data: s } = storeToRefs(settings)
 
 const BG_GRADIENTS = [
   'linear-gradient(160deg,#0b2d52,#1a6ea8)',

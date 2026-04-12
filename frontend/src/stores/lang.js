@@ -1,25 +1,20 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
 export const useLangStore = defineStore('lang', () => {
-  const STORAGE_KEY = 'fulfill_lang'
+  const STORAGE_KEY = 'fa_lang'
   const lang = ref(localStorage.getItem(STORAGE_KEY) || 'en')
-
-  const isZh = computed(() => lang.value === 'zh')
+  const isZh = ref(lang.value === 'zh')
 
   function setLang(l) {
     lang.value = l
+    isZh.value = l === 'zh'
     localStorage.setItem(STORAGE_KEY, l)
-    document.body.classList.toggle('lang-zh', l === 'zh')
+    document.documentElement.classList.toggle('lang-zh', l === 'zh')
   }
 
-  function t(enVal, zhVal) {
-    if (isZh.value) return zhVal || enVal || ''
-    return enVal || zhVal || ''
-  }
+  // Initialize class
+  document.documentElement.classList.toggle('lang-zh', lang.value === 'zh')
 
-  // Initialize body class
-  document.body.classList.toggle('lang-zh', lang.value === 'zh')
-
-  return { lang, isZh, setLang, t }
+  return { lang, isZh, setLang }
 })

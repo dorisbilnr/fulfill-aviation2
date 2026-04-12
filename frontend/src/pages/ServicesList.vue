@@ -44,14 +44,15 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useServicesStore } from '@/stores/services'
 import { useSettingsStore } from '@/stores/settings'
 import { useLangStore } from '@/stores/lang'
 
 const servicesStore = useServicesStore()
 const settings = useSettingsStore()
-const { isZh } = useLangStore()
-const s = settings.data
+const { isZh } = storeToRefs(useLangStore())
+const { data: s } = storeToRefs(settings)
 const loading = ref(true)
 
 const BG_GRADIENTS = [

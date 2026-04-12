@@ -34,11 +34,12 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { useLangStore } from '@/stores/lang'
 
 const route = useRoute()
-const { isZh } = useLangStore()
+const { isZh } = storeToRefs(useLangStore())
 const svc = ref(null)
 const loading = ref(true)
 

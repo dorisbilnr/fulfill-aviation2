@@ -1,8 +1,8 @@
 <template>
   <nav class="gn">
     <RouterLink to="/" class="gn-logo">
-      <span class="logo-en">FULFILL<span>.</span>AVIATION</span>
-      <span class="logo-zh">赋瞻<span>.</span>航空</span>
+      <span v-if="!isZh" class="logo-en">FULFILL<span>.</span>AVIATION</span>
+      <span v-else class="logo-zh">赋瞻<span>.</span>航空</span>
     </RouterLink>
 
     <ul class="gn-links">
@@ -33,18 +33,21 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { useSettingsStore } from '@/stores/settings'
 import { useLangStore } from '@/stores/lang'
 
 const settings = useSettingsStore()
 const langStore = useLangStore()
-const { isZh, setLang } = langStore
+const { isZh } = storeToRefs(langStore)
+const { setLang } = langStore
+const { data: sd } = storeToRefs(settings)
 const route = useRoute()
 const menuOpen = ref(false)
 
 const navItems = computed(() => {
-  const s = settings.data
+  const s = sd.value
   const zh = isZh.value
   return [
     { to: '/',         label: zh ? (s.nav_home_zh     || '首页')       : (s.nav_home     || 'Home') },

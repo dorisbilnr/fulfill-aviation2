@@ -4,8 +4,8 @@
       <!-- Brand -->
       <div class="footer-brand">
         <RouterLink to="/" class="gn-logo">
-          <span class="logo-en">FULFILL<span>.</span>AVIATION</span>
-          <span class="logo-zh">赋瞻<span>.</span>航空</span>
+          <span v-if="!isZh" class="logo-en">FULFILL<span>.</span>AVIATION</span>
+          <span v-else class="logo-zh">赋瞻<span>.</span>航空</span>
         </RouterLink>
         <p class="footer-desc">
           {{ isZh ? (s.intro_text_zh || s.intro_text) : (s.intro_text || '') }}
@@ -55,21 +55,22 @@
 
 <script setup>
 import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useSettingsStore } from '@/stores/settings'
 import { useLangStore } from '@/stores/lang'
 
 const settings = useSettingsStore()
-const { isZh } = useLangStore()
-const s = settings.data
+const { isZh } = storeToRefs(useLangStore())
+const { data: s } = storeToRefs(settings)
 const year = new Date().getFullYear()
 
 const navItems = computed(() => [
-  { to: '/',         label: isZh.value ? (s.nav_home_zh     || '首页')       : (s.nav_home     || 'Home') },
-  { to: '/news',     label: isZh.value ? (s.nav_news_zh     || '新闻动态')   : (s.nav_news     || 'News') },
-  { to: '/services', label: isZh.value ? (s.nav_services_zh || '服务')       : (s.nav_services || 'Services') },
-  { to: '/charter',  label: isZh.value ? (s.nav_charter_zh  || '定班和包机') : (s.nav_charter  || 'Scheduled & Charter') },
-  { to: '/about',    label: isZh.value ? (s.nav_about_zh    || '关于我们')   : (s.nav_about    || 'About Us') },
-  { to: '/contact',  label: isZh.value ? (s.nav_contact_zh  || '联系我们')   : (s.nav_contact  || 'Contact') },
+  { to: '/',         label: isZh.value ? (s.value.nav_home_zh     || '首页')       : (s.value.nav_home     || 'Home') },
+  { to: '/news',     label: isZh.value ? (s.value.nav_news_zh     || '新闻动态')   : (s.value.nav_news     || 'News') },
+  { to: '/services', label: isZh.value ? (s.value.nav_services_zh || '服务')       : (s.value.nav_services || 'Services') },
+  { to: '/charter',  label: isZh.value ? (s.value.nav_charter_zh  || '定班和包机') : (s.value.nav_charter  || 'Scheduled & Charter') },
+  { to: '/about',    label: isZh.value ? (s.value.nav_about_zh    || '关于我们')   : (s.value.nav_about    || 'About Us') },
+  { to: '/contact',  label: isZh.value ? (s.value.nav_contact_zh  || '联系我们')   : (s.value.nav_contact  || 'Contact') },
 ])
 </script>
 

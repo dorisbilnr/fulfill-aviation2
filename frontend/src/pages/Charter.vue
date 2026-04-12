@@ -45,23 +45,24 @@
 
 <script setup>
 import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useSettingsStore } from '@/stores/settings'
 import { useLangStore } from '@/stores/lang'
 
 const settings = useSettingsStore()
-const { isZh } = useLangStore()
-const s = settings.data
+const { isZh } = storeToRefs(useLangStore())
+const { data: s } = storeToRefs(settings)
 
 const EMOJIS = ['👥', '🤝', '📦', '🎫']
 
 const charterTypes = computed(() => [1, 2, 3, 4].map((n, i) => ({
   title: isZh.value
-    ? (s[`charter_type${n}_title_zh`] || s[`charter_type${n}_title`] || '')
-    : (s[`charter_type${n}_title`] || ''),
+    ? (s.value[`charter_type${n}_title_zh`] || s.value[`charter_type${n}_title`] || '')
+    : (s.value[`charter_type${n}_title`] || ''),
   desc: isZh.value
-    ? (s[`charter_type${n}_desc_zh`] || s[`charter_type${n}_desc`] || '')
-    : (s[`charter_type${n}_desc`] || ''),
-  image: s[`charter_type${n}_image`] || '',
+    ? (s.value[`charter_type${n}_desc_zh`] || s.value[`charter_type${n}_desc`] || '')
+    : (s.value[`charter_type${n}_desc`] || ''),
+  image: s.value[`charter_type${n}_image`] || '',
   emoji: EMOJIS[i],
 })))
 </script>

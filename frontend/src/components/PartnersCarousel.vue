@@ -21,9 +21,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useLangStore } from '@/stores/lang'
 
-const { isZh } = useLangStore()
+const { isZh } = storeToRefs(useLangStore())
 const partners = ref([])
 
 onMounted(async () => {
