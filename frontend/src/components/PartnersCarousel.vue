@@ -12,7 +12,7 @@
           rel="noopener"
           class="partner-logo">
           <img v-if="p.logo_url" :src="p.logo_url" :alt="p.name" />
-          <span v-else>{{ p.name }}</span>
+          <span v-if="p.name" class="partner-name">{{ p.name }}</span>
         </a>
       </div>
     </div>
@@ -55,18 +55,18 @@ onMounted(async () => {
   align-items: center; justify-content: center;
 }
 .partner-logo {
-  display: flex; align-items: center; justify-content: center;
-  width: 140px; height: 72px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  width: 160px; min-height: 90px;
   background: white;
   border: 1px solid #e5e9f0;
   border-radius: 4px;
-  padding: 12px 16px;
+  padding: 14px 16px;
   transition: box-shadow 0.2s, border-color 0.2s;
   text-decoration: none;
 }
 .partner-logo:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-color: var(--gold); }
-.partner-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
-.partner-logo span { font-size: 0.8rem; color: var(--text-muted); text-align: center; font-weight: 500; }
+.partner-logo img { max-width: 100%; max-height: 52px; object-fit: contain; }
+.partner-name { font-size: 0.78rem; color: #4a5568; text-align: center; font-weight: 500; line-height: 1.3; }
 
 @media (max-width: 600px) {
   .partner-logo { width: 110px; height: 60px; }
