@@ -178,7 +178,7 @@ function parseTitle(txt, fallback) {
 .slide-1 { background: linear-gradient(135deg, #0b1f3a 0%, #1a6ea8 50%, #0b2d52 100%); }
 .slide-2 { background: linear-gradient(135deg, #0d2640 0%, #0f4c75 60%, #1a6ea8 100%); }
 .slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.55) 100%); }
-.hero-content { position: absolute; z-index: 2; bottom: 22%; left: 10%; max-width: 640px; }
+.hero-content { position: absolute; z-index: 2; bottom: 22%; left: 10%; right: 10%; }
 .hero-tag { display: inline-block; background: var(--gold); color: var(--navy); font-size: 0.7rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; padding: 5px 14px; margin-bottom: 20px; }
 .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 4.5vw, 3.8rem); font-weight: 300; color: var(--white); line-height: 1.25; margin-bottom: 20px; }
 .hero-sub { color: rgba(255,255,255,0.75); font-size: 1rem; font-weight: 300; line-height: 1.7; margin-bottom: 32px; }

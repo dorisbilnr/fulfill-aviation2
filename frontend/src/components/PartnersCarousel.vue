@@ -10,8 +10,10 @@
           :href="p.website_url || '#'"
           :target="p.website_url ? '_blank' : ''"
           rel="noopener"
-          class="partner-logo">
-          <img v-if="p.logo_url" :src="p.logo_url" :alt="p.name" />
+          class="partner-item">
+          <div class="partner-circle">
+            <img v-if="p.logo_url" :src="p.logo_url" :alt="p.name" />
+          </div>
           <span v-if="p.name" class="partner-name">{{ p.name }}</span>
         </a>
       </div>
@@ -53,20 +55,29 @@ onMounted(async () => {
 .partners-track {
   display: flex; flex-wrap: wrap; gap: 20px;
   justify-content: center;
-  padding: 8px 4px 16px;
+  padding: 8px 4px 24px;
 }
-.partner-logo {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-  flex: 0 0 220px;
-  height: 140px;
-  background: white;
-  border: 1px solid #e5e9f0;
-  border-radius: 6px;
-  padding: 20px 20px 16px;
-  transition: box-shadow 0.2s, border-color 0.2s;
+.partner-item {
+  flex: 0 0 calc(20% - 16px);
+  min-width: 140px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
   text-decoration: none;
 }
-.partner-logo:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.1); border-color: var(--gold); }
-.partner-logo img { max-width: 100%; max-height: 80px; object-fit: contain; }
-.partner-name { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #1e2535; text-align: center; font-weight: 500; line-height: 1.3; }
+.partner-circle {
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid #e5e9f0;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  transition: box-shadow 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.partner-item:hover .partner-circle { box-shadow: 0 6px 24px rgba(0,0,0,0.1); border-color: var(--gold); }
+.partner-circle img { max-width: 78%; max-height: 100px; object-fit: contain; }
+.partner-name {
+  font-family: 'Noto Sans SC', 'Barlow', sans-serif;
+  font-size: 1rem; font-weight: 400;
+  color: #1e2535; text-align: center; line-height: 1.4;
+}
 </style>
