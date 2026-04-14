@@ -85,7 +85,7 @@ nav.gn {
 /* ── Logo ── */
 nav.gn .gn-logo {
   font-family: 'Barlow', sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: #ffffff;
   letter-spacing: 3px;
@@ -94,7 +94,7 @@ nav.gn .gn-logo {
   text-transform: uppercase;
 }
 nav.gn .gn-logo span { color: #c8a96e; }
-.logo-zh { font-size: 1.1rem; }
+.logo-zh { font-size: 1.3rem; }
 
 /* ── Desktop links ── */
 nav.gn .gn-links {

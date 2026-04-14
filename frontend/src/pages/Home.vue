@@ -5,7 +5,7 @@
       <div class="slide slide-1" :class="{ active: slide === 0 }">
         <div class="hero-content">
           <span class="hero-tag">{{ isZh ? (s.hero1_tag_zh || s.hero1_tag || 'Trusted Since 2015') : (s.hero1_tag || 'Trusted Since 2015') }}</span>
-          <h1 class="hero-title" v-html="(isZh ? (s.hero1_title_zh || s.hero1_title) : s.hero1_title) || 'Technology&#8209;Led,<br>Talent&#8209;Driven,<br>World-Class Aviation'"></h1>
+          <h1 class="hero-title" v-html="parseTitle(isZh ? (s.hero1_title_zh || s.hero1_title) : s.hero1_title, 'Technology&#8209;Led, Talent&#8209;Driven,<br>World-Class Aviation')"></h1>
           <p class="hero-sub">{{ isZh ? (s.hero1_sub_zh || s.hero1_sub || 'Professional. Reliable. Global.') : (s.hero1_sub || 'Professional. Reliable. Global.') }}</p>
           <RouterLink to="/about" class="hero-btn">{{ isZh ? '了解更多' : 'Learn More' }}</RouterLink>
         </div>
@@ -13,7 +13,7 @@
       <div class="slide slide-2" :class="{ active: slide === 1 }">
         <div class="hero-content">
           <span class="hero-tag">{{ isZh ? (s.hero2_tag_zh || s.hero2_tag || 'Expanding Horizons') : (s.hero2_tag || 'Expanding Horizons') }}</span>
-          <h1 class="hero-title" v-html="(isZh ? (s.hero2_title_zh || s.hero2_title) : s.hero2_title) || 'Opening Skies,<br>Enabling Journeys'"></h1>
+          <h1 class="hero-title" v-html="parseTitle(isZh ? (s.hero2_title_zh || s.hero2_title) : s.hero2_title, 'Opening Skies,<br>Enabling Journeys')"></h1>
           <p class="hero-sub">{{ isZh ? (s.hero2_sub_zh || s.hero2_sub || 'Making flight better for everyone.') : (s.hero2_sub || 'Making flight better for everyone.') }}</p>
           <RouterLink to="/services" class="hero-btn">{{ isZh ? '我们的服务' : 'Our Services' }}</RouterLink>
         </div>
@@ -163,11 +163,16 @@ onMounted(async () => {
 })
 
 onUnmounted(() => clearInterval(slideTimer))
+
+function parseTitle(txt, fallback) {
+  if (!txt) return fallback
+  return txt.replace(/\\n/g, '<br>').replace(/\n/g, '<br>')
+}
 </script>
 
 <style scoped>
 /* ── HERO ── */
-.hero { position: relative; height: 100vh; overflow: hidden; }
+.hero { position: relative; height: calc(100vh - 80px); overflow: hidden; }
 .slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.2s ease; }
 .slide.active { opacity: 1; }
 .slide-1 { background: linear-gradient(135deg, #0b1f3a 0%, #1a6ea8 50%, #0b2d52 100%); }
