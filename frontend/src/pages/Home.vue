@@ -172,7 +172,7 @@ function parseTitle(txt, fallback) {
 
 <style scoped>
 /* ── HERO ── */
-.hero { position: relative; height: calc(100vh - 80px); overflow: hidden; }
+.hero { position: relative; height: calc(100vh - 168px); overflow: hidden; }
 .slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.2s ease; }
 .slide.active { opacity: 1; }
 .slide-1 { background: linear-gradient(135deg, #0b1f3a 0%, #1a6ea8 50%, #0b2d52 100%); }
