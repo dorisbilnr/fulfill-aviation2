@@ -29,7 +29,7 @@
       <div class="footer-col footer-contact">
         <h4>{{ isZh ? '联络方式' : 'Contact Us' }}</h4>
         <p v-if="s.address || s.address_zh">
-          <strong>{{ isZh ? '地址：' : 'Address:' }}</strong><br>
+          <strong>{{ isZh ? '地址：' : 'Address:' }}</strong>
           {{ isZh ? (s.address_zh || s.address) : (s.address || s.address_zh) }}
         </p>
         <p v-if="s.phone">
@@ -81,7 +81,7 @@ footer {
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr;
+  grid-template-columns: 1.1fr 1fr 1fr;
   gap: 48px;
   padding-bottom: 40px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -98,7 +98,7 @@ footer {
   margin-bottom: 16px;
 }
 .gn-logo span { color: #c8a96e; }
-.logo-zh { display: none; font-size: 1.1rem; }
+.logo-zh { font-size: 1.1rem; }
 .footer-desc {
   color: rgba(255,255,255,0.55);
   font-size: 0.85rem;
