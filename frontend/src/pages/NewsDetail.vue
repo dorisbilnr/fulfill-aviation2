@@ -12,7 +12,7 @@
         <div class="hero-inner">
           <span class="page-tag">{{ isZh ? '新闻动态' : 'News' }}</span>
           <h1 class="hero-title">{{ isZh ? article.title : (article.title_en || article.title) }}</h1>
-          <p class="hero-date">{{ article.created_at?.slice(0, 10) }}</p>
+          <p class="hero-date">{{ (article.publish_date || article.created_at)?.slice(0, 10) }}</p>
         </div>
       </div>
 

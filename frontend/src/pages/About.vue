@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Page Hero -->
-    <div class="page-hero">
+    <div class="page-hero" :style="s.about_hero_image ? { backgroundImage: `url(${s.about_hero_image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}">
       <div class="page-hero-content">
         <span class="page-tag">{{ isZh ? '我们的故事' : 'Our Story' }}</span>
         <h1 class="page-title">{{ isZh ? '关于我们' : 'About Us' }}</h1>

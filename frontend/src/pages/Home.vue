@@ -75,7 +75,7 @@
             :to="`/news/${item.slug}`"
             class="news-item"
           >
-            <span class="news-date">{{ item.created_at?.slice(0, 10) }}</span>
+            <span class="news-date">{{ (item.publish_date || item.created_at)?.slice(0, 10) }}</span>
             <span class="news-item-title">{{ isZh ? item.title : (item.title_en || item.title) }}</span>
           </RouterLink>
         </div>

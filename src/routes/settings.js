@@ -45,6 +45,8 @@ const PUBLIC_KEYS = [
   'about_body', 'about_body_zh',
   // 微信二维码
   'wechat_qr',
+  // 关于我们头图
+  'about_hero_image',
 ];
 
 // Public: get frontend-facing settings (no auth required)

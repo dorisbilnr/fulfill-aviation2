@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Admin — Fulfill Aviation</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet"/>
 <style>
+.ql-toolbar{border-radius:4px 4px 0 0;border-color:var(--border)!important;}
+.ql-container{border-radius:0 0 4px 4px;border-color:var(--border)!important;font-family:'Barlow',sans-serif;font-size:0.9rem;min-height:160px;}
+.ql-editor{min-height:160px;}
 :root{--navy:#0b1f3a;--sky:#1a6ea8;--gold:#c8a96e;--light:#f5f6f8;--white:#fff;--text:#1e2535;--danger:#dc2626;--success:#16a34a;--border:#dde3ec;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Barlow',sans-serif;background:var(--light);color:var(--text);min-height:100vh;}
@@ -280,6 +284,12 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
           <div class="form-group"><label>关于我们标题 (ZH)</label><input id="s-about_title_zh" type="text" placeholder="我们的故事"/></div>
           <div class="form-group form-full"><label>About Body Text (EN)</label><textarea id="s-about_body" rows="4"></textarea></div>
           <div class="form-group form-full"><label>关于我们正文 (ZH)</label><textarea id="s-about_body_zh" rows="4"></textarea></div>
+          <div class="form-group form-full">
+            <label>About Us Hero Image / 关于我们头图</label>
+            <input type="file" id="about-hero-file" accept="image/jpeg,image/png,image/webp"/>
+            <div id="about-hero-preview" style="margin-top:8px;"></div>
+            <button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="uploadAboutHero()">Upload / 上传头图</button>
+          </div>
         </div>
         <button class="btn btn-primary" onclick="saveSection(['company_name','company_name_zh','address','address_zh','phone','fax','email','business_hours','business_hours_zh','intro_text','intro_text_zh','about_title','about_title_zh','about_body','about_body_zh'])">Save / 保存</button>
       </div>
@@ -462,11 +472,13 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
       <div class="form-grid">
         <div class="form-group form-full"><label>Title 标题（中文，主字段）</label><input type="text" id="news-title"/></div>
         <div class="form-group form-full"><label>Title (EN) 英文标题（可选，EN版本显示）</label><input type="text" id="news-title-en" placeholder="Leave blank to use Chinese title for both languages"/></div>
+        <div class="form-group"><label>Publish Date / 发布日期</label><input type="date" id="news-pub-date"/></div>
+        <div class="form-group"></div>
         <div class="form-group form-full"><label>Excerpt 摘要（中文）</label><textarea id="news-excerpt" rows="2"></textarea></div>
         <div class="form-group form-full"><label>Excerpt (EN) 英文摘要（可选）</label><textarea id="news-excerpt-en" rows="2" placeholder="Leave blank to use Chinese excerpt"></textarea></div>
-        <div class="form-group form-full"><label>Body 正文 HTML（中文）</label><textarea id="news-body-field" rows="7"></textarea></div>
-        <div class="form-group form-full"><label>Content (EN) 英文正文 HTML（可选）</label><textarea id="news-content-en" rows="7" placeholder="Leave blank to use Chinese body"></textarea></div>
-        <div class="form-group form-full"><label>Cover Image (JPG/PNG/WebP, max 5MB)</label><input type="file" id="news-image" accept="image/*"/></div>
+        <div class="form-group form-full"><label>Body 正文（中文）</label><div id="news-body-editor"></div></div>
+        <div class="form-group form-full"><label>Content (EN) 英文正文（可选）</label><div id="news-content-en-editor"></div></div>
+        <div class="form-group form-full"><label>Cover Image / 封面图片 (JPG/PNG/WebP, max 5MB)</label><input type="file" id="news-image" accept="image/*"/></div>
       </div>
       <div style="display:flex;gap:24px;margin-top:8px">
         <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer"><input type="checkbox" id="news-published"/> Published / 已发布</label>
@@ -662,14 +674,19 @@ function openNewsModal(data){
   document.getElementById('news-modal-title').textContent=data?'Edit Article':'New Article';
   document.getElementById('news-title').value=data?.title||'';
   document.getElementById('news-title-en').value=data?.title_en||'';
+  document.getElementById('news-pub-date').value=(data?.publish_date||data?.created_at||'').slice(0,10);
   document.getElementById('news-excerpt').value=data?.excerpt||'';
   document.getElementById('news-excerpt-en').value=data?.excerpt_en||'';
-  document.getElementById('news-body-field').value=data?.body||'';
-  document.getElementById('news-content-en').value=data?.content_en||'';
   document.getElementById('news-published').checked=!!data?.published;
   document.getElementById('news-featured').checked=!!data?.featured;
   document.getElementById('news-image').value='';
   openModal('news-modal');
+  // Init Quill after modal is visible
+  setTimeout(()=>{
+    initQuills();
+    quillZh.root.innerHTML=data?.body||'';
+    quillEn.root.innerHTML=data?.content_en||'';
+  },50);
 }
 
 async function editNews(id){try{const d=await api('GET','/news/admin/'+id);openNewsModal(d);}catch(e){toast(e.message,'error');}}
@@ -678,10 +695,14 @@ async function saveNews(){
   const fd=new FormData();
   fd.append('title',document.getElementById('news-title').value);
   fd.append('title_en',document.getElementById('news-title-en').value);
+  fd.append('publish_date',document.getElementById('news-pub-date').value);
   fd.append('excerpt',document.getElementById('news-excerpt').value);
   fd.append('excerpt_en',document.getElementById('news-excerpt-en').value);
-  fd.append('body',document.getElementById('news-body-field').value);
-  fd.append('content_en',document.getElementById('news-content-en').value);
+  // Get content from Quill editors
+  const bodyHtml = quillZh ? quillZh.root.innerHTML : '';
+  const contentEnHtml = quillEn ? quillEn.root.innerHTML : '';
+  fd.append('body', bodyHtml === '<p><br></p>' ? '' : bodyHtml);
+  fd.append('content_en', contentEnHtml === '<p><br></p>' ? '' : contentEnHtml);
   fd.append('published',document.getElementById('news-published').checked?'1':'0');
   fd.append('featured',document.getElementById('news-featured').checked?'1':'0');
   const img=document.getElementById('news-image').files[0];if(img)fd.append('image',img);
@@ -808,7 +829,10 @@ async function loadSettings(){
     }
     // Show existing wechat QR
     const qrPrev=document.getElementById('wechat-qr-preview');
-    if(qrPrev)qrPrev.innerHTML=d.wechat_qr?`<img src="${d.wechat_qr}" class="img-preview" style="max-width:100px;"/>`:'';
+    if(qrPrev)qrPrev.innerHTML=d.wechat_qr?`<img src="${d.wechat_qr}" class="img-preview" style="max-width:100px;"/>` :'';
+    // Show existing about hero image
+    const heroPrev=document.getElementById('about-hero-preview');
+    if(heroPrev)heroPrev.innerHTML=d.about_hero_image?`<img src="${d.about_hero_image}" class="img-preview" style="max-width:200px;max-height:80px;object-fit:cover;border-radius:4px;margin-top:4px;"/>` :'';
   }catch(e){toast(e.message,'error');}
 }
 
@@ -926,6 +950,59 @@ function renderPagination(cid,pages,current,fn){
   const el=document.getElementById(cid);
   if(!pages||pages<=1){el.innerHTML='';return;}
   el.innerHTML=Array.from({length:pages},(_,i)=>i+1).map(p=>`<button class="page-btn${p===current?' active':''}" onclick="${fn.name}(${p})">${p}</button>`).join('');
+}
+</script>
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<script>
+// ── QUILL EDITORS ─────────────────────────────────────────────────────────────
+let quillZh = null, quillEn = null;
+const QUILL_TOOLBAR = [
+  [{ header: [2, 3, false] }],
+  ['bold', 'italic', 'underline'],
+  [{ list: 'ordered' }, { list: 'bullet' }],
+  ['link', 'image'],
+  ['clean']
+];
+
+function initQuills() {
+  if (!quillZh) {
+    quillZh = new Quill('#news-body-editor', { theme: 'snow', modules: { toolbar: { container: QUILL_TOOLBAR, handlers: { image: () => quillImageUpload(quillZh) } } } });
+  }
+  if (!quillEn) {
+    quillEn = new Quill('#news-content-en-editor', { theme: 'snow', modules: { toolbar: { container: QUILL_TOOLBAR, handlers: { image: () => quillImageUpload(quillEn) } } } });
+  }
+}
+
+function quillImageUpload(quill) {
+  const input = document.createElement('input');
+  input.setAttribute('type', 'file');
+  input.setAttribute('accept', 'image/jpeg,image/png,image/webp');
+  input.click();
+  input.onchange = async () => {
+    const file = input.files[0]; if (!file) return;
+    const fd = new FormData(); fd.append('image', file);
+    try {
+      const r = await fetch('/api/upload', { method: 'POST', headers: { Authorization: 'Bearer ' + TOKEN }, body: fd });
+      const d = await r.json();
+      const range = quill.getSelection() || { index: quill.getLength() };
+      quill.insertEmbed(range.index, 'image', d.url);
+    } catch(e) { toast(e.message, 'error'); }
+  };
+}
+
+// ── ABOUT HERO UPLOAD ─────────────────────────────────────────────────────────
+async function uploadAboutHero() {
+  const file = document.getElementById('about-hero-file').files[0];
+  if (!file) { toast('请先选择图片 / Please select an image', 'error'); return; }
+  const fd = new FormData(); fd.append('image', file);
+  try {
+    const r = await fetch('/api/upload', { method: 'POST', headers: { Authorization: 'Bearer ' + TOKEN }, body: fd });
+    const d = await r.json();
+    await api('PUT', '/settings', { about_hero_image: d.url });
+    const prev = document.getElementById('about-hero-preview');
+    if (prev) prev.innerHTML = `<img src="${d.url}" class="img-preview" style="max-width:200px;max-height:80px;object-fit:cover;border-radius:4px;margin-top:4px;"/>`;
+    toast('Hero image uploaded ✓');
+  } catch(e) { toast(e.message, 'error'); }
 }
 </script>
 </body>

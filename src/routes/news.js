@@ -27,7 +27,7 @@ const upload = multer({
 router.get('/', (req, res) => {
   const { page = 1, limit = 10, featured } = req.query;
   const offset = (page - 1) * limit;
-  let q = 'SELECT id,title,title_en,slug,excerpt,excerpt_en,image_url,featured,created_at FROM news WHERE published=1';
+  let q = 'SELECT id,title,title_en,slug,excerpt,excerpt_en,image_url,featured,created_at,publish_date FROM news WHERE published=1';
   if (featured === '1') q += ' AND featured=1';
   q += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
   const rows = db.prepare(q).all(parseInt(limit), parseInt(offset));
@@ -46,7 +46,7 @@ router.get('/:slug', (req, res) => {
 router.get('/admin/all', auth, (req, res) => {
   const { page = 1, limit = 20 } = req.query;
   const offset = (page - 1) * limit;
-  const rows = db.prepare('SELECT id,title,title_en,slug,published,featured,created_at FROM news ORDER BY created_at DESC LIMIT ? OFFSET ?').all(parseInt(limit), parseInt(offset));
+  const rows = db.prepare('SELECT id,title,title_en,slug,published,featured,created_at,publish_date FROM news ORDER BY created_at DESC LIMIT ? OFFSET ?').all(parseInt(limit), parseInt(offset));
   const total = db.prepare('SELECT COUNT(*) as n FROM news').get().n;
   res.json({ data: rows, total });
 });
@@ -67,16 +67,16 @@ router.post('/', auth, upload.single('image'), [
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ error: errors.array()[0].msg });
 
-  const { title, title_en, excerpt, excerpt_en, body: articleBody, content_en, published = 0, featured = 0 } = req.body;
+  const { title, title_en, excerpt, excerpt_en, body: articleBody, content_en, published = 0, featured = 0, publish_date } = req.body;
   let slug = slugify(title);
   const existing = db.prepare('SELECT id FROM news WHERE slug=?').get(slug);
   if (existing) slug = slug + '-' + Date.now();
 
   const image_url = req.file ? '/uploads/news/' + req.file.filename : null;
   const result = db.prepare(
-    `INSERT INTO news(title,title_en,slug,excerpt,excerpt_en,body,content_en,image_url,published,featured)
-     VALUES(?,?,?,?,?,?,?,?,?,?)`
-  ).run(title, title_en||null, slug, excerpt||null, excerpt_en||null, articleBody||null, content_en||null, image_url, parseInt(published), parseInt(featured));
+    `INSERT INTO news(title,title_en,slug,excerpt,excerpt_en,body,content_en,image_url,published,featured,publish_date)
+     VALUES(?,?,?,?,?,?,?,?,?,?,?)`
+  ).run(title, title_en||null, slug, excerpt||null, excerpt_en||null, articleBody||null, content_en||null, image_url, parseInt(published), parseInt(featured), publish_date||null);
 
   res.json({ success: true, id: result.lastInsertRowid, slug });
 });
@@ -86,7 +86,7 @@ router.put('/:id', auth, upload.single('image'), (req, res) => {
   const row = db.prepare('SELECT * FROM news WHERE id=?').get(req.params.id);
   if (!row) return res.status(404).json({ error: 'Not found' });
 
-  const { title, title_en, excerpt, excerpt_en, body: articleBody, content_en, published, featured } = req.body;
+  const { title, title_en, excerpt, excerpt_en, body: articleBody, content_en, published, featured, publish_date } = req.body;
   const image_url = req.file ? '/uploads/news/' + req.file.filename : row.image_url;
   const slug = title && title !== row.title ? (() => {
     let s = slugify(title);
@@ -95,7 +95,7 @@ router.put('/:id', auth, upload.single('image'), (req, res) => {
   })() : row.slug;
 
   db.prepare(
-    `UPDATE news SET title=?,title_en=?,slug=?,excerpt=?,excerpt_en=?,body=?,content_en=?,image_url=?,published=?,featured=?,updated_at=datetime('now') WHERE id=?`
+    `UPDATE news SET title=?,title_en=?,slug=?,excerpt=?,excerpt_en=?,body=?,content_en=?,image_url=?,published=?,featured=?,publish_date=?,updated_at=datetime('now') WHERE id=?`
   ).run(
     title ?? row.title,
     title_en ?? row.title_en,
@@ -107,6 +107,7 @@ router.put('/:id', auth, upload.single('image'), (req, res) => {
     image_url,
     published != null ? parseInt(published) : row.published,
     featured != null ? parseInt(featured) : row.featured,
+    publish_date !== undefined ? (publish_date || null) : row.publish_date,
     req.params.id
   );
   res.json({ success: true, slug });

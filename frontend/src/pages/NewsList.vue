@@ -20,7 +20,7 @@
           </div>
           <div class="nf-body">
             <span class="news-cat">{{ isZh ? '最新' : 'Latest' }}</span>
-            <div class="nf-date">{{ featured.created_at?.slice(0, 10) }}</div>
+            <div class="nf-date">{{ (featured.publish_date || featured.created_at)?.slice(0, 10) }}</div>
             <div class="nf-title">{{ featuredTitle }}</div>
             <p class="nf-exc">{{ featuredExcerpt }}</p>
             <RouterLink :to="`/news/${featured.slug}`" class="read-btn">{{ isZh ? '阅读全文' : 'Read More' }}</RouterLink>
@@ -42,7 +42,7 @@
               <div v-else class="img-ph">Photo</div>
             </div>
             <div class="nc-body">
-              <div class="nc-date">{{ item.created_at?.slice(0, 10) }}</div>
+              <div class="nc-date">{{ (item.publish_date || item.created_at)?.slice(0, 10) }}</div>
               <div class="nc-title">{{ isZh ? item.title : (item.title_en || item.title) }}</div>
               <p class="nc-exc">{{ (isZh ? (item.excerpt || '') : (item.excerpt_en || item.excerpt || '')).slice(0, 120) }}</p>
             </div>

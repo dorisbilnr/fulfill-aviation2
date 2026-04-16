@@ -110,6 +110,8 @@ addColumn('services', 'details_zh', 'TEXT');
 addColumn('news', 'title_en', 'TEXT');
 addColumn('news', 'excerpt_en', 'TEXT');
 addColumn('news', 'content_en', 'TEXT');
+// news: editable publish date
+addColumn('news', 'publish_date', 'TEXT');
 
 console.log('[setup] Database setup complete.');
 db.close();
