@@ -317,23 +317,26 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
             <div id="qr1-preview" style="margin-top:6px;"></div>
             <button class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="uploadBrandAsset('qr1-file','qr1_image','qr1-preview',80)">Upload</button>
           </div>
-          <div class="form-group"><label>QR Code 1 描述</label><input type="text" id="s-qr1_desc" placeholder="e.g. 微信公众号"/></div>
+          <div class="form-group"><label>QR Code 1 描述 (中文)</label><input type="text" id="s-qr1_desc" placeholder="e.g. 微信公众号"/></div>
+          <div class="form-group"><label>QR Code 1 Description (EN)</label><input type="text" id="s-qr1_desc_en" placeholder="e.g. WeChat Official Account"/></div>
           <div class="form-group">
             <label>QR Code 2 图片</label>
             <input type="file" id="qr2-file" accept="image/jpeg,image/png,image/webp"/>
             <div id="qr2-preview" style="margin-top:6px;"></div>
             <button class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="uploadBrandAsset('qr2-file','qr2_image','qr2-preview',80)">Upload</button>
           </div>
-          <div class="form-group"><label>QR Code 2 描述</label><input type="text" id="s-qr2_desc" placeholder="e.g. 企业微信"/></div>
+          <div class="form-group"><label>QR Code 2 描述 (中文)</label><input type="text" id="s-qr2_desc" placeholder="e.g. 企业微信"/></div>
+          <div class="form-group"><label>QR Code 2 Description (EN)</label><input type="text" id="s-qr2_desc_en" placeholder="e.g. WeChat Work"/></div>
           <div class="form-group">
             <label>QR Code 3 图片</label>
             <input type="file" id="qr3-file" accept="image/jpeg,image/png,image/webp"/>
             <div id="qr3-preview" style="margin-top:6px;"></div>
             <button class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="uploadBrandAsset('qr3-file','qr3_image','qr3-preview',80)">Upload</button>
           </div>
-          <div class="form-group"><label>QR Code 3 描述</label><input type="text" id="s-qr3_desc" placeholder="e.g. 小程序"/></div>
+          <div class="form-group"><label>QR Code 3 描述 (中文)</label><input type="text" id="s-qr3_desc" placeholder="e.g. 小程序"/></div>
+          <div class="form-group"><label>QR Code 3 Description (EN)</label><input type="text" id="s-qr3_desc_en" placeholder="e.g. Mini Program"/></div>
         </div>
-        <button class="btn btn-primary" onclick="saveSection(['qr1_desc','qr2_desc','qr3_desc'])">Save Descriptions / 保存描述</button>
+        <button class="btn btn-primary" onclick="saveSection(['qr1_desc','qr1_desc_en','qr2_desc','qr2_desc_en','qr3_desc','qr3_desc_en'])">Save Descriptions / 保存描述</button>
       </div>
     </div>
 

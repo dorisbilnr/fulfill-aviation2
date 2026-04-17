@@ -52,9 +52,9 @@ const PUBLIC_KEYS = [
   'company_logo',
   'favicon',
   // 二维码
-  'qr1_image', 'qr1_desc',
-  'qr2_image', 'qr2_desc',
-  'qr3_image', 'qr3_desc',
+  'qr1_image', 'qr1_desc', 'qr1_desc_en',
+  'qr2_image', 'qr2_desc', 'qr2_desc_en',
+  'qr3_image', 'qr3_desc', 'qr3_desc_en',
 ];
 
 // Public: get frontend-facing settings (no auth required)

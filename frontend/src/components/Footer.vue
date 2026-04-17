@@ -69,9 +69,9 @@ const { data: s } = storeToRefs(settings)
 const year = new Date().getFullYear()
 
 const activeQRs = computed(() => [
-  { image: s.value.qr1_image, desc: s.value.qr1_desc },
-  { image: s.value.qr2_image, desc: s.value.qr2_desc },
-  { image: s.value.qr3_image, desc: s.value.qr3_desc },
+  { image: s.value.qr1_image, desc: isZh.value ? s.value.qr1_desc : (s.value.qr1_desc_en || s.value.qr1_desc) },
+  { image: s.value.qr2_image, desc: isZh.value ? s.value.qr2_desc : (s.value.qr2_desc_en || s.value.qr2_desc) },
+  { image: s.value.qr3_image, desc: isZh.value ? s.value.qr3_desc : (s.value.qr3_desc_en || s.value.qr3_desc) },
 ].filter(q => q.image))
 
 const navItems = computed(() => [
