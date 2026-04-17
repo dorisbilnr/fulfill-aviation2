@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Admin — Fulfill Aviation</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet"/>
+<link href="https://cdn.bootcdn.net/ajax/libs/quill/1.3.7/quill.snow.css" rel="stylesheet"/>
 <style>
 .ql-toolbar{border-radius:4px 4px 0 0;border-color:var(--border)!important;}
 .ql-container{border-radius:0 0 4px 4px;border-color:var(--border)!important;font-family:'Barlow',sans-serif;font-size:0.9rem;min-height:160px;}
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
     <div class="section" id="sec-news">
       <div class="page-header"><h1><span data-i18n="News">News</span></h1><button class="btn btn-primary" onclick="openNewsModal()">+ New Article</button></div>
       <div class="card">
-        <table><thead><tr><th><span data-i18n="Title">Title</span></th><th><span data-i18n="Status">Status</span></th><th><span data-i18n="Featured">Featured</span></th><th><span data-i18n="Date">Date</span></th><th><span data-i18n="Actions">Actions</span></th></tr></thead>
+        <table><thead><tr><th>Title</th><th>Status</th><th>Featured</th><th>Display Date</th><th>Created</th><th>Actions</th></tr></thead>
         <tbody id="news-body"></tbody></table>
         <div class="pagination" id="news-pagination"></div>
       </div>
@@ -250,7 +250,20 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
         <div class="form-grid">
           <div class="form-group form-full"><label>Company Name (EN)</label><input id="s-company_name" type="text"/></div>
           <div class="form-group form-full"><label>公司名称 (ZH)</label><input id="s-company_name_zh" type="text"/></div>
+          <div class="form-group">
+            <label>Company Logo / 公司Logo（导航栏+后台）</label>
+            <input type="file" id="logo-file" accept="image/jpeg,image/png,image/webp,image/svg+xml"/>
+            <div id="logo-preview" style="margin-top:8px;"></div>
+            <button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="uploadBrandAsset('logo-file','company_logo','logo-preview',48)">Upload Logo</button>
+          </div>
+          <div class="form-group">
+            <label>Favicon / 浏览器标签小图标（建议正方形PNG）</label>
+            <input type="file" id="favicon-file" accept="image/png,image/x-icon,image/svg+xml"/>
+            <div id="favicon-preview" style="margin-top:8px;"></div>
+            <button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="uploadBrandAsset('favicon-file','favicon','favicon-preview',32)">Upload Favicon</button>
+          </div>
         </div>
+        <button class="btn btn-primary" onclick="saveSection(['company_name','company_name_zh'])">Save / 保存</button>
       </div>
       <div class="sec-card">
         <h3>联络方式 / Contact Details</h3>
@@ -284,14 +297,49 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
           <div class="form-group"><label>关于我们标题 (ZH)</label><input id="s-about_title_zh" type="text" placeholder="我们的故事"/></div>
           <div class="form-group form-full"><label>About Body Text (EN)</label><textarea id="s-about_body" rows="4"></textarea></div>
           <div class="form-group form-full"><label>关于我们正文 (ZH)</label><textarea id="s-about_body_zh" rows="4"></textarea></div>
-          <div class="form-group form-full">
+          <div class="form-group">
             <label>About Us Hero Image / 关于我们头图</label>
             <input type="file" id="about-hero-file" accept="image/jpeg,image/png,image/webp"/>
             <div id="about-hero-preview" style="margin-top:8px;"></div>
             <button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="uploadAboutHero()">Upload / 上传头图</button>
           </div>
+          <div class="form-group">
+            <label>About Section Photo / 关于我们正文配图</label>
+            <input type="file" id="about-section-file" accept="image/jpeg,image/png,image/webp"/>
+            <div id="about-section-preview" style="margin-top:8px;"></div>
+            <button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="uploadBrandAsset('about-section-file','about_section_image','about-section-preview',80)">Upload / 上传配图</button>
+          </div>
         </div>
         <button class="btn btn-primary" onclick="saveSection(['company_name','company_name_zh','address','address_zh','phone','fax','email','business_hours','business_hours_zh','intro_text','intro_text_zh','about_title','about_title_zh','about_body','about_body_zh'])">Save / 保存</button>
+      </div>
+      <!-- QR CODES -->
+      <div class="sec-card">
+        <h3>二维码设置 / QR Codes（主页右下角悬浮，最多3个）</h3>
+        <p style="font-size:0.82rem;color:#6b7280;margin-bottom:16px;">只上传了图片的才会显示，描述文字可选。</p>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>QR Code 1 图片</label>
+            <input type="file" id="qr1-file" accept="image/jpeg,image/png,image/webp"/>
+            <div id="qr1-preview" style="margin-top:6px;"></div>
+            <button class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="uploadBrandAsset('qr1-file','qr1_image','qr1-preview',80)">Upload</button>
+          </div>
+          <div class="form-group"><label>QR Code 1 描述</label><input type="text" id="s-qr1_desc" placeholder="e.g. 微信公众号"/></div>
+          <div class="form-group">
+            <label>QR Code 2 图片</label>
+            <input type="file" id="qr2-file" accept="image/jpeg,image/png,image/webp"/>
+            <div id="qr2-preview" style="margin-top:6px;"></div>
+            <button class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="uploadBrandAsset('qr2-file','qr2_image','qr2-preview',80)">Upload</button>
+          </div>
+          <div class="form-group"><label>QR Code 2 描述</label><input type="text" id="s-qr2_desc" placeholder="e.g. 企业微信"/></div>
+          <div class="form-group">
+            <label>QR Code 3 图片</label>
+            <input type="file" id="qr3-file" accept="image/jpeg,image/png,image/webp"/>
+            <div id="qr3-preview" style="margin-top:6px;"></div>
+            <button class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="uploadBrandAsset('qr3-file','qr3_image','qr3-preview',80)">Upload</button>
+          </div>
+          <div class="form-group"><label>QR Code 3 描述</label><input type="text" id="s-qr3_desc" placeholder="e.g. 小程序"/></div>
+        </div>
+        <button class="btn btn-primary" onclick="saveSection(['qr1_desc','qr2_desc','qr3_desc'])">Save Descriptions / 保存描述</button>
       </div>
     </div>
 
@@ -506,8 +554,8 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
         <div class="form-group"><label>Sort Order / 排序</label><input type="number" id="svc-order" value="0"/></div>
         <div class="form-group form-full"><label>Short Description (EN) / 英文简介</label><textarea id="svc-desc" rows="2"></textarea></div>
         <div class="form-group form-full"><label>简短描述 (ZH) / 中文简介</label><textarea id="svc-desc-zh" rows="2" placeholder="中文简短描述"></textarea></div>
-        <div class="form-group form-full"><label>Full Details HTML (EN) / 英文详情</label><textarea id="svc-details" rows="5"></textarea></div>
-        <div class="form-group form-full"><label>详细内容 HTML (ZH) / 中文详情</label><textarea id="svc-details-zh" rows="5" placeholder="中文详细内容"></textarea></div>
+        <div class="form-group form-full"><label>Full Details (EN) / 英文详情</label><div id="svc-details-editor"></div></div>
+        <div class="form-group form-full"><label>详细内容 (ZH) / 中文详情</label><div id="svc-details-zh-editor"></div></div>
         <div class="form-group form-full"><label>Image / 图片 (JPG/PNG/WebP, max 5MB)</label><input type="file" id="svc-image" accept="image/*"/></div>
       </div>
     </div>
@@ -660,7 +708,9 @@ async function loadNews(page){
     document.getElementById('news-body').innerHTML=d.data.map(n=>`<tr>
       <td>${n.title}${n.title_en?'<br><small style="color:#6b7280">EN: '+n.title_en+'</small>':''}</td>
       <td><span class="badge badge-${n.published?'pub':'draft'}">${n.published?'Published':'Draft'}</span></td>
-      <td>${n.featured?'✓':'—'}</td><td>${n.created_at.slice(0,10)}</td>
+      <td>${n.featured?'✓':'—'}</td>
+      <td style="color:var(--gold);font-weight:500">${n.publish_date?n.publish_date.slice(0,10):'<span style="color:#9ba8b8">—</span>'}</td>
+      <td style="color:#9ba8b8;font-size:0.8rem">${n.created_at.slice(0,10)}</td>
       <td style="display:flex;gap:6px">
         <button class="btn btn-outline btn-sm" onclick="editNews(${n.id})">Edit</button>
         <button class="btn btn-danger btn-sm" onclick="deleteNews(${n.id})">Del</button>
@@ -681,11 +731,11 @@ function openNewsModal(data){
   document.getElementById('news-featured').checked=!!data?.featured;
   document.getElementById('news-image').value='';
   openModal('news-modal');
-  // Init Quill after modal is visible
   setTimeout(()=>{
-    initQuills();
-    quillZh.root.innerHTML=data?.body||'';
-    quillEn.root.innerHTML=data?.content_en||'';
+    const zh=getOrInitEditor('news-body-editor');
+    const en=getOrInitEditor('news-content-en-editor');
+    zh.root.innerHTML=data?.body||'';
+    en.root.innerHTML=data?.content_en||'';
   },50);
 }
 
@@ -698,11 +748,9 @@ async function saveNews(){
   fd.append('publish_date',document.getElementById('news-pub-date').value);
   fd.append('excerpt',document.getElementById('news-excerpt').value);
   fd.append('excerpt_en',document.getElementById('news-excerpt-en').value);
-  // Get content from Quill editors
-  const bodyHtml = quillZh ? quillZh.root.innerHTML : '';
-  const contentEnHtml = quillEn ? quillEn.root.innerHTML : '';
-  fd.append('body', bodyHtml === '<p><br></p>' ? '' : bodyHtml);
-  fd.append('content_en', contentEnHtml === '<p><br></p>' ? '' : contentEnHtml);
+  const newsZh=editors['news-body-editor'],newsEn=editors['news-content-en-editor'];
+  fd.append('body',newsZh&&newsZh.root.innerHTML!=='<p><br></p>'?newsZh.root.innerHTML:'');
+  fd.append('content_en',newsEn&&newsEn.root.innerHTML!=='<p><br></p>'?newsEn.root.innerHTML:'');
   fd.append('published',document.getElementById('news-published').checked?'1':'0');
   fd.append('featured',document.getElementById('news-featured').checked?'1':'0');
   const img=document.getElementById('news-image').files[0];if(img)fd.append('image',img);
@@ -734,11 +782,15 @@ function openServiceModal(data){
   document.getElementById('svc-icon').value=data?.icon||'';
   document.getElementById('svc-desc').value=data?.description||'';
   document.getElementById('svc-desc-zh').value=data?.description_zh||'';
-  document.getElementById('svc-details').value=data?.details||'';
-  document.getElementById('svc-details-zh').value=data?.details_zh||'';
   document.getElementById('svc-order').value=data?.sort_order||0;
   document.getElementById('svc-image').value='';
   openModal('service-modal');
+  setTimeout(()=>{
+    const en=getOrInitEditor('svc-details-editor');
+    const zh=getOrInitEditor('svc-details-zh-editor');
+    en.root.innerHTML=data?.details||'';
+    zh.root.innerHTML=data?.details_zh||'';
+  },50);
 }
 
 async function editService(id){
@@ -754,8 +806,9 @@ async function saveService(){
   fd.append('icon',document.getElementById('svc-icon').value);
   fd.append('description',document.getElementById('svc-desc').value);
   fd.append('description_zh',document.getElementById('svc-desc-zh').value);
-  fd.append('details',document.getElementById('svc-details').value);
-  fd.append('details_zh',document.getElementById('svc-details-zh').value);
+  const svcEn=editors['svc-details-editor'],svcZh=editors['svc-details-zh-editor'];
+  fd.append('details',svcEn&&svcEn.root.innerHTML!=='<p><br></p>'?svcEn.root.innerHTML:'');
+  fd.append('details_zh',svcZh&&svcZh.root.innerHTML!=='<p><br></p>'?svcZh.root.innerHTML:'');
   fd.append('sort_order',document.getElementById('svc-order').value);
   const img=document.getElementById('svc-image').files[0];if(img)fd.append('image',img);
   try{if(id)await api('PUT','/services/'+id,null,fd);else await api('POST','/services',null,fd);toast('Saved');closeModal('service-modal');loadServices();}catch(e){toast(e.message,'error');}
@@ -832,7 +885,26 @@ async function loadSettings(){
     if(qrPrev)qrPrev.innerHTML=d.wechat_qr?`<img src="${d.wechat_qr}" class="img-preview" style="max-width:100px;"/>` :'';
     // Show existing about hero image
     const heroPrev=document.getElementById('about-hero-preview');
-    if(heroPrev)heroPrev.innerHTML=d.about_hero_image?`<img src="${d.about_hero_image}" class="img-preview" style="max-width:200px;max-height:80px;object-fit:cover;border-radius:4px;margin-top:4px;"/>` :'';
+    if(heroPrev)heroPrev.innerHTML=d.about_hero_image?`<img src="${d.about_hero_image}" style="max-width:200px;max-height:80px;object-fit:cover;border-radius:4px;margin-top:4px;"/>` :'';
+    // About section image
+    const secPrev=document.getElementById('about-section-preview');
+    if(secPrev)secPrev.innerHTML=d.about_section_image?`<img src="${d.about_section_image}" style="max-width:120px;max-height:80px;object-fit:cover;border-radius:4px;"/>` :'';
+    // Company logo
+    const logoPrev=document.getElementById('logo-preview');
+    if(logoPrev)logoPrev.innerHTML=d.company_logo?`<img src="${d.company_logo}" style="max-height:48px;object-fit:contain;"/>` :'';
+    // Favicon
+    const favPrev=document.getElementById('favicon-preview');
+    if(favPrev)favPrev.innerHTML=d.favicon?`<img src="${d.favicon}" style="width:32px;height:32px;object-fit:contain;"/>` :'';
+    // QR codes
+    ['qr1','qr2','qr3'].forEach(k=>{
+      const p=document.getElementById(k+'-preview');
+      if(p)p.innerHTML=d[k+'_image']?`<img src="${d[k+'_image']}" style="width:80px;height:80px;object-fit:contain;border:1px solid #e5e9f0;border-radius:4px;"/>` :'';
+    });
+    // Update sidebar logo
+    const sidebarLogo=document.querySelector('.sidebar-logo');
+    if(sidebarLogo&&d.company_logo)sidebarLogo.innerHTML=`<img src="${d.company_logo}" style="max-height:40px;max-width:180px;object-fit:contain;"/>`;
+    // Update favicon
+    if(d.favicon){let lnk=document.querySelector("link[rel~='icon']");if(!lnk){lnk=document.createElement('link');lnk.rel='icon';document.head.appendChild(lnk);}lnk.href=d.favicon;}
   }catch(e){toast(e.message,'error');}
 }
 
@@ -952,10 +1024,10 @@ function renderPagination(cid,pages,current,fn){
   el.innerHTML=Array.from({length:pages},(_,i)=>i+1).map(p=>`<button class="page-btn${p===current?' active':''}" onclick="${fn.name}(${p})">${p}</button>`).join('');
 }
 </script>
-<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/quill/1.3.7/quill.min.js"></script>
 <script>
 // ── QUILL EDITORS ─────────────────────────────────────────────────────────────
-let quillZh = null, quillEn = null;
+const editors = {};
 const QUILL_TOOLBAR = [
   [{ header: [2, 3, false] }],
   ['bold', 'italic', 'underline'],
@@ -964,14 +1036,23 @@ const QUILL_TOOLBAR = [
   ['clean']
 ];
 
-function initQuills() {
-  if (!quillZh) {
-    quillZh = new Quill('#news-body-editor', { theme: 'snow', modules: { toolbar: { container: QUILL_TOOLBAR, handlers: { image: () => quillImageUpload(quillZh) } } } });
+function getOrInitEditor(containerId) {
+  if (!editors[containerId]) {
+    editors[containerId] = new Quill('#' + containerId, {
+      theme: 'snow',
+      modules: { toolbar: { container: QUILL_TOOLBAR, handlers: { image: () => quillImageUpload(editors[containerId]) } } }
+    });
   }
-  if (!quillEn) {
-    quillEn = new Quill('#news-content-en-editor', { theme: 'snow', modules: { toolbar: { container: QUILL_TOOLBAR, handlers: { image: () => quillImageUpload(quillEn) } } } });
-  }
+  return editors[containerId];
 }
+
+// Keep aliases for backward compat
+function initQuills() {
+  getOrInitEditor('news-body-editor');
+  getOrInitEditor('news-content-en-editor');
+}
+let quillZh = { root: { innerHTML: '' } };
+let quillEn = { root: { innerHTML: '' } };
 
 function quillImageUpload(quill) {
   const input = document.createElement('input');
@@ -990,19 +1071,35 @@ function quillImageUpload(quill) {
   };
 }
 
-// ── ABOUT HERO UPLOAD ─────────────────────────────────────────────────────────
+// ── BRAND / IMAGE UPLOADS ─────────────────────────────────────────────────────
+async function uploadBrandAsset(inputId, settingKey, previewId, previewH) {
+  const file=document.getElementById(inputId).files[0];
+  if(!file){toast('请先选择图片','error');return;}
+  const fd=new FormData();fd.append('image',file);
+  try{
+    const r=await fetch('/api/upload',{method:'POST',headers:{Authorization:'Bearer '+TOKEN},body:fd});
+    const d=await r.json();
+    await api('PUT','/settings',{[settingKey]:d.url});
+    const prev=document.getElementById(previewId);
+    if(prev)prev.innerHTML=`<img src="${d.url}" style="max-height:${previewH}px;object-fit:contain;border-radius:4px;margin-top:4px;"/>`;
+    if(settingKey==='company_logo'){const sl=document.querySelector('.sidebar-logo');if(sl)sl.innerHTML=`<img src="${d.url}" style="max-height:40px;max-width:180px;object-fit:contain;"/>`;}
+    if(settingKey==='favicon'){let lnk=document.querySelector("link[rel~='icon']");if(!lnk){lnk=document.createElement('link');lnk.rel='icon';document.head.appendChild(lnk);}lnk.href=d.url;}
+    toast('Uploaded ✓');
+  }catch(e){toast(e.message,'error');}
+}
+
 async function uploadAboutHero() {
-  const file = document.getElementById('about-hero-file').files[0];
-  if (!file) { toast('请先选择图片 / Please select an image', 'error'); return; }
-  const fd = new FormData(); fd.append('image', file);
-  try {
-    const r = await fetch('/api/upload', { method: 'POST', headers: { Authorization: 'Bearer ' + TOKEN }, body: fd });
-    const d = await r.json();
-    await api('PUT', '/settings', { about_hero_image: d.url });
-    const prev = document.getElementById('about-hero-preview');
-    if (prev) prev.innerHTML = `<img src="${d.url}" class="img-preview" style="max-width:200px;max-height:80px;object-fit:cover;border-radius:4px;margin-top:4px;"/>`;
+  const file=document.getElementById('about-hero-file').files[0];
+  if(!file){toast('请先选择图片','error');return;}
+  const fd=new FormData();fd.append('image',file);
+  try{
+    const r=await fetch('/api/upload',{method:'POST',headers:{Authorization:'Bearer '+TOKEN},body:fd});
+    const d=await r.json();
+    await api('PUT','/settings',{about_hero_image:d.url});
+    const prev=document.getElementById('about-hero-preview');
+    if(prev)prev.innerHTML=`<img src="${d.url}" style="max-width:200px;max-height:80px;object-fit:cover;border-radius:4px;margin-top:4px;"/>`;
     toast('Hero image uploaded ✓');
-  } catch(e) { toast(e.message, 'error'); }
+  }catch(e){toast(e.message,'error');}
 }
 </script>
 </body>

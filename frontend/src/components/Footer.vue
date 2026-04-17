@@ -10,9 +10,6 @@
         <p class="footer-desc">
           {{ isZh ? (s.intro_text_zh || s.intro_text) : (s.intro_text || '') }}
         </p>
-        <div v-if="s.wechat_qr" class="footer-qr">
-          <img :src="s.wechat_qr" alt="WeChat QR" />
-        </div>
       </div>
 
       <!-- Quick Links -->
@@ -105,14 +102,6 @@ footer {
   line-height: 1.8;
   margin-bottom: 20px;
 }
-.footer-qr {
-  width: 80px; height: 80px;
-  background: white;
-  border-radius: 4px;
-  overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-}
-.footer-qr img { width: 100%; height: 100%; object-fit: contain; }
 
 .footer-col h4 {
   color: var(--gold);

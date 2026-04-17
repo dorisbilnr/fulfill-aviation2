@@ -70,7 +70,7 @@
         <!-- 列表 -->
         <div class="news-list">
           <RouterLink
-            v-for="item in newsItems.slice(0, 6)"
+            v-for="item in newsItems.slice(0, 3)"
             :key="item.id"
             :to="`/news/${item.slug}`"
             class="news-item"

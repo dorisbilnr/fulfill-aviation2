@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
   const offset = (page - 1) * limit;
   let q = 'SELECT id,title,title_en,slug,excerpt,excerpt_en,image_url,featured,created_at,publish_date FROM news WHERE published=1';
   if (featured === '1') q += ' AND featured=1';
-  q += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
+  q += ' ORDER BY COALESCE(publish_date, created_at) DESC LIMIT ? OFFSET ?';
   const rows = db.prepare(q).all(parseInt(limit), parseInt(offset));
   const total = db.prepare('SELECT COUNT(*) as n FROM news WHERE published=1').get().n;
   res.json({ data: rows, total, page: parseInt(page) });

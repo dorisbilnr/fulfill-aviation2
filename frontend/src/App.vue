@@ -4,12 +4,14 @@
     <RouterView />
   </main>
   <Footer />
+  <QRFloat />
 </template>
 
 <script setup>
 import { onMounted } from 'vue'
 import NavBar from '@/components/NavBar.vue'
 import Footer from '@/components/Footer.vue'
+import QRFloat from '@/components/QRFloat.vue'
 import { useSettingsStore } from '@/stores/settings'
 import { useServicesStore } from '@/stores/services'
 

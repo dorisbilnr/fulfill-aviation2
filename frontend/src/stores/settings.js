@@ -11,6 +11,11 @@ export const useSettingsStore = defineStore('settings', () => {
       const r = await window.fetch('/api/settings/public')
       data.value = await r.json()
       loaded.value = true
+      if (data.value.favicon) {
+        let link = document.querySelector("link[rel~='icon']")
+        if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link) }
+        link.href = data.value.favicon
+      }
     } catch (e) {
       console.error('[settings] fetch failed', e)
     }

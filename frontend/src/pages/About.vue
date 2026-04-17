@@ -12,7 +12,8 @@
       <!-- About story grid -->
       <div class="about-grid">
         <div class="about-img">
-          <div class="img-ph">{{ isZh ? '公司照片' : 'Company photo' }}</div>
+          <img v-if="s.about_section_image" :src="s.about_section_image" alt="Company" style="width:100%;height:100%;object-fit:cover;" />
+          <div v-else class="img-ph">{{ isZh ? '公司照片' : 'Company photo' }}</div>
         </div>
         <div class="about-body">
           <div class="gold-line"></div>
