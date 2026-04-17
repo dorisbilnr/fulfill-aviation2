@@ -23,7 +23,7 @@ const upload = multer({
   },
 });
 
-router.post('/', auth, upload.single('file'), (req, res) => {
+router.post('/', auth, upload.single('image'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
   res.json({ url: '/uploads/general/' + req.file.filename, filename: req.file.filename });
 });

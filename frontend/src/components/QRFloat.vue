@@ -6,14 +6,6 @@
         <p v-if="qr.desc" class="qr-desc">{{ qr.desc }}</p>
       </div>
     </div>
-    <button class="qr-trigger" aria-label="Contact QR Codes">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-        <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/>
-        <rect x="19" y="14" width="2" height="2"/><rect x="14" y="19" width="2" height="2"/>
-        <rect x="18" y="19" width="3" height="2"/><rect x="19" y="17" width="2" height="2"/>
-      </svg>
-    </button>
   </div>
 </template>
 
@@ -45,21 +37,12 @@ const activeQRs = computed(() => [
 .qr-panel {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   background: white;
   border: 1px solid #e5e9f0;
   border-radius: 10px;
   padding: 16px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(10px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-.qr-float:hover .qr-panel {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
 }
 .qr-item {
   display: flex;
@@ -79,24 +62,5 @@ const activeQRs = computed(() => [
   text-align: center;
   max-width: 110px;
   line-height: 1.4;
-}
-.qr-trigger {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--navy, #0b1f3a);
-  color: #c8a96e;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-  transition: background 0.2s, transform 0.2s;
-  flex-shrink: 0;
-}
-.qr-trigger:hover {
-  background: #1a6ea8;
-  transform: scale(1.08);
 }
 </style>
