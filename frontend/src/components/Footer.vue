@@ -41,6 +41,13 @@
           <strong>{{ isZh ? '邮箱：' : 'Email:' }}</strong>
           <a :href="`mailto:${s.email}`">{{ s.email }}</a>
         </p>
+        <!-- QR Codes -->
+        <div v-if="activeQRs.length" class="footer-qrs">
+          <div v-for="(qr, i) in activeQRs" :key="i" class="footer-qr-item">
+            <img :src="qr.image" :alt="qr.desc || 'QR'" />
+            <span v-if="qr.desc">{{ qr.desc }}</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -60,6 +67,12 @@ const settings = useSettingsStore()
 const { isZh } = storeToRefs(useLangStore())
 const { data: s } = storeToRefs(settings)
 const year = new Date().getFullYear()
+
+const activeQRs = computed(() => [
+  { image: s.value.qr1_image, desc: s.value.qr1_desc },
+  { image: s.value.qr2_image, desc: s.value.qr2_desc },
+  { image: s.value.qr3_image, desc: s.value.qr3_desc },
+].filter(q => q.image))
 
 const navItems = computed(() => [
   { to: '/',         label: isZh.value ? (s.value.nav_home_zh     || '首页')       : (s.value.nav_home     || 'Home') },
@@ -134,6 +147,34 @@ footer {
   transition: color 0.2s;
 }
 .footer-contact a:hover { color: var(--gold); }
+
+.footer-qrs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+}
+.footer-qr-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.footer-qr-item img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  background: white;
+  border-radius: 6px;
+  padding: 4px;
+}
+.footer-qr-item span {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.55);
+  text-align: center;
+  max-width: 90px;
+  line-height: 1.4;
+}
 
 .footer-bottom {
   padding-top: 24px;

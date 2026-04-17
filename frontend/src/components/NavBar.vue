@@ -1,6 +1,7 @@
 <template>
   <nav class="gn">
     <RouterLink to="/" class="gn-logo">
+      <img v-if="sd.company_logo" :src="sd.company_logo" class="logo-img" alt="logo" />
       <span v-if="!isZh" class="logo-en">FULFILL<span>.</span>AVIATION</span>
       <span v-else class="logo-zh">赋瞻<span>.</span>航空</span>
     </RouterLink>
@@ -92,9 +93,13 @@ nav.gn .gn-logo {
   text-decoration: none;
   flex-shrink: 0;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 nav.gn .gn-logo span { color: #c8a96e; }
 .logo-zh { font-size: 1.3rem; }
+.logo-img { height: 36px; width: auto; object-fit: contain; flex-shrink: 0; }
 
 /* ── Desktop links ── */
 nav.gn .gn-links {
