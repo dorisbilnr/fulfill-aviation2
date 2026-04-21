@@ -315,7 +315,10 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
             <label>QR Code 1 图片</label>
             <input type="file" id="qr1-file" accept="image/jpeg,image/png,image/webp"/>
             <div id="qr1-preview" style="margin-top:6px;"></div>
-            <button class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="uploadBrandAsset('qr1-file','qr1_image','qr1-preview',80)">Upload</button>
+            <div style="display:flex;gap:8px;margin-top:6px;">
+              <button class="btn btn-outline btn-sm" onclick="uploadBrandAsset('qr1-file','qr1_image','qr1-preview',80)">Upload</button>
+              <button class="btn btn-outline btn-sm" style="color:#e53e3e;border-color:#e53e3e;" onclick="clearQR(1)">清除 / Clear</button>
+            </div>
           </div>
           <div class="form-group"><label>QR Code 1 描述 (中文)</label><input type="text" id="s-qr1_desc" placeholder="e.g. 微信公众号"/></div>
           <div class="form-group"><label>QR Code 1 Description (EN)</label><input type="text" id="s-qr1_desc_en" placeholder="e.g. WeChat Official Account"/></div>
@@ -323,7 +326,10 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
             <label>QR Code 2 图片</label>
             <input type="file" id="qr2-file" accept="image/jpeg,image/png,image/webp"/>
             <div id="qr2-preview" style="margin-top:6px;"></div>
-            <button class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="uploadBrandAsset('qr2-file','qr2_image','qr2-preview',80)">Upload</button>
+            <div style="display:flex;gap:8px;margin-top:6px;">
+              <button class="btn btn-outline btn-sm" onclick="uploadBrandAsset('qr2-file','qr2_image','qr2-preview',80)">Upload</button>
+              <button class="btn btn-outline btn-sm" style="color:#e53e3e;border-color:#e53e3e;" onclick="clearQR(2)">清除 / Clear</button>
+            </div>
           </div>
           <div class="form-group"><label>QR Code 2 描述 (中文)</label><input type="text" id="s-qr2_desc" placeholder="e.g. 企业微信"/></div>
           <div class="form-group"><label>QR Code 2 Description (EN)</label><input type="text" id="s-qr2_desc_en" placeholder="e.g. WeChat Work"/></div>
@@ -331,7 +337,10 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
             <label>QR Code 3 图片</label>
             <input type="file" id="qr3-file" accept="image/jpeg,image/png,image/webp"/>
             <div id="qr3-preview" style="margin-top:6px;"></div>
-            <button class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="uploadBrandAsset('qr3-file','qr3_image','qr3-preview',80)">Upload</button>
+            <div style="display:flex;gap:8px;margin-top:6px;">
+              <button class="btn btn-outline btn-sm" onclick="uploadBrandAsset('qr3-file','qr3_image','qr3-preview',80)">Upload</button>
+              <button class="btn btn-outline btn-sm" style="color:#e53e3e;border-color:#e53e3e;" onclick="clearQR(3)">清除 / Clear</button>
+            </div>
           </div>
           <div class="form-group"><label>QR Code 3 描述 (中文)</label><input type="text" id="s-qr3_desc" placeholder="e.g. 小程序"/></div>
           <div class="form-group"><label>QR Code 3 Description (EN)</label><input type="text" id="s-qr3_desc_en" placeholder="e.g. Mini Program"/></div>
@@ -926,7 +935,7 @@ async function saveCharterTypes(){
       const file=document.getElementById('charter-img-'+i).files[0];
       if(file){
         const fd=new FormData();
-        fd.append('file',file);
+        fd.append('image',file);
         uploads.push(
           fetch('/api/upload',{method:'POST',headers:{Authorization:'Bearer '+TOKEN},body:fd})
           .then(r=>r.json())
@@ -1066,6 +1075,17 @@ async function uploadBrandAsset(inputId, settingKey, previewId, previewH) {
     if(settingKey==='company_logo'){const sl=document.querySelector('.sidebar-logo');if(sl)sl.innerHTML=`<img src="${d.url}" style="max-height:40px;max-width:180px;object-fit:contain;"/>`;}
     if(settingKey==='favicon'){let lnk=document.querySelector("link[rel~='icon']");if(!lnk){lnk=document.createElement('link');lnk.rel='icon';document.head.appendChild(lnk);}lnk.href=d.url;}
     toast('Uploaded ✓');
+  }catch(e){toast(e.message,'error');}
+}
+
+async function clearQR(n) {
+  if(!confirm(`清除 QR Code ${n} 图片？此操作不可恢复。`)) return;
+  try {
+    await api('PUT','/settings',{['qr'+n+'_image']:''});
+    const prev=document.getElementById('qr'+n+'-preview');
+    if(prev)prev.innerHTML='';
+    document.getElementById('qr'+n+'-file').value='';
+    toast('QR Code '+n+' cleared ✓');
   }catch(e){toast(e.message,'error');}
 }
 

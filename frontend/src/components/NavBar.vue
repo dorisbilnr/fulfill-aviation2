@@ -104,7 +104,7 @@ nav.gn .gn-logo span { color: #c8a96e; }
 /* ── Desktop links ── */
 nav.gn .gn-links {
   display: flex;
-  gap: 20px;
+  gap: 32px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -117,7 +117,7 @@ nav.gn .gn-links a {
   font-size: 0.82rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.85);
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
@@ -212,10 +212,14 @@ nav.gn .gn-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-4
 }
 
 /* ── Responsive ── */
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
   nav.gn { padding: 0 28px; }
-  nav.gn .gn-links { gap: 14px; }
-  nav.gn .gn-links a { font-size: 0.78rem; letter-spacing: 0.5px; }
+  nav.gn .gn-links { gap: 22px; }
+  nav.gn .gn-links a { font-size: 0.80rem; letter-spacing: 1px; }
+}
+@media (max-width: 1100px) {
+  nav.gn .gn-links { gap: 16px; }
+  nav.gn .gn-links a { font-size: 0.78rem; letter-spacing: 1px; }
 }
 @media (max-width: 860px) {
   nav.gn .gn-links { display: none; }
