@@ -22,7 +22,8 @@ router.post('/login', (req, res) => {
     console.log('[auth] Login attempt:', email, '| match:', match);
     if (!match) return res.status(401).json({ error: 'Invalid email or password' });
 
-    const secret = String(process.env.JWT_SECRET || 'default_dev_secret_abc123');
+    const secret = String(process.env.JWT_SECRET || '');
+    if (!secret) { return res.status(500).json({ error: 'Server misconfigured' }); }
     console.log('[auth] JWT secret length:', secret.length);
     
     const token = jwt.sign(

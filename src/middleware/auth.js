@@ -6,7 +6,8 @@ module.exports = (req, res, next) => {
     return res.status(401).json({ error: 'Authentication required' });
   }
   try {
-    const secret = String(process.env.JWT_SECRET || 'default_dev_secret_abc123');
+    const secret = String(process.env.JWT_SECRET || '');
+    if (!secret) { return res.status(500).json({ error: 'Server misconfigured' }); }
     const payload = jwt.verify(auth.slice(7), secret);
     req.admin = payload;
     next();
