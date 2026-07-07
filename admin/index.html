@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
       <div class="nav-item" onclick="showSection('navlabels')" data-sec="navlabels"><span class="ico">🌐</span> <span data-i18n="Nav Labels">Nav Labels</span></div>
       <div class="nav-item" onclick="showSection('homepage')" data-sec="homepage"><span class="ico">📄</span> <span data-i18n="Homepage">Homepage</span></div>
       <div class="nav-item" onclick="showSection('charter')" data-sec="charter"><span class="ico">🛫</span> <span data-i18n="Charter Types">Charter Types</span></div>
+      <div class="nav-item" onclick="showSection('flights')" data-sec="flights"><span class="ico">📡</span> <span data-i18n="Flight Tracker">Flight Tracker</span></div>
       <div class="nav-item" onclick="showSection('account')" data-sec="account"><span class="ico">🔑</span> <span data-i18n="Account">Account</span></div>
     </nav>
     <div class="sidebar-footer">
@@ -490,6 +491,32 @@ document.addEventListener('DOMContentLoaded',function(){applyAdminLang(adminLang
     </div>
 
     <!-- ACCOUNT -->
+    <div class="section" id="sec-flights">
+      <h1 style="margin-bottom:6px;">航班追踪 Flight Tracker</h1>
+      <p style="color:#888;font-size:0.85rem;margin-bottom:16px;">查询航班动态 / 机场通告，管理起降监控（通知推送到企微群）</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <input id="ft-flight" placeholder="航班号 如 CKS207" style="padding:8px 10px;width:150px;">
+        <input id="ft-date" placeholder="日期(选填) 0705/今天/明天" style="padding:8px 10px;width:170px;">
+        <input id="ft-time" placeholder="计划起飞(选填) 14:30" style="padding:8px 10px;width:150px;">
+        <button class="btn" onclick="ftQuery()">查航班</button>
+        <button class="btn" onclick="ftWatch()">加监控</button>
+        <button class="btn" onclick="ftUnwatch()">取消监控</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <input id="ft-icao" placeholder="机场码 如 ZSPD" style="padding:8px 10px;width:140px;">
+        <button class="btn" onclick="ftNotam()">查通告</button>
+        <button class="btn" onclick="ftCmd('列表')">监控列表</button>
+        <button class="btn" onclick="ftCmd('航班 列表')">航班清单</button>
+        <button class="btn" onclick="ftCmd('机场 列表')">机场清单</button>
+        <button class="btn" onclick="ftCmd('用量')">用量</button>
+        <button class="btn" onclick="ftCmd('帮助')">帮助</button>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:14px;">
+        <input id="ft-free" placeholder="自由指令，如: 航班 添加 CKS207 莫斯科货班" style="padding:8px 10px;flex:1;">
+        <button class="btn" onclick="ftFree()">发送</button>
+      </div>
+      <pre id="ft-out" style="background:#0f172a;color:#e2e8f0;padding:16px;border-radius:8px;min-height:200px;white-space:pre-wrap;font-size:0.85rem;line-height:1.6;">输出显示在这里</pre>
+    </div>
     <div class="section" id="sec-account">
       <div class="page-header"><h1><span data-i18n="Account">Account</span></h1></div>
       <div class="sec-card" style="max-width:440px">
@@ -1101,6 +1128,36 @@ async function uploadAboutHero() {
     if(prev)prev.innerHTML=`<img src="${d.url}" style="max-width:200px;max-height:80px;object-fit:cover;border-radius:4px;margin-top:4px;"/>`;
     toast('Hero image uploaded ✓');
   }catch(e){toast(e.message,'error');}
+}
+</script>
+<script>
+async function ftSend(text){
+  const out=document.getElementById('ft-out');
+  out.textContent='查询中…';
+  try{const d=await api('POST','/flights/command',{text});out.textContent=d.reply||JSON.stringify(d);}
+  catch(e){out.textContent='失败: '+e.message;}
+}
+function ftCmd(t){ftSend(t);}
+function ftFree(){const v=document.getElementById('ft-free').value.trim();if(v)ftSend(v);}
+function ftNotam(){const i=document.getElementById('ft-icao').value.trim();if(!i)return alert('请输入机场码');ftSend('通告 '+i);}
+function ftQuery(){
+  const f=document.getElementById('ft-flight').value.trim();
+  const d=document.getElementById('ft-date').value.trim();
+  if(!f)return alert('请输入航班号');
+  ftSend(d?f+' '+d:f);
+}
+function ftWatch(){
+  const f=document.getElementById('ft-flight').value.trim();
+  const d=document.getElementById('ft-date').value.trim()||'今天';
+  const t=document.getElementById('ft-time').value.trim();
+  if(!f)return alert('请输入航班号');
+  ftSend('监控 '+f+' '+d+(t?' '+t:''));
+}
+function ftUnwatch(){
+  const f=document.getElementById('ft-flight').value.trim();
+  const d=document.getElementById('ft-date').value.trim();
+  if(!f)return alert('请输入航班号');
+  ftSend('取消 '+f+(d?' '+d:''));
 }
 </script>
 </body>

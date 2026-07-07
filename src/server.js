@@ -73,6 +73,7 @@ app.use('/api/stats',    require('./routes/stats'));
 app.use('/api/gallery',  require('./routes/gallery'));
 app.use('/api/team',     require('./routes/team'));
 app.use('/api/partners', require('./routes/partners'));
+app.use('/api/flights',  require('./routes/flights'));
 
 // ── Health check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
