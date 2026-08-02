@@ -29,4 +29,26 @@ router.post('/command', auth, (req, res) => {
   fr.end();
 });
 
+// SSO：admin 已通过 JWT 鉴权，向追踪服务换一枚管理员会话 token（免再登录）
+router.post('/sso', auth, (req, res) => {
+  const payload = '{}';
+  const fr = http.request(
+    { host: '127.0.0.1', port: 8300, path: '/internal/sso', method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) },
+      timeout: 10000 },
+    (pr) => {
+      let buf = '';
+      pr.on('data', (c) => (buf += c));
+      pr.on('end', () => {
+        try { res.json(JSON.parse(buf)); }
+        catch (e) { res.status(502).json({ error: 'flight service bad response' }); }
+      });
+    }
+  );
+  fr.on('timeout', () => { fr.destroy(); res.status(504).json({ error: 'flight service timeout' }); });
+  fr.on('error', () => res.status(502).json({ error: 'flight service unavailable' }));
+  fr.write(payload);
+  fr.end();
+});
+
 module.exports = router;
